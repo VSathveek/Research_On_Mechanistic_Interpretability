@@ -256,7 +256,7 @@ Key Research Themes:
 
 -------------------------------------------------------------------------------
 
-Author: [Your Name]
+Author: Varanasi Sathveek
 Purpose: Research & Presentation Demonstration
 Model: GPT-2 Small (124M)
 Framework: PyTorch + TransformerLens
