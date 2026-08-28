@@ -23,10 +23,11 @@ harmful. The whole design is built so all outcomes are visible, not just success
 
 | Output verdict | Meaning for the project |
 |---|---|
-| **DECOUPLING OBSERVED** | refusal falls, harmfulness holds → hypothesis supported, project is live |
+| **DECOUPLING OBSERVED** | in *successful* attacks, refusal falls while harmfulness holds → hypothesis supported, project is live |
 | **BOTH DECAY** | both fall → hypothesis dead |
-| **NO SIGNAL** | neither moves → nothing happening in these representations |
-| **EXTRACTION FAILED** | directions are the same thing, or set-C jailbreaks didn't work → measurement broken, no conclusion |
+| **NO SIGNAL** | neither moves in successful attacks → nothing happening in these representations |
+| **NO SUCCESSFUL ATTACKS** | no attack jailbroke the model, so there is no refusal collapse to observe → need a validated attack set, not a conclusion |
+| **EXTRACTION FAILED** | directions are the same thing, or set-C jailbreaks didn't work (retention < 50) → measurement broken, no conclusion |
 
 ### Method lineage (papers)
 - **Base:** *LLMs Encode Harmfulness and Refusal Separately* — arXiv **2507.11878**. Harmfulness and
@@ -51,6 +52,17 @@ refusal_dir[layer]     = mean(A[layer]) − mean(C[layer])   # both harmful, dif
 harmfulness_dir[layer] = mean(C[layer]) − mean(B[layer])   # both comply, differ in harmfulness
 ```
 
+### Multi-turn attack source (`ATTACK_SOURCE` in the config)
+- **`seed`** — 20 hand-authored crescendo attacks embedded in the notebook (self-contained). Their harm is
+  *end-loaded* (the overt request is the final turn), which spikes refusal at that turn instead of eroding it.
+- **`mhj`** — **ScaleAI/mhj** (537 released *human* multi-turn jailbreaks; gated, needs an HF token). Harm is
+  distributed across escalating human-written turns — the right shape for observing refusal decay. Each row's
+  user turns are replayed and the model's own replies regenerated; conversations are capped at `MAX_USER_TURNS`.
+
+Whichever source is used, each conversation is classified by **attack success** (did the model comply on its
+final turn?), and the verdict is computed on **successful attacks only** — refusal cannot "collapse" in a
+dialogue the model refused.
+
 ---
 
 ## Repository layout
@@ -61,11 +73,20 @@ major_project/
 │   └── exp1_decoupling.ipynb      # the deliverable — runs top-to-bottom on Kaggle
 ├── data/
 │   └── conversations.json         # 20 attack (crescendo) + 20 benign, matched seed set
-├── results/                       # paste Kaggle outputs here (projections.csv, verdict.txt, ...)
-├── figures/                       # paste plots here (fig1..fig4 .png)
+├── results/                       # seed-set (1.5B) run: verdict, projections, causal_validation,
+│   │                              #   conversation_success, refusal_dir.npy, harmfulness_dir.npy
+│   ├── mhj_1p5b/                  # ScaleAI/mhj run at 1.5B (37/40 attacks succeeded)
+│   └── mhj_7b/                    # ScaleAI/mhj run at 7B (EXTRACTION FAILED — set-C retention 34)
+├── figures/                       # fig1 main · fig2 gap · fig3 cosine · fig4 spaghetti · fig5 attack-outcome
+│   ├── mhj_1p5b/                  #   same five figures for the mhj 1.5B run
+│   └── mhj_7b/                    #   same five figures for the mhj 7B run
 └── notes/
-    └── experiment_log.md          # record each run
+    └── experiment_log.md          # one row per run (Runs 1–4 recorded)
 ```
+
+> **Note on `asst_reply`.** The notebook's `projections.csv` includes an `asst_reply` column (truncated model
+> replies). The copies committed here have that column **removed** — 37/40 mhj attacks succeeded, so those
+> replies can contain harmful text; only the numeric projections and the `asst_refused` label are published.
 
 The notebook is **self-contained**: the conversation seed set is embedded, so a fresh Kaggle session
 needs no extra uploads. (Optionally upload `data/conversations.json` as a Kaggle dataset and it will be
@@ -103,48 +124,64 @@ read from `/kaggle/input` instead.)
 
 | Config | Precision | Fits | Approx. wall-clock (Run All) |
 |---|---|---|---|
-| `Qwen/Qwen2.5-1.5B-Instruct` (default) | fp16 | 1× T4 | **~20–35 min** |
-| `Qwen/Qwen2.5-7B-Instruct` | 8-bit (`USE_8BIT=True`) | shards over 2× T4 | **~2–3.5 hours** |
+| `Qwen/Qwen2.5-1.5B-Instruct` (default) | fp16 | 1× P100 (CLI) or T4 | **~20–35 min** |
+| `Qwen/Qwen2.5-7B-Instruct` | fp16, `BATCH_SIZE=4`, `N_PROMPTS≈120` | 1× P100 16GB (CLI) | **~1–2 hours** |
+| `Qwen/Qwen2.5-7B-Instruct` | 8-bit (`USE_8BIT=True`) | 2× T4 (Kaggle UI only) | **~2–3.5 hours** |
 
-Multi-turn generation (Section 8) dominates both. With 30 GPU-hours/week, the 1.5B pilot costs well
-under an hour and the 7B run is comfortably affordable. If the 7B config OOMs in fp16 the loader falls
-back to 8-bit automatically and prints a note.
+Multi-turn generation (Section 8) dominates. **The Kaggle *CLI* always assigns a single P100** (you cannot
+select T4×2 from the API), and 8-bit does not run on Pascal — so CLI 7B runs use fp16 with reduced
+`BATCH_SIZE`/`N_PROMPTS`. For 8-bit on T4×2, import the notebook in the Kaggle **UI**. With 30 GPU-hours/week
+all of these are comfortably affordable.
 
 ---
 
 ## Config knobs (Section 0 of the notebook)
 - `MODEL_NAME` — default `Qwen/Qwen2.5-1.5B-Instruct`; 7B commented beside it. **Do not use Llama** — it
   is gated on HuggingFace and approval takes days.
-- `USE_8BIT` — 8-bit load for the 7B config.
+- `USE_8BIT` — 8-bit load for the 7B config. **Note:** 8-bit (bitsandbytes) does **not** run on Kaggle's
+  CLI-assigned P100 (Pascal); use fp16 with a smaller `BATCH_SIZE`/`N_PROMPTS` there, or the UI's T4×2 for 8-bit.
 - `N_PROMPTS` (200), `SEED` (42, seeds torch/numpy/random; greedy decoding = deterministic).
+- `ATTACK_SOURCE` (`"seed"` | `"mhj"`), `HF_TOKEN` (required for `mhj`), `N_ATTACK_CONVS` (40), `MAX_USER_TURNS` (8).
 - Toggles: `RUN_BEHAVIORAL_VERIFICATION`, `GENERATE_ASSISTANT_TURNS`, `RELOAD_CACHED_DIRECTIONS`,
   `ABLATE_ALL_LAYERS`. On a fresh session leave them at defaults.
 - Guards: `MIN_SETC_RETENTION` (50), `COSINE_SAME_THRESH` (0.9).
 
 ---
 
+## Results summary
+
+Four Kaggle runs so far (full detail in `notes/experiment_log.md`; artifacts in `results/` and `figures/`).
+
+| Run | Model | Attack source | Attacks succeeded | Multi-turn refusal (successful) | Verdict |
+|---|---|---|---|---|---|
+| 1 | 1.5B | seed crescendo | 8/20 | refusal **spikes** at end-loaded harmful turn | NO SIGNAL |
+| 2 | 1.5B | seed + success filter | 8/20 | refusal ≈30 (success) vs ≈57 (fail) at harmful turn, p<0.001 | NO SIGNAL |
+| 3 | 1.5B | **mhj** (human) | **37/40** | refusal **falls** 6.2→1.9 while harm holds 8.9→12.3 (n.s.) | NO SIGNAL |
+| 4 | **7B** | mhj (human) | **30/30** | direction underpowered (set-C 34<50) | **EXTRACTION FAILED** |
+
+**Two robust conclusions across all runs:**
+1. **The causal double dissociation replicates at both 1.5B and 7B.** Ablating the refusal direction drops
+   refusal *behaviour* (1.00→0.20 at 1.5B; 0.95→0.40 at 7B) while the harmfulness representation persists;
+   ablating harmfulness zeroes harm-proj while refusal is untouched. The base-paper claim — refusal and
+   harmfulness are *separable* directions — is causally supported at both scales.
+2. **Real human jailbreaks (mhj) fix the trajectory shape.** With mhj, refusal finally trends *downward*
+   across turns (6.2→1.9) instead of spiking, and harm holds — the hypothesised decoupling, visible in the
+   aggregate means. It is not yet *statistically* significant at 1.5B (per-conversation slope −0.16, p=0.76).
+
+**The 7B run is an honest null, not a wasted run.** It hit `EXTRACTION FAILED` because set-C retention was
+only 34/120: the 7B model resists the simple single-turn jailbreak templates, so the *harmfulness* direction
+was underpowered at N=120 and its multi-turn projections were untrustworthy. The notebook correctly refused
+to draw a conclusion (no hidden fallbacks).
+
 ## Status
 
-- [x] Notebook authored, all code cells compile, tensor/hook logic statically verified.
-- [x] Seed conversations authored and matched (turn counts equal, token delta ≤ 20%).
-- [x] **First Kaggle run complete — 2026-08-26 (P100 via CLI).** Two environment fixes were needed and
-      are now baked into the notebook: (1) Kaggle's CLI always assigns a **P100 (sm_60)** and its stock
-      torch 2.10 has no Pascal kernels, so the notebook pins **torch 2.4.1+cu121**; (2) `walledai/AdvBench`
-      became **gated**, so AdvBench now loads from the ungated llm-attacks GitHub CSV.
-- [x] Directions separate (cosine@layer24 = **−0.315**) and behaviourally verified (retention A/B/C =
-      199/187/56). **Causal validation passed with a clean double dissociation** — ablating refusal drops
-      refusal behaviour 1.00→0.20 while harmfulness persists; ablating harmfulness zeroes harm-proj while
-      refusal is untouched. The base-paper claim (two separable directions) is **causally supported**.
-- [x] **Run 2 (2026-08-27): added conversation-level attack-success filtering.** The notebook now
-      generates the model's reply each turn, classifies refusal, and splits conversations into
-      attack_success / attack_fail / benign; the verdict is computed on *successful* attacks only.
-      **8/20 attacks succeeded.** At the harmful turn, successful jailbreaks show refusal ≈**30** vs failed
-      ≈**57** (roughly halved, success-vs-fail p<0.001) while harmfulness stays positive — a
-      conversation-level replication of the base paper's "jailbreaks reduce refusal without reversing the
-      harmfulness belief." Verdict is **NO SIGNAL for across-turn decay**: the crescendo design still
-      concentrates the harmful ask in the final turn, so there is no sustained-harmful trajectory to erode.
-- [ ] **Next: MultiTurnPSB + 7B.** Switch attacks to the released MultiTurnPSB benchmark (464 validated
-      4-turn harmful conversations that escalate gradually), and re-run at Qwen2.5-7B-Instruct (STAR saw
-      decay on 8B+; 1.5B may lack the refusal machinery to erode gradually). Same pipeline + attack-success gate.
+- [x] Notebook authored; tensor/hook logic verified; runs top-to-bottom on Kaggle.
+- [x] Env fixes baked in: **torch 2.4.1+cu121** (Kaggle CLI P100 has no Pascal kernels in stock torch 2.10);
+      AdvBench loaded from the **ungated llm-attacks GitHub CSV** (`walledai/AdvBench` is gated).
+- [x] Runs 1–2 (1.5B, seed): clean causal double dissociation; conversation-level attack-success filtering added.
+- [x] Run 3 (1.5B, **mhj**): 37/40 attacks succeeded; refusal trajectory now decouples qualitatively.
+- [x] Run 4 (**7B**, mhj): double dissociation replicates; `EXTRACTION FAILED` on set-C retention (see above).
+- [ ] **Next — valid 7B run:** rerun 7B with `N_PROMPTS ≥ 200` and/or stronger jailbreak templates so set C
+      clears 50, then recompute the mhj decoupling test at 7B (STAR saw decay on 8B+; 1.5B may be too small).
 
 _Update this section after each run._
