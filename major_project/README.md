@@ -157,21 +157,28 @@ Four Kaggle runs so far (full detail in `notes/experiment_log.md`; artifacts in 
 | 1 | 1.5B | seed crescendo | 8/20 | refusal **spikes** at end-loaded harmful turn | NO SIGNAL |
 | 2 | 1.5B | seed + success filter | 8/20 | refusal ≈30 (success) vs ≈57 (fail) at harmful turn, p<0.001 | NO SIGNAL |
 | 3 | 1.5B | **mhj** (human) | **37/40** | refusal **falls** 6.2→1.9 while harm holds 8.9→12.3 (n.s.) | NO SIGNAL |
-| 4 | **7B** | mhj (human) | **30/30** | direction underpowered (set-C 34<50) | **EXTRACTION FAILED** |
+| 4 | 7B | mhj (human) | 30/30 | direction underpowered (set-C 34<50) | EXTRACTION FAILED |
+| **5** | **7B** | **mhj, N=300** | **30/30** | refusal **−2.42/turn (p=0.005)**, harm +1.55 (p=0.19) | **✅ DECOUPLING OBSERVED** |
 
-**Two robust conclusions across all runs:**
+**Headline result (Run 5, 7B).** With enough prompts for a valid extraction (set-C retention 86 > 50) and
+real human multi-turn jailbreaks, the **refusal representation significantly decays across turns**
+(slope −2.42, p=0.005) while the **harmfulness representation does not** (slope +1.55, p=0.19). The two
+directions *decouple* — the central hypothesis is **supported at 7B**.
+
+**Three robust conclusions:**
 1. **The causal double dissociation replicates at both 1.5B and 7B.** Ablating the refusal direction drops
-   refusal *behaviour* (1.00→0.20 at 1.5B; 0.95→0.40 at 7B) while the harmfulness representation persists;
-   ablating harmfulness zeroes harm-proj while refusal is untouched. The base-paper claim — refusal and
-   harmfulness are *separable* directions — is causally supported at both scales.
-2. **Real human jailbreaks (mhj) fix the trajectory shape.** With mhj, refusal finally trends *downward*
-   across turns (6.2→1.9) instead of spiking, and harm holds — the hypothesised decoupling, visible in the
-   aggregate means. It is not yet *statistically* significant at 1.5B (per-conversation slope −0.16, p=0.76).
+   refusal *behaviour* (1.00→0.20 at 1.5B; 1.00→0.65 at 7B) while the harmfulness representation persists;
+   ablating harmfulness zeroes harm-proj while refusal is untouched. Refusal and harmfulness are *separable*.
+2. **Real human jailbreaks (mhj) are needed to see decay.** The hand-authored crescendo attacks were
+   end-loaded (harm only in the final turn), which spikes refusal; mhj distributes harm across turns, so
+   refusal erodes. Attack success also jumps (8/20 hand-authored → 37/40 mhj).
+3. **Scale matters.** The refusal decay is only *significant* at 7B (p=0.005), not 1.5B (p=0.76) — consistent
+   with the idea that a larger model has more refusal machinery to erode gradually (1.5B tends to refuse or not).
 
-**The 7B run is an honest null, not a wasted run.** It hit `EXTRACTION FAILED` because set-C retention was
-only 34/120: the 7B model resists the simple single-turn jailbreak templates, so the *harmfulness* direction
-was underpowered at N=120 and its multi-turn projections were untrustworthy. The notebook correctly refused
-to draw a conclusion (no hidden fallbacks).
+**Caveat.** Absolute projection signs are offset between the single-turn extraction domain and the multi-turn
+mhj domain, so the result is the across-turn **trend** (refusal decays, harm flat), not absolute values.
+Run 4 (7B, N=120) is kept as an honest `EXTRACTION FAILED` — set-C retention 34<50 made the harmfulness
+direction untrustworthy; Run 5 fixes it by raising `N_PROMPTS` to 300.
 
 ## Status
 
@@ -180,8 +187,10 @@ to draw a conclusion (no hidden fallbacks).
       AdvBench loaded from the **ungated llm-attacks GitHub CSV** (`walledai/AdvBench` is gated).
 - [x] Runs 1–2 (1.5B, seed): clean causal double dissociation; conversation-level attack-success filtering added.
 - [x] Run 3 (1.5B, **mhj**): 37/40 attacks succeeded; refusal trajectory now decouples qualitatively.
-- [x] Run 4 (**7B**, mhj): double dissociation replicates; `EXTRACTION FAILED` on set-C retention (see above).
-- [ ] **Next — valid 7B run:** rerun 7B with `N_PROMPTS ≥ 200` and/or stronger jailbreak templates so set C
-      clears 50, then recompute the mhj decoupling test at 7B (STAR saw decay on 8B+; 1.5B may be too small).
+- [x] Run 4 (7B, mhj, N=120): double dissociation replicates; `EXTRACTION FAILED` on set-C retention 34<50.
+- [x] **Run 5 (7B, mhj, N=300): `DECOUPLING OBSERVED`.** Set-C retention 86; refusal decays significantly
+      (−2.42/turn, p=0.005) while harmfulness holds (+1.55, p=0.19). **Central hypothesis supported at 7B.**
+- [ ] **Next:** robustness — repeat across seeds / more mhj conversations for tighter CIs; probe *why* the
+      projection signs are domain-offset (extraction vs measurement); optionally a 14B/larger check.
 
 _Update this section after each run._
