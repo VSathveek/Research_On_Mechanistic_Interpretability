@@ -150,35 +150,45 @@ all of these are comfortably affordable.
 
 ## Results summary
 
-Four Kaggle runs so far (full detail in `notes/experiment_log.md`; artifacts in `results/` and `figures/`).
+Seven Kaggle runs (full detail in `notes/experiment_log.md`; artifacts in `results/` and `figures/`).
 
-| Run | Model | Attack source | Attacks succeeded | Multi-turn refusal (successful) | Verdict |
+| Run | Model | Attack source | Attacks succ. | Multi-turn refusal (successful) | Verdict |
 |---|---|---|---|---|---|
 | 1 | 1.5B | seed crescendo | 8/20 | refusal **spikes** at end-loaded harmful turn | NO SIGNAL |
-| 2 | 1.5B | seed + success filter | 8/20 | refusal ≈30 (success) vs ≈57 (fail) at harmful turn, p<0.001 | NO SIGNAL |
-| 3 | 1.5B | **mhj** (human) | **37/40** | refusal **falls** 6.2→1.9 while harm holds 8.9→12.3 (n.s.) | NO SIGNAL |
-| 4 | 7B | mhj (human) | 30/30 | direction underpowered (set-C 34<50) | EXTRACTION FAILED |
-| **5** | **7B** | **mhj, N=300** | **30/30** | refusal **−2.42/turn (p=0.005)**, harm +1.55 (p=0.19) | **✅ DECOUPLING OBSERVED** |
+| 2 | 1.5B | seed + success filter | 8/20 | refusal ≈30 (succ) vs ≈57 (fail) at harmful turn, p<0.001 | NO SIGNAL |
+| 3 | 1.5B | mhj | 37/40 | refusal falls 6.2→1.9, harm holds (n.s.) | NO SIGNAL |
+| 4 | 7B | mhj, N=120 | 30/30 | direction underpowered (set-C 34<50) | EXTRACTION FAILED |
+| 5 | 7B | mhj, N=300, **30 convs** | 30/30 | refusal −2.42/turn (p=0.005), harm flat | DECOUPLING OBSERVED* |
+| 6 | 1.5B | mhj, N=300, **60 convs** + controls | 55/60 | refusal −0.66 (p=0.20) | NO SIGNAL |
+| **7** | **7B** | **mhj, N=300, 60 convs + controls** | 60/60 | refusal −2.35 (**p=0.076**) | **NO SIGNAL** |
 
-**Headline result (Run 5, 7B).** With enough prompts for a valid extraction (set-C retention 86 > 50) and
-real human multi-turn jailbreaks, the **refusal representation significantly decays across turns**
-(slope −2.42, p=0.005) while the **harmfulness representation does not** (slope +1.55, p=0.19). The two
-directions *decouple* — the central hypothesis is **supported at 7B**.
+> **\*Run 5's `DECOUPLING OBSERVED` did NOT survive the controls (Runs 6–7) — treat it as retracted.**
 
-**Three robust conclusions:**
-1. **The causal double dissociation replicates at both 1.5B and 7B.** Ablating the refusal direction drops
-   refusal *behaviour* (1.00→0.20 at 1.5B; 1.00→0.65 at 7B) while the harmfulness representation persists;
-   ablating harmfulness zeroes harm-proj while refusal is untouched. Refusal and harmfulness are *separable*.
-2. **Real human jailbreaks (mhj) are needed to see decay.** The hand-authored crescendo attacks were
-   end-loaded (harm only in the final turn), which spikes refusal; mhj distributes harm across turns, so
-   refusal erodes. Attack success also jumps (8/20 hand-authored → 37/40 mhj).
-3. **Scale matters.** The refusal decay is only *significant* at 7B (p=0.005), not 1.5B (p=0.76) — consistent
-   with the idea that a larger model has more refusal machinery to erode gradually (1.5B tends to refuse or not).
+### What the controls found (the honest bottom line)
+Run 5 looked like a win, so Runs 6–7 re-ran the same pipeline with **more conversations (60)** and two
+controls. The apparent decoupling **falls apart**:
 
-**Caveat.** Absolute projection signs are offset between the single-turn extraction domain and the multi-turn
-mhj domain, so the result is the across-turn **trend** (refusal decays, harm flat), not absolute values.
-Run 4 (7B, N=120) is kept as an honest `EXTRACTION FAILED` — set-C retention 34<50 made the harmfulness
-direction untrustworthy; Run 5 fixes it by raising `N_PROMPTS` to 300.
+1. **Statistical robustness fails.** Doubling the sample (30→60 convs) moved the 7B refusal slope from
+   −2.42 (p=**0.005**) to −2.35 (p=**0.076**) — *less* significant with *more* data. Run 5's p=0.005 was a
+   small-sample fluke (regression to the mean).
+2. **Length control fails (the decisive one).** Regressing `refusal_proj ~ turn + n_tokens`, the `turn`
+   coefficient flips **positive** (+3.50, p=0.019) once dialogue length is controlled, while `n_tokens` is the
+   significant negative predictor (−0.0245, p=0.0015) at 7B — same pattern at 1.5B. **The refusal "decay"
+   tracks conversation length, not turn/escalation** — the PsychoPass confound, not a finding.
+3. **Random-direction control is not enough to save it.** Refusal is a random-outlier (z=−3.5) — it drifts more
+   than 20 random directions — but that only rules out *generic* drift. Length is a *specific* confound the
+   length control catches; refusal is simply more length-sensitive than random.
+
+### What still stands
+- **The causal double dissociation is real and robust** (single-turn, Section 6, not length-dependent):
+  ablate refusal → refusal behaviour drops (1.00→0.20 at 1.5B; 1.00→0.65 at 7B) while harm persists; ablate
+  harm → harm-proj zeroes while refusal is untouched. **Refusal and harmfulness are separable directions.**
+- **Real human jailbreaks (mhj) are far stronger** than the hand-authored crescendo set (8/20 → 55/60).
+
+### What does NOT stand
+- **The multi-turn claim** — "refusal decays across turns while harmfulness holds" — is **not established**.
+  It is a dialogue-length artifact plus a small-sample fluke. Claims 1–2 (separable, causal) survive;
+  claim 3 (the multi-turn decay is not an artifact) **does not**.
 
 ## Status
 
@@ -188,9 +198,14 @@ direction untrustworthy; Run 5 fixes it by raising `N_PROMPTS` to 300.
 - [x] Runs 1–2 (1.5B, seed): clean causal double dissociation; conversation-level attack-success filtering added.
 - [x] Run 3 (1.5B, **mhj**): 37/40 attacks succeeded; refusal trajectory now decouples qualitatively.
 - [x] Run 4 (7B, mhj, N=120): double dissociation replicates; `EXTRACTION FAILED` on set-C retention 34<50.
-- [x] **Run 5 (7B, mhj, N=300): `DECOUPLING OBSERVED`.** Set-C retention 86; refusal decays significantly
-      (−2.42/turn, p=0.005) while harmfulness holds (+1.55, p=0.19). **Central hypothesis supported at 7B.**
-- [ ] **Next:** robustness — repeat across seeds / more mhj conversations for tighter CIs; probe *why* the
-      projection signs are domain-offset (extraction vs measurement); optionally a 14B/larger check.
+- [x] Run 5 (7B, mhj, N=300, 30 convs): looked like `DECOUPLING OBSERVED` — **later retracted** (see below).
+- [x] **Runs 6–7 (1.5B & 7B, N=300, 60 convs + controls): result does NOT survive.** Length control shows the
+      refusal "decay" tracks dialogue length, not turn; and the 7B slope loses significance (p=0.005→0.076)
+      when the sample is doubled. **The multi-turn decoupling claim is not established.** The single-turn causal
+      double dissociation still stands.
+- [ ] **Next (if continuing):** (a) a length-matched design — truncate/pad conversations to equal token length
+      per turn, or measure at a fixed harmful probe appended each turn; (b) a within-attack success-vs-fail test
+      with more failures; (c) cross-model / cross-attack transfer of the (single-turn) directions, which is the
+      part that is actually robust.
 
 _Update this section after each run._
