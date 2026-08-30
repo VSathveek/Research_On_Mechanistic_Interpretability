@@ -1,0 +1,12 @@
+======================================================================
+CONTROLS (successful attacks)
+======================================================================
+[length] pooled OLS  refusal ~ 1 + turn + n_tokens   (n=272 rows)
+         turn coef     = +3.5000  (p=0.0186)   <- want negative & significant
+         n_tokens coef = -0.024500  (p=0.0015)
+         corr(refusal, n_tokens) = -0.154
+         -> refusal-vs-turn does NOT survive the length control
+[random] refusal slope = -2.350   harm slope = +0.236 (reference)
+         random 20 dirs slope = -0.206 ± 0.609
+         refusal z vs random = -3.52;  0/20 random dirs <= refusal slope
+         -> refusal decay is SPECIFIC (outlier vs random drift)
