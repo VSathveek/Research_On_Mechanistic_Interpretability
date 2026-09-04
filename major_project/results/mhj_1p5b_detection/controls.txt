@@ -1,0 +1,20 @@
+======================================================================
+CONTROLS (successful attacks)
+======================================================================
+[length] pooled OLS  refusal ~ 1 + turn + n_tokens   (n=251 rows)
+         turn coef     = +1.4315  (p=0.0517)   <- want negative & significant
+         n_tokens coef = -0.012090  (p=0.0024)
+         corr(refusal, n_tokens) = -0.173
+         -> refusal-vs-turn does NOT survive the length control
+[random] refusal slope = -0.662   harm slope = +1.265 (reference)
+         random 20 dirs slope = -0.032 ± 0.313
+         refusal z vs random = -2.01;  0/20 random dirs <= refusal slope
+         -> refusal decay is SPECIFIC (outlier vs random drift)
+
+[norm]   MAGNITUDE CONTROL  (cosine = projection / ||h||)
+         ||h|| slope across turns = -0.984   (mean ||h|| = 142.8)
+         refusal COSINE slope = -0.004344 (p=0.2363)   [raw dot slope was -0.662]
+         harm    COSINE slope = +0.009361
+         cosine length control: turn coef +0.010018 (p=0.0497), n_tokens coef -0.00008441 (p=0.0023)
+         random cosine slopes = -0.000178 +/- 0.002198;  refusal z = -1.90
+         => MAGNITUDE/LENGTH ARTIFACT: no directional refusal decay once normalized
