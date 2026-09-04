@@ -186,9 +186,14 @@ controls. The apparent decoupling **falls apart**:
 - **Real human jailbreaks (mhj) are far stronger** than the hand-authored crescendo set (8/20 → 55/60).
 
 ### What does NOT stand
-- **The multi-turn claim** — "refusal decays across turns while harmfulness holds" — is **not established**.
-  It is a dialogue-length artifact plus a small-sample fluke. Claims 1–2 (separable, causal) survive;
-  claim 3 (the multi-turn decay is not an artifact) **does not**.
+- **The multi-turn claim** — "refusal decays across turns while harmfulness holds" — is **not established**,
+  and after Run 8 we treat it as **settled: not a real effect.** It fails three independent ways:
+  1. **No replication** — 7B slope went p=0.005 (30 convs) → p=0.076 (60 convs).
+  2. **Fails the length control** at both scales — `turn` flips positive once `n_tokens` is included.
+  3. **Fails after norm-normalization** (Run 8) — the refusal *cosine* slope is n.s. (p=0.24), and the length
+     confound **persists on the cosine measure** (`n_tokens` p=0.0023), so it is not merely a magnitude effect.
+  This agrees with **PsychoPass (2606.03136)**. Note **STAR (2603.15684)** reports the same decay but ran no
+  length control — our controlled result *contradicts* their uncontrolled claim, which is itself a finding.
 
 ## Status
 
