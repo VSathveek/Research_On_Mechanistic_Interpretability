@@ -179,6 +179,22 @@ controls. The apparent decoupling **falls apart**:
    than 20 random directions — but that only rules out *generic* drift. Length is a *specific* confound the
    length control catches; refusal is simply more length-sensitive than random.
 
+### The detection line (Runs 9–13) — also closed
+After the trajectory claim failed, we tested a different question: can the harmfulness direction
+**classify** an adversarial conversation, and how early? Initial result looked strong (AUC **0.891** vs real
+chat, **0.774 at turn 0**, length baseline at chance). It did not survive baselines:
+
+| Control | Result |
+|---|---|
+| vs real chat (UltraChat) | harm 0.891 — but **TF-IDF 0.994** |
+| topic-matched benign (53 generated) | **TF-IDF stayed 0.995** → control failed; harmful text contains harmful words |
+| prefix-matched (text sees only turns 0..t) | **TF-IDF wins at every turn**, incl. turn 0 (0.953 vs 0.783) |
+| success-vs-fail, powered (465 vs 31) | harmfulness **at chance** (0.39–0.54); late-turn signal is inverted and near-tautological |
+
+**Conclusion: the harmfulness direction never beats a bag-of-words classifier on any solvable task, and is at
+chance on the one task where text is weak.** A key assumption also proved false — MHJ turn-0 messages are
+*not* lexically benign (TF-IDF scores 0.953 on the opening message alone).
+
 ### What still stands
 - **The causal double dissociation is real and robust** (single-turn, Section 6, not length-dependent):
   ablate refusal → refusal behaviour drops (1.00→0.20 at 1.5B; 1.00→0.65 at 7B) while harm persists; ablate
