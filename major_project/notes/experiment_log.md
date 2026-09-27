@@ -97,3 +97,58 @@ Example row (delete once you have real data):
    confound, not a safety effect. Rebalance `data/conversations.json`.
 4. **Causal validation didn't move refusal** → the ablation isn't biting; try `ABLATE_ALL_LAYERS=True`
    or a different selected layer.
+
+---
+
+## Experiment 3 — Do multi-turn jailbreaks break the same safety relay? (2026-09-27)
+
+**Question.** Single-turn roleplay jailbreaks work by "safety-relay attenuation": harm recognition is retained
+at the request while refusal expression weakens (Safety Relay, arXiv 2608.30585). Is the multi-turn mechanism
+the same, or does multi-turn context change the harm judgment itself (as 2507.02956 suggests correlationally)?
+
+**Design.** Identical final request under four contexts: `iso` (alone), `wrap` (single-turn roleplay wrapper),
+`ctx` (real MHJ attack turns, on-policy), `neu` (length-capped benign UltraChat turns, on-policy). Harm read at
+the last request token, refusal where the answer begins; changes expressed as fractions of each direction's
+calibration gap. Pre-screened to the 184/496 MHJ conversations whose final request is refused in isolation;
+150 used. Causal test: add harm direction (1x, 2x gap) vs random direction of equal norm; refusal direction as
+positive control. Model: Qwen2.5-1.5B-Instruct, layer 19. Three smoke runs preceded the full run.
+
+**Validation.** Retention A/B/C 299/283/85; cos(harm,ref) -0.23; ablating refusal: 1.00 -> 0.10.
+
+**Results (n=150).**
+| arm | refusal rate |
+|---|---|
+| iso | 0.993 |
+| wrap | 0.280 |
+| ctx | 0.107 |
+| neu | 0.353 |
+
+Attack context beats neutral context: 45 vs 8 discordant pairs, McNemar p=2.4e-7.
+
+Representation on flipped cases (fraction of calibration gap):
+| contrast | harm | refusal |
+|---|---|---|
+| single-turn wrap-iso (n=107) | **+0.318** | **-0.340** |
+| multi-turn ctx-iso (n=133) | +0.040 | **-0.157** |
+| multi-turn ctx-neu (n=133) | +0.012 | **-0.081** (p=7.3e-17) |
+
+Causal restoration (successful attacks): refusal steering restores 1.00 in both. Harm at 2x gap restores
+refusal in 0.44 (single-turn) and 0.40 (multi-turn) vs random 0.08 / 0.04 (McNemar p=3.2e-8, 6.1e-13).
+At 1x gap: single-turn 0.28 vs 0.17 (p=0.036); multi-turn 0.11 vs 0.09 (n.s.).
+
+**Robustness.** Length does not explain the multi-turn effect: regressing (ctx-neu) on token difference gives
+per-token slope p=0.58 and intercept -0.078 (p=2.9e-11); in a length-balanced subset (n=79) the effect holds
+(McNemar p=8.8e-5). Harm is not lowered in any of the five MHJ tactics; only 7/133 flipped cases show a harm drop
+>10% of gap. See `results/exp3_relay_1p5b/robustness.txt`.
+
+**Conclusion.** On this model, multi-turn jailbreaks use the **same mechanism** as single-turn roleplay
+jailbreaks: harm recognition is retained (slightly increased) while refusal is suppressed, and the harm->refusal
+link is intact but attenuated -- restoring refusal needs roughly twice the normal harm signal.
+
+**Caveats.** Single model at 1.5B -- replication at 7B and on a second family is required. 2507.02956 measured
+representations of the model's *responses*; we measure at the *request*. The two findings may not conflict:
+harm can be recognised at the request while the response is produced in a benign mode. Refusal is scored by
+substring matching.
+
+**Secondary observation.** Benign context alone lowers refusal on an identical harmful request from 0.99 to
+0.35, via the same pattern (harm +0.028, refusal -0.076 of gap). Attack content roughly doubles that effect.

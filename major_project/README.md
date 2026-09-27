@@ -148,6 +148,24 @@ all of these are comfortably affordable.
 
 ---
 
+## Experiment 3 — multi-turn jailbreaks break the same safety relay (current main result)
+
+Notebook: `notebooks/exp3_multiturn_safety_relay.ipynb` · results: `results/exp3_relay_1p5b/`
+
+The identical final harmful request, under four contexts (alone / single-turn roleplay / real multi-turn attack /
+length-matched benign), Qwen2.5-1.5B-Instruct, 150 MHJ conversations:
+
+- **Behaviour:** refusal 0.99 alone → 0.28 roleplay → **0.11 multi-turn attack** → 0.35 benign context.
+  Attack content beats benign context (McNemar p=2.4e-7), and survives length control (p=8.8e-5 on a
+  length-balanced subset).
+- **Mechanism:** in both single-turn and multi-turn, the **harm representation is retained** (single +0.32,
+  multi +0.04 of calibration gap) while **refusal is suppressed** (single −0.34, multi −0.16).
+- **Causal:** adding the harm direction back at 2× restores refusal in ~40% of successful attacks vs ~4–8%
+  for a random direction (p≤3e-8) — the harm→refusal link is intact but attenuated.
+- **Conclusion:** multi-turn jailbreaks work by the **same relay-attenuation mechanism** as single-turn roleplay
+  jailbreaks (cf. Safety Relay, arXiv 2608.30585), not by changing the harm judgment. Single model so far;
+  replication at 7B and on a second family is next.
+
 ## Results summary
 
 Seven Kaggle runs (full detail in `notes/experiment_log.md`; artifacts in `results/` and `figures/`).

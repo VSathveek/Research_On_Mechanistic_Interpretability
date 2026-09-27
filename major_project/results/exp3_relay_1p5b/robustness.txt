@@ -1,0 +1,20 @@
+EXPERIMENT 3 -- post-hoc robustness checks (computed from four_arm_paired.csv)
+
+Concern: attack contexts ran longer than neutral contexts (ctx-neu tokens: mean +151.2, median +108).
+
+(1) Regression (ctx - neu) ~ 1 + token difference, multi-turn flipped cases, n=133
+    refusal: intercept -0.0779 of gap (p=2.9e-11) | per-token slope -0.000022 (p=0.58)
+    harm   : intercept +0.0119 of gap (p=0.021)   | per-token slope +0.000001 (p=0.96)
+    -> length does not predict the effect; attack effect at EQUAL length is unchanged.
+
+(2) Length-balanced subset (token counts within 20%), n=79
+    refusal rate: neu 0.354 vs ctx 0.101 | discordant 23 vs 3, McNemar p=8.8e-05
+    flipped (n=70): refusal ctx-neu -0.0867 (Wilcoxon p=5.7e-11); harm +0.0176 (p=0.0081)
+
+(3) Per-tactic, multi-turn flipped, ctx-iso change (fraction of calibration gap)
+    Obfuscation (42)                harm +0.033  refusal -0.169
+    Direct Request (36)             harm +0.053  refusal -0.154
+    Hidden Intention Streamline (35) harm +0.054  refusal -0.160
+    Request Framing (12)            harm +0.014  refusal -0.137
+    Injection (6)                   harm -0.007  refusal -0.145
+    Harm dropped by >10% of gap in only 7/133 flipped cases.
