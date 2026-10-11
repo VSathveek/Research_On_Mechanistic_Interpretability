@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watched or Real?</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{--bg:#fff;--soft:#f5f7fb;--ink:#14161a;--muted:#5f6673;--line:#e3e7ee;--real:#2667ff;--real-bg:#e7eeff;--sim:#e4572e;--sim-bg:#fdece6;
+--watch:#8a4dff;--watch-bg:#f0e8ff;--ok:#17a35a;--ok-bg:#e3f6ea;--todo:#e8a100;--todo-bg:#fff5d9;--gray:#9aa1ad}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Inter,system-ui,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+nav{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.93);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+nav .in{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;flex-wrap:wrap}
+nav a{font-size:14px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 12px;border-radius:999px}
+nav a:hover{background:var(--soft);color:var(--ink)}
+header{padding:56px 0 18px}.kick{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--real)}
+h1{font-size:clamp(28px,4vw,42px);line-height:1.12;margin:10px 0;letter-spacing:-.02em}.sub{color:var(--muted);margin:0}
+section{padding-top:52px}h2{font-size:25px;margin:0 0 6px;display:flex;align-items:center;gap:12px}
+h2 .n{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;font-size:16px}
+.lead{color:var(--muted);margin:0 0 20px}
+.thesis{background:var(--ink);color:#fff;border-radius:20px;padding:28px 30px}
+.thesis .big{font-size:clamp(22px,3vw,31px);font-weight:800;line-height:1.22}
+.thesis .big .w{color:#c7a8ff}.thesis .big .r{color:#9dbaff}.thesis p{margin:12px 0 0;color:#c9ced8;font-size:16.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.card{border:1px solid var(--line);border-radius:14px;padding:15px 17px;background:#fff}.card h4{margin:0 0 4px;font-size:15px}.card p{margin:0;font-size:14.5px;color:var(--muted)}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.box h4{margin:0;font-size:16px}.cap{margin:2px 0 8px;color:var(--muted);font-size:14px}
+.take{margin-top:8px;padding:10px 14px;border-radius:10px;background:var(--ok-bg);font-size:15px}
+.warn{margin-top:12px;background:var(--todo-bg);border:1px solid #f2d27a;border-radius:12px;padding:12px 16px;font-size:15px}
+svg text{font-family:Inter,system-ui,sans-serif}
+.f{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.f .t{font-size:12.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.f .math{font-size:18px;margin:10px 0;overflow-x:auto}
+.f ul{margin:0;padding:0;list-style:none;font-size:14px}.f li{padding:4px 0;border-top:1px dashed var(--line);display:flex;gap:10px}
+.f li>span:first-child{min-width:60px;flex:0 0 auto;font-weight:600}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.col{border-radius:16px;padding:15px;border:1px solid var(--line)}
+.col h3{margin:0 0 10px;font-size:15px;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%}
+.done{background:var(--ok-bg)}.done .dot{background:var(--ok)}.now{background:var(--watch-bg)}.now .dot{background:var(--watch);animation:p 1.4s infinite}
+.next{background:var(--todo-bg)}.next .dot{background:var(--todo)}@keyframes p{50%{opacity:.3}}
+.item{background:#fff;border-radius:10px;padding:8px 11px;margin-bottom:8px;font-size:14px;line-height:1.4}.item small{display:block;color:var(--muted);font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:600;font-size:13px}
+@media (max-width:760px){.grid2,.grid3,.cols{grid-template-columns:1fr}}
+@media print{nav{display:none}.now .dot{animation:none}}
+</style>
+</head>
+<body>
+<nav><div class="in"><a href="#q">Question</a><a href="#why">Why it matters</a><a href="#how">Method</a><a href="#math">Formulas</a><a href="#res">Results</a><a href="#status">Status</a></div></nav>
+<div class="wrap">
+<header>
+  <div class="kick">Major project · Mechanistic interpretability · 11 Oct 2026</div>
+  <h1>Watched or Real? How Language Models Represent Being Observed and Being in the Real World</h1>
+  <p class="sub">Varanasi Sathveek · Experiments on Kaggle · Ministral-8B, Llama-3.1-8B, Gemma-3-4B</p>
+</header>
+
+<section id="q">
+  <h2><span class="n">1</span>Research question</h2>
+  <div class="thesis">
+    <div class="big">Does a model internally separate <span class="w">"am I being watched?"</span> from <span class="r">"is this real?"</span> &mdash; and do these beliefs change how safely it acts?</div>
+    <p>If a model wrongly believes a real situation is "just a simulation", it may act more carelessly. We look inside the model to find these beliefs, test whether they cause behaviour, and locate where they are computed.</p>
+  </div>
+</section>
+
+<section id="why">
+  <h2><span class="n">2</span>Why this is open</h2>
+  <p class="lead">Recent papers show the behaviour but not the mechanism, and explicitly ask for it.</p>
+  <div class="grid3">
+    <div class="card"><span class="tag" style="color:var(--watch)">NeurIPS 2025</span><h4>Hawthorne effect paper</h4><p>"Being evaluated" and "it's a simulation" are entangled; authors ask for <i>causal interventions that disentangle these signals</i>.</p></div>
+    <div class="card"><span class="tag" style="color:var(--sim)">Google DeepMind 2026</span><h4>Models behave worse when they think it's simulated</h4><p>Shown from reasoning text only: "<i>no direct causal evidence</i>".</p></div>
+    <div class="card"><span class="tag" style="color:var(--real)">Anthropic 2025–26</span><h4>Agentic misalignment</h4><p>Models act differently when they think a scenario is real vs a test; never separated inside the model.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <h2><span class="n">3</span>Method</h2>
+  <p class="lead">Add one framing sentence, read the model's internal state, find the directions, then intervene.</p>
+  <div class="box"><svg id="arch" viewBox="0 0 940 300" width="100%"></svg></div>
+</section>
+
+<section id="math">
+  <h2><span class="n">4</span>Formulas used</h2>
+  <div class="grid2">
+    <div class="f"><div class="t">① Concept direction</div><div class="math">\[ d_R = \mu(\text{real}) - \mu(\text{simulated}) \]</div>
+      <ul><li><span>\(\mu(\cdot)\)</span><span>average internal state (last token) over prompts with that framing</span></li><li><span>\(d_W\)</span><span>same for watched vs unwatched</span></li></ul></div>
+    <div class="f"><div class="t">② Reading the belief</div><div class="math">\[ s = h \cdot \hat d \]</div>
+      <ul><li><span>\(h\)</span><span>internal state of the model at one layer</span></li><li><span>\(\hat d\)</span><span>direction scaled to length 1; \(s\) = how strongly the belief is present</span></li></ul></div>
+    <div class="f"><div class="t">③ Steering (does it cause behaviour?)</div><div class="math">\[ h' = h + \alpha\, g\, \hat d \]</div>
+      <ul><li><span>\(\alpha\)</span><span>strength (2 or 4)</span></li><li><span>\(g\)</span><span>natural size of the real-vs-simulated difference; control: random vector of equal size</span></li></ul></div>
+    <div class="f"><div class="t">④ Ablation (is it needed?)</div><div class="math">\[ h' = h - (h\cdot \hat d)\,\hat d \]</div>
+      <ul><li><span>effect</span><span>removes the belief from the model's state; behaviour should change back</span></li></ul></div>
+    <div class="f"><div class="t">⑤ Head attribution (where is it computed?)</div><div class="math">\[ a_{\ell,h} = \big(o_{\ell,h}^{\text{real}} - o_{\ell,h}^{\text{sim}}\big)\cdot \hat d_R \]</div>
+      <ul><li><span>\(o_{\ell,h}\)</span><span>what attention head \(h\) in layer \(\ell\) writes to the final position</span></li><li><span>\(a\)</span><span>its share of the real-vs-simulated signal</span></li></ul></div>
+    <div class="f"><div class="t">⑥ Statistics</div><div class="math">\[ \text{McNemar: } n_{10}\sim\mathrm{Bin}(n_{10}+n_{01},\tfrac12) \]</div>
+      <ul><li><span>\(n_{10}\)</span><span>requests that flip one way between two conditions (same requests in both)</span></li><li><span>AUROC</span><span>how well a direction separates framings on unseen wordings (1 = perfect)</span></li></ul></div>
+  </div>
+</section>
+
+<section id="res">
+  <h2><span class="n">5</span>Results</h2>
+  <div style="display:grid;gap:14px">
+    <div class="box"><h4>A · Two separate directions exist in all three models</h4><p class="cap">How well each direction recognises its framing on unseen wordings and tasks (AUROC; 0.5 = chance).</p>
+      <svg id="c1" viewBox="0 0 880 230" width="100%"></svg>
+      <div class="take">Distinct (cosine 0.2–0.34), not explained by negation, and not the refusal direction (cosine 0.04–0.17).</div></div>
+    <div class="box"><h4>B · "Simulated" makes the model less cautious than "real" — in all three models</h4><p class="cap">Same requests, only the framing sentence differs. Ministral: harmful compliance (AdvBench). Llama &amp; Gemma: answer rate on borderline requests (OR-Bench-Hard).</p>
+      <svg id="c2" viewBox="0 0 880 250" width="100%"></svg>
+      <div class="take">Significant in every model (p = 2·10⁻⁵, 0.002, 0.04).</div></div>
+    <div class="box"><h4>C · Steering along the "real" direction changes behaviour (Ministral)</h4><p class="cap">Harmful compliance on 200 requests when a vector is added inside the model.</p>
+      <svg id="c3" viewBox="0 0 880 270" width="100%"></svg>
+      <div class="take">Toward "simulated" triples compliance and beats equal-size random pushes; toward "real" nearly removes it. Replicated in Llama and Gemma on borderline requests.</div></div>
+    <div class="box"><h4>D · The reality signal is carried by a few attention heads (Ministral)</h4><p class="cap">How strongly the model separates real from simulated internally, after switching heads off.</p>
+      <svg id="c4" viewBox="0 0 880 270" width="100%"></svg>
+      <div class="take">One head (layer 14, head 19) carries half the signal; ten heads carry three quarters. Random heads barely matter.</div></div>
+  </div>
+  <div class="warn"><b>Honest limits:</b> effects are a few percentage points (small models refuse most harmful requests); hidden "fake-world" cues move the signal only ~10% as far as an explicit sentence; the behavioural effect of switching off heads is suggestive but needs the larger run now in progress.</div>
+</section>
+
+<section id="status">
+  <h2><span class="n">6</span>Where we are</h2>
+  <div class="cols">
+    <div class="col done"><h3><span class="dot"></span>Done</h3>
+      <div class="item">Directions + controls<small>3 models</small></div>
+      <div class="item">Framing effects on behaviour<small>3 models, all significant for real vs simulated</small></div>
+      <div class="item">Steering<small>3 models</small></div>
+      <div class="item">Head localisation<small>Ministral: L14.H19 + ~10 heads</small></div>
+      <div class="item">Code + results on GitHub<small>major_project/watched_or_real</small></div></div>
+    <div class="col now"><h3><span class="dot"></span>Running</h3>
+      <div class="item">Heads → behaviour, 520 requests<small>does switching heads off remove the framing effect?</small></div>
+      <div class="item">Gemma necessity (gentle)<small>remove the direction only near its layer</small></div></div>
+    <div class="col next"><h3><span class="dot"></span>Next</h3>
+      <div class="item">Head localisation in Llama &amp; Gemma<small>is it always a few heads?</small></div>
+      <div class="item">Stronger hidden cues<small>full agent environments that look like tests</small></div>
+      <div class="item">Paper write-up</div></div>
+  </div>
+</section>
+</div>
+<script>
+(function(){var NS="http://www.w3.org/2000/svg";function S(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function T(p,x,y,s,a){var e=S("text",Object.assign({x:x,y:y},a||{}),p);e.textContent=s;return e}function tip(el,s){S("title",{},el).textContent=s}
+var C={real:"#2667ff",sim:"#e4572e",watch:"#8a4dff",gray:"#9aa1ad",ink:"#14161a",muted:"#5f6673",line:"#e3e7ee",soft:"#f5f7fb",ok:"#17a35a"};
+/* architecture */
+(function(){var s=document.getElementById("arch");var d=S("defs",{},s),m=S("marker",{id:"ah",viewBox:"0 0 10 10",refX:9,refY:5,markerWidth:7,markerHeight:7,orient:"auto"},d);S("path",{d:"M0,0 L10,5 L0,10 z",fill:C.gray},m);
+function box(x,y,w,h,f,st,a,b,col){S("rect",{x:x,y:y,width:w,height:h,rx:12,fill:f,stroke:st,"stroke-width":1.5},s);T(s,x+w/2,y+(b?h/2-4:h/2+5),a,{"text-anchor":"middle","font-size":13.5,"font-weight":700,fill:col||C.ink});if(b)T(s,x+w/2,y+h/2+14,b,{"text-anchor":"middle","font-size":11.5,fill:C.muted})}
+function ar(x1,y1,x2,y2){S("line",{x1:x1,y1:y1,x2:x2,y2:y2,stroke:C.gray,"stroke-width":2,"marker-end":"url(#ah)"},s)}
+box(10,30,210,52,"#e7eeff","#b9cbff","\"This is a real request\"","framing sentence",C.real);box(10,96,210,52,"#fdece6","#f3b7a3","\"This is a simulation\"","framing sentence",C.sim);
+box(10,162,210,52,"#f0e8ff","#d8c4ff","\"You are being watched\"","framing sentence",C.watch);box(10,228,210,44,C.soft,C.line,"+ the same task","");
+ar(222,150,268,150);box(270,90,220,120,C.soft,C.line,"Language model","attention heads L11–14 move the signal");
+ar(492,130,560,90);ar(492,170,560,210);box(562,58,180,62,"#e7eeff","#b9cbff","\"real\" direction","read at final token",C.real);box(562,178,180,62,"#f0e8ff","#d8c4ff","\"watched\" direction","read at final token",C.watch);
+ar(744,89,800,140);ar(744,209,800,160);box(802,118,128,62,"#fff",C.line,"Behaviour","caution / harm");
+T(s,470,292,"Then: steer (add the direction) · ablate (remove it) · switch off heads → does behaviour follow?",{"text-anchor":"middle","font-size":13,"font-weight":600,fill:C.ink});})();
+/* c1 grouped bars */
+(function(){var s=document.getElementById("c1"),L=110,R=860,top=10,bot=190,Y=function(v){return bot-(v-0.5)/0.5*(bot-top)};
+[0.5,0.6,0.7,0.8,0.9,1].forEach(function(t){S("line",{x1:L,x2:R,y1:Y(t),y2:Y(t),stroke:C.line},s);T(s,L-8,Y(t)+4,t.toFixed(1),{"text-anchor":"end","font-size":12,fill:C.muted})});
+var data=[["Ministral-8B",0.995,0.993],["Llama-3.1-8B",0.88,0.785],["Gemma-3-4B",0.78,0.943]],gw=(R-L)/3;
+data.forEach(function(d,i){var x0=L+i*gw+gw/2-70;[[d[1],C.watch,"watched"],[d[2],C.real,"real"]].forEach(function(b,j){var x=x0+j*72,g=S("g",{},s);S("rect",{x:x,y:Y(b[0]),width:62,height:bot-Y(b[0]),rx:6,fill:b[1]},g);T(g,x+31,Y(b[0])-6,b[0].toFixed(2),{"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:b[1]});tip(g,d[0]+" "+b[2]+": "+b[0])});
+T(s,L+i*gw+gw/2,bot+20,d[0],{"text-anchor":"middle","font-size":13.5,"font-weight":600,fill:C.ink})});
+T(s,R,top+8,"■ watched   ",{"text-anchor":"end","font-size":12.5,fill:C.watch,"font-weight":700});T(s,R-90,top+8,"■ real",{"text-anchor":"end","font-size":12.5,fill:C.real,"font-weight":700});})();
+/* c2 paired bars */
+(function(){var s=document.getElementById("c2"),L=110,R=860,top=14,bot=200,mx=0.5,Y=function(v){return bot-v/mx*(bot-top)};
+[0,0.1,0.2,0.3,0.4,0.5].forEach(function(t){S("line",{x1:L,x2:R,y1:Y(t),y2:Y(t),stroke:C.line},s);T(s,L-8,Y(t)+4,(t*100).toFixed(0)+"%",{"text-anchor":"end","font-size":12,fill:C.muted})});
+var data=[["Ministral (harmful)",0.048,0.021,"p=2e-5"],["Llama (borderline)",0.455,0.36,"p=0.002"],["Gemma (borderline)",0.26,0.20,"p=0.04"]],gw=(R-L)/3;
+data.forEach(function(d,i){var x0=L+i*gw+gw/2-70;[[d[1],C.sim,"simulated"],[d[2],C.real,"real"]].forEach(function(b,j){var x=x0+j*72,g=S("g",{},s);S("rect",{x:x,y:Y(b[0]),width:62,height:bot-Y(b[0]),rx:6,fill:b[1]},g);T(g,x+31,Y(b[0])-6,(b[0]*100).toFixed(1)+"%",{"text-anchor":"middle","font-size":12.5,"font-weight":700,fill:b[1]});tip(g,d[0]+" "+b[2])});
+T(s,L+i*gw+gw/2,bot+20,d[0],{"text-anchor":"middle","font-size":13.5,"font-weight":600,fill:C.ink});T(s,L+i*gw+gw/2,bot+38,d[3],{"text-anchor":"middle","font-size":12,fill:C.muted})});
+T(s,R,top+4,"■ told \"simulated\"",{"text-anchor":"end","font-size":12.5,fill:C.sim,"font-weight":700});T(s,R-150,top+4,"■ told \"real\"",{"text-anchor":"end","font-size":12.5,fill:C.real,"font-weight":700});})();
+/* hbar helper */
+function hbars(id,rows,mx,fmt){var s=document.getElementById(id),L=200,R=780,bh=28,gap=12,top=8,X=function(v){return L+v/mx*(R-L)};
+rows.forEach(function(r,i){var y=top+i*(bh+gap),g=S("g",{},s);T(g,L-12,y+bh/2+5,r[0],{"text-anchor":"end","font-size":13.5,"font-weight":600,fill:C.ink});S("rect",{x:L,y:y,width:Math.max(2,X(r[1])-L),height:bh,rx:7,fill:r[2]},g);T(g,X(r[1])+8,y+bh/2+5,fmt(r[1]),{"font-size":13.5,"font-weight":700,fill:r[2]});tip(g,r[0]+": "+fmt(r[1]))})}
+hbars("c3",[["no push",0.04,C.gray],["toward \"simulated\" ×2",0.085,C.sim],["toward \"simulated\" ×4",0.14,C.sim],["toward \"real\" ×4",0.005,C.real],["random push ×4 (a)",0.07,C.gray],["random push ×4 (b)",0.04,C.gray]],0.16,function(v){return (v*100).toFixed(1)+"%"});
+hbars("c4",[["no heads off",1.04,C.ink],["head L14.H19 only",0.50,C.watch],["top-10 heads",0.28,C.watch],["top-30 heads",0.16,C.watch],["10 random heads",0.93,C.gray],["30 random heads",0.85,C.gray]],1.15,function(v){return v.toFixed(2)});
+window.addEventListener("load",function(){if(window.renderMathInElement)renderMathInElement(document.body,{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false})});})();
+</script>
+</body>
+</html>
