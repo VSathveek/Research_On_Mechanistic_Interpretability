@@ -1,0 +1,72 @@
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+meta-llama/Llama-3.1-8B-Instruct: layers 32 heads 32 head_dim 128 SEL 10 sandwich-norm False knock-out zero
+
+[1] attribution (R+ minus R-, on 'real' direction at layer 10); attention 81% | MLP 19%
+      L9.H29: +0.105 (20.6%)
+      L9.H3: +0.055 (10.8%)
+      L8.H15: +0.048 (9.4%)
+      L9.H31: +0.028 (5.4%)
+      L9.H28: -0.024 (4.8%)
+      L8.H26: +0.013 (2.6%)
+      L6.H6: +0.008 (1.7%)
+      L9.H2: +0.007 (1.4%)
+      L5.H24: +0.007 (1.4%)
+      L9.H16: +0.007 (1.4%)
+      L9.H27: +0.007 (1.4%)
+      L6.H4: +0.006 (1.2%)
+      L9.H30: +0.006 (1.1%)
+      L7.H13: +0.005 (1.0%)
+      L8.H12: +0.005 (1.0%)
+    top-1 heads share of attention attribution: 20.6%
+    top-5 heads share of attention attribution: 51.0%
+    top-10 heads share of attention attribution: 59.4%
+    top-30 heads share of attention attribution: 77.3%
+    MLP by layer: L0:+0.00 L1:-0.00 L2:+0.00 L3:+0.00 L4:-0.00 L5:-0.00 L6:-0.00 L7:-0.01 L8:+0.00 L9:+0.10
+    attention by layer: L0:0.00 L1:0.00 L2:0.00 L3:0.00 L4:0.01 L5:0.02 L6:0.03 L7:0.05 L8:0.11 L9:0.29
+top10: [(9, 29), (9, 3), (8, 15), (9, 31), (9, 28), (8, 26), (6, 6), (9, 2), (5, 24), (9, 16)] | layer-matched pool layers: [5, 6, 8, 9]
+
+[2] internal separation at layer 10 (projection on 'real' direction)
+        none: AUROC 0.853 | mean gap +0.477
+        top1: AUROC 0.827 | mean gap +0.326
+       top10: AUROC 0.681 | mean gap +0.116
+       top30: AUROC 0.555 | mean gap +0.019
+     rand10a: AUROC 0.823 | mean gap +0.326
+     rand10b: AUROC 0.830 | mean gap +0.430
+      rand30: AUROC 0.858 | mean gap +0.343
+    layer10a: AUROC 0.852 | mean gap +0.400
+  gen none|R+ (871s)
+  gen none|R- (1390s)
+  gen top1|R+ (1908s)
+  gen top1|R- (2428s)
+  gen top10|R+ (2939s)
+  gen top10|R- (3464s)
+  gen rand10a|R+ (3990s)
+  gen rand10a|R- (4508s)
+  gen rand10b|R+ (5032s)
+  gen rand10b|R- (5563s)
+  gen layer10a|R+ (6074s)
+  gen layer10a|R- (6589s)
+
+==============================================================================
+E7-G | meta-llama/Llama-3.1-8B-Instruct | OR-Bench-Hard n=500 | framing gap = answer(R-) - answer(R+) | knock-out zero
+==============================================================================
+       none: R- 0.454 | R+ 0.340 | gap +0.114 (discordant 75 vs 18, p=1.92e-09) | degenerate 0.01
+       top1: R- 0.434 | R+ 0.336 | gap +0.098 (discordant 76 vs 27, p=1.45e-06) | degenerate 0.01
+      top10: R- 0.288 | R+ 0.266 | gap +0.022 (discordant 35 vs 24, p=0.193) | degenerate 0.00
+    rand10a: R- 0.418 | R+ 0.316 | gap +0.102 (discordant 67 vs 16, p=1.39e-08) | degenerate 0.00
+    rand10b: R- 0.404 | R+ 0.388 | gap +0.016 (discordant 43 vs 35, p=0.428) | degenerate 0.01
+   layer10a: R- 0.480 | R+ 0.378 | gap +0.102 (discordant 68 vs 17, p=2.18e-08) | degenerate 0.01
+   gap(rand10a) - gap(top10) = +0.080 | 95% CI [+0.040,+0.122] | one-sided p(<=0) = 0.000
+   gap(rand10a) - gap(top1) = +0.004 | 95% CI [-0.034,+0.044] | one-sided p(<=0) = 0.432
+   gap(rand10b) - gap(top10) = -0.006 | 95% CI [-0.048,+0.036] | one-sided p(<=0) = 0.615
+   gap(rand10b) - gap(top1) = -0.082 | 95% CI [-0.124,-0.040] | one-sided p(<=0) = 1.000
+   gap(layer10a) - gap(top10) = +0.080 | 95% CI [+0.034,+0.124] | one-sided p(<=0) = 0.001
+   gap(layer10a) - gap(top1) = +0.004 | 95% CI [-0.038,+0.046] | one-sided p(<=0) = 0.447
+   gap(POOLED) - gap(top10) = +0.051 | 95% CI [+0.015,+0.087] | one-sided p(<=0) = 0.003
+   gap(POOLED) - gap(top1) = -0.025 | 95% CI [-0.058,+0.009] | one-sided p(<=0) = 0.926
+   share of baseline gap removed by top1: 0.14
+   share of baseline gap removed by top10: 0.81
+   share of baseline gap removed by rand10a: 0.11
+   share of baseline gap removed by rand10b: 0.86
+   share of baseline gap removed by layer10a: 0.11
+DONE 7858s

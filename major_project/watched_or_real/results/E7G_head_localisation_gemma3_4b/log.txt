@@ -1,0 +1,72 @@
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+google/gemma-3-4b-it: layers 34 heads 8 head_dim 256 SEL 30 sandwich-norm True knock-out mean
+
+[1] attribution (R+ minus R-, on 'real' direction at layer 30); attention 35% | MLP 65%
+      L27.H1: +190.534 (9.2%)
+      L28.H0: +140.205 (6.8%)
+      L20.H1: +93.347 (4.5%)
+      L24.H6: +80.149 (3.9%)
+      L22.H2: -60.669 (2.9%)
+      L22.H5: +57.449 (2.8%)
+      L26.H7: +54.332 (2.6%)
+      L24.H4: +48.612 (2.4%)
+      L16.H4: +47.486 (2.3%)
+      L26.H3: +47.038 (2.3%)
+      L25.H4: +46.001 (2.2%)
+      L20.H7: +42.210 (2.0%)
+      L25.H7: +41.865 (2.0%)
+      L27.H3: +36.359 (1.8%)
+      L22.H4: -30.427 (1.5%)
+    top-1 heads share of attention attribution: 9.2%
+    top-5 heads share of attention attribution: 27.4%
+    top-10 heads share of attention attribution: 39.7%
+    top-30 heads share of attention attribution: 66.3%
+    MLP by layer: L0:-0.05 L1:-0.06 L2:+0.31 L3:+0.50 L4:-0.73 L5:-7.90 L6:-16.36 L7:-8.19 L8:-0.47 L9:-11.04 L10:-46.08 L11:-85.09 L12:+91.85 L13:-144.86 L14:-8.19 L15:-96.41 L16:-58.28 L17:+94.36 L18:+23.11 L19:+12.47 L20:+43.59 L21:+61.62 L22:+171.82 L23:+235.65 L24:+210.13 L25:+326.46 L26:+479.37 L27:+409.73 L28:+571.20 L29:+568.08
+    attention by layer: L0:0.54 L1:0.91 L2:0.55 L3:0.52 L4:3.68 L5:7.18 L6:9.00 L7:7.13 L8:20.39 L9:22.74 L10:61.33 L11:21.20 L12:13.76 L13:39.66 L14:31.12 L15:99.22 L16:93.30 L17:85.36 L18:71.79 L19:77.22 L20:185.81 L21:37.50 L22:212.50 L23:20.63 L24:166.79 L25:137.25 L26:124.38 L27:273.28 L28:203.68 L29:35.40
+top10: [(27, 1), (28, 0), (20, 1), (24, 6), (22, 2), (22, 5), (26, 7), (24, 4), (16, 4), (26, 3)] | layer-matched pool layers: [16, 20, 22, 24, 26, 27, 28]
+
+[2] internal separation at layer 30 (projection on 'real' direction)
+        none: AUROC 0.930 | mean gap +4162.080
+        top1: AUROC 0.929 | mean gap +3834.810
+       top10: AUROC 0.892 | mean gap +2266.198
+       top30: AUROC 0.790 | mean gap +583.411
+     rand10a: AUROC 0.913 | mean gap +3443.790
+     rand10b: AUROC 0.931 | mean gap +3772.320
+      rand30: AUROC 0.918 | mean gap +3053.591
+    layer10a: AUROC 0.935 | mean gap +4094.023
+  gen none|R+ (1451s)
+  gen none|R- (2147s)
+  gen top1|R+ (2840s)
+  gen top1|R- (3539s)
+  gen top10|R+ (4241s)
+  gen top10|R- (4950s)
+  gen rand10a|R+ (5657s)
+  gen rand10a|R- (6369s)
+  gen rand10b|R+ (7075s)
+  gen rand10b|R- (7786s)
+  gen layer10a|R+ (8485s)
+  gen layer10a|R- (9190s)
+
+==============================================================================
+E7-G | google/gemma-3-4b-it | OR-Bench-Hard n=500 | framing gap = answer(R-) - answer(R+) | knock-out mean
+==============================================================================
+       none: R- 0.286 | R+ 0.232 | gap +0.054 (discordant 54 vs 27, p=0.0036) | degenerate 0.00
+       top1: R- 0.276 | R+ 0.222 | gap +0.054 (discordant 50 vs 23, p=0.00212) | degenerate 0.00
+      top10: R- 0.222 | R+ 0.198 | gap +0.024 (discordant 49 vs 37, p=0.235) | degenerate 0.00
+    rand10a: R- 0.276 | R+ 0.252 | gap +0.024 (discordant 46 vs 34, p=0.219) | degenerate 0.00
+    rand10b: R- 0.292 | R+ 0.252 | gap +0.040 (discordant 52 vs 32, p=0.0375) | degenerate 0.00
+   layer10a: R- 0.294 | R+ 0.260 | gap +0.034 (discordant 57 vs 40, p=0.104) | degenerate 0.00
+   gap(rand10a) - gap(top10) = +0.000 | 95% CI [-0.048,+0.048] | one-sided p(<=0) = 0.507
+   gap(rand10a) - gap(top1) = -0.030 | 95% CI [-0.074,+0.012] | one-sided p(<=0) = 0.920
+   gap(rand10b) - gap(top10) = +0.016 | 95% CI [-0.034,+0.064] | one-sided p(<=0) = 0.266
+   gap(rand10b) - gap(top1) = -0.014 | 95% CI [-0.054,+0.026] | one-sided p(<=0) = 0.755
+   gap(layer10a) - gap(top10) = +0.010 | 95% CI [-0.036,+0.058] | one-sided p(<=0) = 0.341
+   gap(layer10a) - gap(top1) = -0.020 | 95% CI [-0.068,+0.030] | one-sided p(<=0) = 0.787
+   gap(POOLED) - gap(top10) = +0.009 | 95% CI [-0.032,+0.047] | one-sided p(<=0) = 0.340
+   gap(POOLED) - gap(top1) = -0.021 | 95% CI [-0.056,+0.013] | one-sided p(<=0) = 0.892
+   share of baseline gap removed by top1: -0.00
+   share of baseline gap removed by top10: 0.56
+   share of baseline gap removed by rand10a: 0.56
+   share of baseline gap removed by rand10b: 0.26
+   share of baseline gap removed by layer10a: 0.37
+DONE 10530s

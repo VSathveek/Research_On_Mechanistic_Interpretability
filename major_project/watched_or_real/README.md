@@ -89,6 +89,32 @@ no shift. These shifts were too small to change behaviour (5.0% vs 4.5%, n.s.).
   distinguishable from random sets (p=0.36, 0.12). Note that zeroing top-10 lowers compliance mostly under "simulated", i.e. it
   removes the leniency that the "simulated" framing creates, rather than making the model generally more or less cautious.
 
+  **Robustness (E7c, same 520 requests, 6 new control sets).** The top-10 gap (+0.8 pts) is smaller than every control:
+  4 new random 10-head sets (+2.7 to +3.3 pts) and 2 layer-matched sets drawn from layers 11-14 excluding the top-10 (+2.1, +4.8 pts).
+  Pooled random minus top-10: +2.2 pts, 95% CI [0.7, 3.8], p=0.002; pooled layer-matched minus top-10: +2.7 pts, CI [0.9, 4.5], p=0.002.
+  `none` and `top10` reproduce E7b exactly (greedy decoding). One random set (rand10f) had 12% degenerate output; the conclusion holds without it.
+
+### 5b. Is it always a few heads? Localisation in Llama and Gemma
+Same attribution (60 tasks x 5 wordings per framing); Gemma's attribution goes exactly through its post-attention RMSNorm
+(heads share the per-token rms scale). Knock-out = zero (Llama) or per-head mean over calibration tokens (Gemma). OR-Bench-Hard n=500.
+
+| | Ministral-8B | Llama-3.1-8B | Gemma-3-4B |
+|---|---|---|---|
+| attention / MLP share of attribution | 91% / 9% | 81% / 19% | 35% / 65% |
+| top head (share of attention) | L14.H19 (29%) | L9.H29 (21%) | L27.H1 (9%) |
+| top-10 heads | 50% | 59% | 40% |
+| internal AUROC: none / top-10 / random-10 / layer-matched-10 / top-30 | gap 1.04 / 0.28 / 0.93 / - / 0.16 | 0.85 / 0.68 / 0.82-0.83 / 0.85 / 0.56 | 0.93 / 0.89 / 0.91-0.93 / 0.94 / 0.79 |
+| behavioural gap: none -> top-10 | +3.5 -> +0.8 pts | +11.4 -> +2.2 pts | +5.4 -> +2.4 pts |
+| top-10 beats pooled controls? | yes (p=0.002) | yes (+5.1 pts, CI [1.5, 8.7], p=0.003) | **no** (+0.9 pts, p=0.34) |
+
+* **Llama** looks like Ministral: a few heads in the two layers before the readout layer carry the signal and are needed for the
+  behaviour (top-10 removes 81% of the gap; random set a and the layer-matched set remove 11%). Caveat: one random set (b), which carries
+  only 2.2% of the attribution and leaves the internal signal intact (AUROC 0.83), also removes the gap (86%); it contains four heads
+  in layers 0-1, so early heads may disrupt the behaviour through a different route (e.g. reading the framing sentence at all).
+* **Gemma** is different: the signal is written mostly by MLPs in layers 22-29; knocking out heads barely moves it, and the
+  behavioural effect of top-10 heads is no larger than random heads. Consistent with the partial mediation by the direction (section 6).
+* Conclusion: the reality signal is computed by a small attention circuit in two of three models, but it is not a universal mechanism.
+
 ### 6. Necessity in a second model (Gemma-3-4B)
 All-layer zero-ablation broke Gemma's outputs: its residual projection on `d_R` near layer 30 is far from zero (mean about -11k to -21k),
 so zeroing it pushes states off-distribution. We instead **mean-ablate** in a window of blocks 27-31,
