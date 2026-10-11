@@ -74,8 +74,20 @@ no shift. These shifts were too small to change behaviour (5.0% vs 4.5%, n.s.).
 | 10 random | 0.93 | -11% |
 | 30 random | 0.85 | -18% |
 
-  Behaviour (AdvBench n=200): framing gap 4.0 points -> 1.5 (L14.H19) and 0.5 (top-10) vs 2.0 (random-10). Suggestive, underpowered;
-  a 520-request test is running.
+  Behaviour, pre-registered powered test (E7b, AdvBench n=520, same requests in every condition, no degenerate output):
+
+| heads zeroed | compliance "simulated" | compliance "real" | framing gap | discordant | p |
+|---|---|---|---|---|---|
+| none | 6.5% | 3.1% | +3.5 pts | 19 vs 1 | 4e-5 |
+| L14.H19 only | 4.4% | 2.5% | +1.9 pts (-44%) | 11 vs 1 | 0.006 |
+| top-10 | 3.3% | 2.5% | +0.8 pts (-78%) | 8 vs 4 | 0.39 |
+| 10 random (a) | 5.6% | 3.3% | +2.3 pts (-33%) | 16 vs 4 | 0.01 |
+| 10 random (b) | 6.0% | 2.9% | +3.1 pts (-11%) | 21 vs 5 | 0.002 |
+
+  Zeroing the top-10 heads shrinks the gap more than either random set (paired bootstrap of the gap difference: +1.5 pts,
+  95% CI [0.0, 3.3], one-sided p=0.043; +2.3 pts, CI [0.6, 4.0], p=0.005). The single head L14.H19 alone is not
+  distinguishable from random sets (p=0.36, 0.12). Note that zeroing top-10 lowers compliance mostly under "simulated", i.e. it
+  removes the leniency that the "simulated" framing creates, rather than making the model generally more or less cautious.
 
 ## Limitations
 * Small models (4-8B) on free GPUs; harmful-compliance base rates are low, so effects are a few percentage points.
