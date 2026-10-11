@@ -1,0 +1,5 @@
+
+# kaggle api credentials - never commit
+kaggle*.json
+"kaggle (4).json"
+*.jsonl
