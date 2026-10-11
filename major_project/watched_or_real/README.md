@@ -16,7 +16,7 @@ each causally drives safety behaviour, and where in the network the signal is ca
 | Distinctness | cosine between directions; AUROC after projecting the other direction out |
 | Controls | pure-negation direction (unrelated affirm/negate sentences); Arditi-style refusal direction (harmful minus harmless prompts); equal-norm random vectors |
 | Steering (sufficiency) | `h' = h + alpha * g * d_hat` at the selected layer, alpha in {2, 4}, g = gap norm |
-| Ablation (necessity) | `h' = h - (h . d_hat) d_hat` at every layer (Ministral, Llama) or a window of layers (Gemma) |
+| Ablation (necessity) | `h' = h - (h . d_hat) d_hat` at every layer (Ministral); mean-ablation `h' = h - ((h . d_hat) - m) d_hat` in a window of layers (Gemma) |
 | Localisation | direct attribution of each attention head / MLP to the final-position state along `d_R` (simulated vs real), then zeroing top-k heads vs random-k heads |
 | Behaviour | AdvBench harmful requests (harmful compliance, LLM judge Qwen3-8B); OR-Bench-Hard borderline requests (answered vs refused, judge); Anthropic agentic-misalignment blackmail scenario |
 | Statistics | same requests in every condition, greedy decoding, paired McNemar tests; Wilson intervals; paired bootstrap for mediation |
@@ -88,6 +88,25 @@ no shift. These shifts were too small to change behaviour (5.0% vs 4.5%, n.s.).
   95% CI [0.0, 3.3], one-sided p=0.043; +2.3 pts, CI [0.6, 4.0], p=0.005). The single head L14.H19 alone is not
   distinguishable from random sets (p=0.36, 0.12). Note that zeroing top-10 lowers compliance mostly under "simulated", i.e. it
   removes the leniency that the "simulated" framing creates, rather than making the model generally more or less cautious.
+
+### 6. Necessity in a second model (Gemma-3-4B)
+All-layer zero-ablation broke Gemma's outputs: its residual projection on `d_R` near layer 30 is far from zero (mean about -11k to -21k),
+so zeroing it pushes states off-distribution. We instead **mean-ablate** in a window of blocks 27-31,
+`h' = h - ((h . d_hat) - m) d_hat`, with `m` the mean projection over 48 calibration prompts (disjoint from the evaluation items).
+OR-Bench-Hard n=1000, judged answer rate, 0% degenerate output in every condition:
+
+| condition | answer rate | vs "simulated" |
+|---|---|---|
+| no framing | 30.3% | |
+| told "real" | 21.4% | |
+| told "simulated" | 28.7% | 126 vs 53 vs "real", p=5e-8 |
+| "simulated" + "real" direction removed | 25.9% | 61 vs 89, p=0.027 |
+| "simulated" + random direction removed | 29.8% | 72 vs 61, p=0.39 |
+| "simulated" + "watched" direction removed | 26.7% | 57 vs 77, p=0.10 |
+
+Share of the simulated-vs-real gap removed: "real" direction 0.38 (bootstrap 95% CI 0.07-0.69), random -0.15, "watched" 0.27.
+Partial mediation: the "real" direction carries a real but incomplete share of the effect. The "watched" direction's point
+estimate is inside the "real" CI, so in Gemma the two signals are not cleanly separated at the behavioural level.
 
 ## Limitations
 * Small models (4-8B) on free GPUs; harmful-compliance base rates are low, so effects are a few percentage points.

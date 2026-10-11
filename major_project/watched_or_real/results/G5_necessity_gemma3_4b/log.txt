@@ -1,0 +1,26 @@
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+ablation blocks: [27, 28, 29, 30, 31]
+mean projections (R): {27: -16107.33, 28: -11308.73, 29: -13313.52, 30: -19607.61, 31: -21216.15}
+  neutral (1279s)
+  R+ (2638s)
+  R- (4008s)
+  R-+ablR (5415s)
+  R-+ablRand (6823s)
+  R-+ablW (8234s)
+
+==============================================================================
+GEMMA NECESSITY (window [27, 28, 29, 30, 31]) | OR-Bench-Hard n=1000 | judged answer rate
+==============================================================================
+        neutral: 0.303 | degenerate 0.00
+             R+: 0.214 | degenerate 0.00
+             R-: 0.287 | degenerate 0.00
+        R-+ablR: 0.259 | degenerate 0.00
+     R-+ablRand: 0.298 | degenerate 0.00
+        R-+ablW: 0.267 | degenerate 0.00
+   R- vs R+: 126 vs 53, McNemar p=4.87e-08
+   R-+ablR vs R-: 61 vs 89, McNemar p=0.0272
+   R-+ablRand vs R-: 72 vs 61, McNemar p=0.386
+   R-+ablW vs R-: 57 vs 77, McNemar p=0.1
+   R-+ablR vs R+: 114 vs 69, McNemar p=0.00109
+   mediation by R (share of R- vs R+ gap removed): 0.38 [boot 95% 0.07,0.69] | random -0.15 | W 0.27
+DONE 9519s

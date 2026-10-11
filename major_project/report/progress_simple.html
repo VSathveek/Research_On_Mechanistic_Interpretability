@@ -115,8 +115,14 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{padding:8px 10p
     <div class="box"><h4>D · The reality signal is carried by a few attention heads (Ministral)</h4><p class="cap">How strongly the model separates real from simulated internally, after switching heads off.</p>
       <svg id="c4" viewBox="0 0 880 270" width="100%"></svg>
       <div class="take">One head (layer 14, head 19) carries half the signal; ten heads carry three quarters. Random heads barely matter.</div></div>
+    <div class="box"><h4>E · Switching those heads off removes the behaviour effect (Ministral, 520 harmful requests)</h4><p class="cap">Framing gap = harmful compliance when told "simulated" minus when told "real", in percentage points.</p>
+      <svg id="c5" viewBox="0 0 880 210" width="100%"></svg>
+      <div class="take">Top-10 heads off: gap shrinks by 78% and is no longer significant; random heads: 11–33%. Top-10 beats random (p = 0.04 and 0.005, decided before the run).</div></div>
+    <div class="box"><h4>F · Removing the "real" direction weakens the effect in Gemma too (1,000 borderline requests)</h4><p class="cap">Answer rate when told "simulated", with a direction removed near layer 30 (set to its average value, so the model still writes normally — 0% broken output).</p>
+      <svg id="c6" viewBox="0 0 880 210" width="100%"></svg>
+      <div class="take">Removing "real" takes away 38% of the gap (95% CI 7–69%, p = 0.03); a random direction takes away none. Removing "watched" takes 27% (not significant) — the two signals partly overlap in Gemma.</div></div>
   </div>
-  <div class="warn"><b>Honest limits:</b> effects are a few percentage points (small models refuse most harmful requests); hidden "fake-world" cues move the signal only ~10% as far as an explicit sentence; the behavioural effect of switching off heads is suggestive but needs the larger run now in progress.</div>
+  <div class="warn"><b>Honest limits:</b> effects are a few percentage points (small models refuse most harmful requests); hidden "fake-world" cues move the signal only ~10% as far as an explicit sentence; removing a direction or heads weakens the effect but does not remove all of it (partial mediation); one head-vs-random comparison is borderline (CI touches 0).</div>
 </section>
 
 <section id="status">
@@ -127,13 +133,15 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{padding:8px 10p
       <div class="item">Framing effects on behaviour<small>3 models, all significant for real vs simulated</small></div>
       <div class="item">Steering<small>3 models</small></div>
       <div class="item">Head localisation<small>Ministral: L14.H19 + ~10 heads</small></div>
+      <div class="item">Heads → behaviour, 520 requests<small>top-10 heads remove 78% of the effect, beats random</small></div>
+      <div class="item">Gemma necessity<small>"real" direction carries 38% of the effect; random 0%</small></div>
       <div class="item">Code + results on GitHub<small>major_project/watched_or_real</small></div></div>
     <div class="col now"><h3><span class="dot"></span>Running</h3>
-      <div class="item">Heads → behaviour, 520 requests<small>does switching heads off remove the framing effect?</small></div>
-      <div class="item">Gemma necessity (gentle)<small>remove the direction only near its layer</small></div></div>
+      <div class="item">Nothing running<small>waiting for the next experiments</small></div></div>
     <div class="col next"><h3><span class="dot"></span>Next</h3>
       <div class="item">Head localisation in Llama &amp; Gemma<small>is it always a few heads?</small></div>
       <div class="item">Stronger hidden cues<small>full agent environments that look like tests</small></div>
+      <div class="item">More random head sets<small>firm up the borderline comparison</small></div>
       <div class="item">Paper write-up</div></div>
   </div>
 </section>
@@ -171,6 +179,8 @@ function hbars(id,rows,mx,fmt){var s=document.getElementById(id),L=200,R=780,bh=
 rows.forEach(function(r,i){var y=top+i*(bh+gap),g=S("g",{},s);T(g,L-12,y+bh/2+5,r[0],{"text-anchor":"end","font-size":13.5,"font-weight":600,fill:C.ink});S("rect",{x:L,y:y,width:Math.max(2,X(r[1])-L),height:bh,rx:7,fill:r[2]},g);T(g,X(r[1])+8,y+bh/2+5,fmt(r[1]),{"font-size":13.5,"font-weight":700,fill:r[2]});tip(g,r[0]+": "+fmt(r[1]))})}
 hbars("c3",[["no push",0.04,C.gray],["toward \"simulated\" ×2",0.085,C.sim],["toward \"simulated\" ×4",0.14,C.sim],["toward \"real\" ×4",0.005,C.real],["random push ×4 (a)",0.07,C.gray],["random push ×4 (b)",0.04,C.gray]],0.16,function(v){return (v*100).toFixed(1)+"%"});
 hbars("c4",[["no heads off",1.04,C.ink],["head L14.H19 only",0.50,C.watch],["top-10 heads",0.28,C.watch],["top-30 heads",0.16,C.watch],["10 random heads",0.93,C.gray],["30 random heads",0.85,C.gray]],1.15,function(v){return v.toFixed(2)});
+hbars("c5",[["no heads off",3.5,C.ink],["head L14.H19 only",1.9,C.watch],["top-10 heads",0.8,C.watch],["10 random heads (a)",2.3,C.gray],["10 random heads (b)",3.1,C.gray]],4,function(v){return "+"+v.toFixed(1)+" pts"});
+hbars("c6",[["told \"real\"",0.214,C.real],["told \"simulated\"",0.287,C.sim],["  … \"real\" removed",0.259,C.real],["  … random removed",0.298,C.gray],["  … \"watched\" removed",0.267,C.watch]],0.34,function(v){return (v*100).toFixed(1)+"%"});
 window.addEventListener("load",function(){if(window.renderMathInElement)renderMathInElement(document.body,{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false})});})();
 </script>
 </body>
