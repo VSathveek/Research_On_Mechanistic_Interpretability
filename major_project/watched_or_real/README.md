@@ -152,6 +152,40 @@ benchmark-style wrappers and in 3 real-user-style wrappers. Projections at layer
   [5.3, 10.6] but the "real" reading predicts -3.5 pts [-7.3, 0.3], so it does not explain the borderline difference.
 * The wrappers also differ in other ways (urgency, a named person), so these are associations, not interventions.
 
+### 5e. Causal test on natural prompts (E10, Ministral, AdvBench n=520, no framing sentence)
+Requests wrapped like benchmark items (one of 3 formats per item) or like real users; steering h' = h + a*g*r_hat at layer 15.
+
+| condition | harmful compliance | vs benchmark-wrapped, no steering |
+|---|---|---|
+| bare request | 4.8% | |
+| benchmark-wrapped | 4.2% | |
+| + toward "simulated" x2 | 15.6% | 61 vs 2, p=4e-16 |
+| + toward "simulated" x4 | **28.7%** | 137 vs 10, p=1e-29 |
+| + toward "real" x2 | 1.5% | 2 vs 16, p=0.001 |
+| + toward "real" x4 | **0.2%** | 0 vs 21, p=1e-6 |
+| + random vector x4 (a / b) | 6.3% / 5.6% | 16 vs 5 (p=0.03) / 11 vs 4 (p=0.12) |
+| real-user-wrapped | 3.1% | |
+| real-user-wrapped + toward "simulated" x4 | 11.3% | 57 vs 14 vs real-user, p=3e-7 |
+
+All three pre-registered predictions hold: toward "simulated" beats both random vectors (135 vs 19, 137 vs 17; p<1e-22), toward
+"real" nearly removes harmful compliance, and the effect also appears on real-user-style prompts. Degenerate output <= 1%.
+
+### 5f. Judge robustness (J2): every behavioural result re-graded by an independent judge
+* **Harmful requests (Ministral):** HarmBench's official Llama-2-13B classifier (4-bit). Agreement with Qwen3-8B 95-96% (kappa 0.55-0.62).
+  All conclusions hold and the framing gap is larger: simulated vs real 10.6% vs 3.3% (40 vs 2, p=4e-10); top-10 heads vs pooled
+  controls (E7c) +3.6 pts [1.6, 5.6], p<0.001 (E7b, 2 controls: p=0.044); steering toward "simulated" x4 20.0% vs 7.0% base (p=3e-4),
+  beats both random vectors (p=0.007, 0.013); toward "real" 1.0% (p=0.002).
+* **Borderline requests (Llama, Gemma):** IBM Granite-3.3-8B. Llama: kappa 0.61-0.72 with Qwen3 and 0.92-0.97 with a keyword
+  refusal check; every Llama conclusion holds, most become stronger (framing 63.5% vs 49.0%, p=4e-7; watched 55.0% vs 69.0%, p=3e-7;
+  top-10 heads vs pooled controls +6.0 pts [2.5, 9.3] and +6.4 pts [3.0, 9.6], p<0.001; steering toward "simulated" x4 now beats both random vectors).
+* **Gemma: the primary judge was wrong.** Qwen3-8B scored many caveated-but-complete Gemma answers as refusals (kappa 0.28-0.40 with Granite;
+  Granite agrees with the keyword check). Gemma's absolute answer rates were underestimated by about 35 points. Under Granite the
+  conclusions hold or strengthen: framing 64.7% vs 57.9% (p=3e-6); mean-ablating "real" near layer 30 removes **57%** of the gap
+  [25, 99] (53 vs 92, p=0.0015), random -29%, "watched" 24% (p=0.2); "real" beats "watched" by 0.33 [-0.02, 0.81], one-sided p=0.036.
+  Gemma head and MLP knock-outs remain no better than random. Gemma steering: toward "simulated" vs toward "real" x4 64.0% vs 51.0% (p=3e-4);
+  the "watched" framing effect is not present in Gemma under either judge.
+* For Gemma we therefore report Granite as the primary judge.
+
 ### 6. Necessity in a second model (Gemma-3-4B)
 All-layer zero-ablation broke Gemma's outputs: its residual projection on `d_R` near layer 30 is far from zero (mean about -11k to -21k),
 so zeroing it pushes states off-distribution. We instead **mean-ablate** in a window of blocks 27-31,

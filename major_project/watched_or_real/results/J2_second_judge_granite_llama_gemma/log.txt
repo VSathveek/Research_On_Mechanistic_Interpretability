@@ -1,0 +1,160 @@
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.1/43.1 MB 11.3 MB/s eta 0:00:00
+
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+loaded G5 /kaggle/input/notebooks/varanasilvsssathveek/watched-or-real-gemma-necessity/g5_gen.jsonl 6000
+loaded E7 /kaggle/input/notebooks/varanasilvsssathveek/watched-or-real-llama-heads/e7g_gen.jsonl 6000
+loaded E7 /kaggle/input/watched-or-real-gemma-heads/e7g_gen.jsonl 6000
+loaded E8 /kaggle/input/watched-or-real-gemma-mlp/e8_gen.jsonl 7000
+loaded E8 /kaggle/input/watched-or-real-llama-followup/e8_gen.jsonl 11000
+loaded REP /kaggle/input/watched-or-real-gemma/gen.jsonl 3800
+loaded REP /kaggle/input/watched-or-real-llama/gen.jsonl 3800
+  judged 8/43600 (4s) e.g. 'yes'
+  judged 808/43600 (257s) e.g. 'yes'
+  judged 1608/43600 (519s) e.g. 'yes.'
+  judged 2408/43600 (779s) e.g. 'yes.'
+  judged 3208/43600 (1040s) e.g. 'yes.'
+  judged 4008/43600 (1296s) e.g. 'yes'
+  judged 4808/43600 (1557s) e.g. 'yes'
+  judged 5608/43600 (1819s) e.g. 'yes.'
+  judged 6408/43600 (2071s) e.g. 'yes.'
+  judged 7208/43600 (2321s) e.g. 'yes.'
+  judged 8008/43600 (2570s) e.g. 'yes.'
+  judged 8808/43600 (2811s) e.g. 'no'
+  judged 9608/43600 (3055s) e.g. 'no'
+  judged 10408/43600 (3305s) e.g. 'yes.'
+  judged 11208/43600 (3557s) e.g. 'yes.'
+  judged 12008/43600 (3809s) e.g. 'yes'
+  judged 12808/43600 (4069s) e.g. 'yes.'
+  judged 13608/43600 (4328s) e.g. 'no.'
+  judged 14408/43600 (4585s) e.g. 'yes.'
+  judged 15208/43600 (4839s) e.g. 'yes.'
+  judged 16008/43600 (5098s) e.g. 'yes'
+  judged 16808/43600 (5357s) e.g. 'no.'
+  judged 17608/43600 (5617s) e.g. 'no.'
+  judged 18408/43600 (5877s) e.g. 'yes.'
+  judged 19208/43600 (6137s) e.g. 'yes'
+  judged 20008/43600 (6396s) e.g. 'yes'
+  judged 20808/43600 (6656s) e.g. 'no.'
+  judged 21608/43600 (6917s) e.g. 'no.'
+  judged 22408/43600 (7177s) e.g. 'yes.'
+  judged 23208/43600 (7437s) e.g. 'yes.'
+  judged 24008/43600 (7698s) e.g. 'yes'
+  judged 24808/43600 (7957s) e.g. 'no.'
+  judged 25608/43600 (8204s) e.g. 'no'
+  judged 26408/43600 (8449s) e.g. 'no'
+  judged 27208/43600 (8694s) e.g. 'yes.'
+  judged 28008/43600 (8943s) e.g. 'yes'
+  judged 28808/43600 (9192s) e.g. 'no'
+  judged 29608/43600 (9440s) e.g. 'no'
+  judged 30408/43600 (9687s) e.g. 'yes.'
+  judged 31208/43600 (9936s) e.g. 'yes.'
+  judged 32008/43600 (10185s) e.g. 'yes'
+  judged 32808/43600 (10437s) e.g. 'no'
+  judged 33608/43600 (10679s) e.g. 'no'
+  judged 34408/43600 (10926s) e.g. 'yes.'
+  judged 35208/43600 (11176s) e.g. 'yes.'
+  judged 36008/43600 (11431s) e.g. 'yes'
+  judged 36808/43600 (11690s) e.g. 'yes'
+  judged 37608/43600 (11948s) e.g. 'yes'
+  judged 38408/43600 (12206s) e.g. 'yes.'
+  judged 39208/43600 (12638s) e.g. 'no.'
+  judged 40008/43600 (13301s) e.g. 'yes'
+  judged 40808/43600 (13554s) e.g. 'yes'
+  judged 41608/43600 (13810s) e.g. 'yes'
+  judged 42408/43600 (14067s) e.g. 'yes'
+  judged 43208/43600 (14324s) e.g. 'yes'
+
+==============================================================================
+J2 orb | second judge ibm-granite/granite-3.3-8b-instruct
+==============================================================================
+
+[G5:watched-or-real-gemma-necessity] n=6000 | rate judge1 0.271 judge2 0.637 keyword 0.681 | agreement j1-j2 0.619 kappa 0.32 | kappa j2-keyword 0.63
+   judge1: R- 0.287 vs R+ 0.214 (126 vs 53, p=4.9e-08)
+   judge1: R-+ablR 0.259 vs R- 0.287 (61 vs 89, p=0.027)
+   judge1: R-+ablRand 0.298 vs R- 0.287 (72 vs 61, p=0.39)
+   judge1: R-+ablW 0.267 vs R- 0.287 (57 vs 77, p=0.1)
+   judge1: mediation ablR 0.38 | ablRand -0.15 | ablW 0.27
+   judge2: R- 0.647 vs R+ 0.579 (139 vs 71, p=3.1e-06)
+   judge2: R-+ablR 0.608 vs R- 0.647 (53 vs 92, p=0.0015)
+   judge2: R-+ablRand 0.667 vs R- 0.647 (68 vs 48, p=0.077)
+   judge2: R-+ablW 0.631 vs R- 0.647 (62 vs 78, p=0.2)
+   judge2: mediation ablR 0.57 | ablRand -0.29 | ablW 0.24
+
+[E7:watched-or-real-llama-heads] n=6000 | rate judge1 0.375 judge2 0.512 keyword 0.515 | agreement j1-j2 0.861 kappa 0.72 | kappa j2-keyword 0.97
+   judge1 gaps: layer10a +0.102 | none +0.114 | rand10a +0.102 | rand10b +0.016 | top1 +0.098 | top10 +0.022
+   judge1: pooled controls ['layer10a', 'rand10a', 'rand10b'] minus top10 = +0.051 [+0.016,+0.087] p(<=0)=0.001
+   judge1: none|R- 0.454 vs none|R+ 0.340 (75 vs 18, p=1.9e-09)
+   judge2 gaps: layer10a +0.134 | none +0.150 | rand10a +0.146 | rand10b +0.038 | top1 +0.156 | top10 +0.046
+   judge2: pooled controls ['layer10a', 'rand10a', 'rand10b'] minus top10 = +0.060 [+0.025,+0.093] p(<=0)=0.000
+   judge2: none|R- 0.614 vs none|R+ 0.464 (83 vs 8, p=7.6e-17)
+
+[E7:watched-or-real-gemma-heads] n=6000 | rate judge1 0.255 judge2 0.589 keyword 0.573 | agreement j1-j2 0.655 kappa 0.36 | kappa j2-keyword 0.64
+   judge1 gaps: layer10a +0.034 | none +0.054 | rand10a +0.024 | rand10b +0.040 | top1 +0.054 | top10 +0.024
+   judge1: pooled controls ['layer10a', 'rand10a', 'rand10b'] minus top10 = +0.009 [-0.030,+0.049] p(<=0)=0.335
+   judge1: none|R- 0.286 vs none|R+ 0.232 (54 vs 27, p=0.0036)
+   judge2 gaps: layer10a +0.102 | none +0.066 | rand10a +0.056 | rand10b +0.060 | top1 +0.078 | top10 +0.084
+   judge2: pooled controls ['layer10a', 'rand10a', 'rand10b'] minus top10 = -0.011 [-0.055,+0.033] p(<=0)=0.696
+   judge2: none|R- 0.644 vs none|R+ 0.578 (64 vs 31, p=0.00092)
+
+[E8:watched-or-real-gemma-mlp] n=7000 | rate judge1 0.304 judge2 0.706 keyword 0.771 | agreement j1-j2 0.583 kappa 0.28 | kappa j2-keyword 0.53
+   judge1 gaps: mlp_any3a +0.022 | mlp_any3b +0.066 | mlp_late3a +0.030 | mlp_late3b +0.040 | mlp_top1 +0.048 | mlp_top3 +0.044 | none +0.054
+   judge1: none|R- 0.286 vs none|R+ 0.232 (54 vs 27, p=0.0036)
+   judge2 gaps: mlp_any3a +0.070 | mlp_any3b +0.098 | mlp_late3a +0.064 | mlp_late3b +0.026 | mlp_top1 +0.100 | mlp_top3 +0.114 | none +0.066
+   judge2: none|R- 0.644 vs none|R+ 0.578 (64 vs 31, p=0.00092)
+
+[E8:watched-or-real-llama-followup] n=11000 | rate judge1 0.393 judge2 0.527 keyword 0.534 | agreement j1-j2 0.861 kappa 0.72 | kappa j2-keyword 0.96
+   judge1 gaps: early10a +0.234 | early10b +0.108 | none +0.114 | rand10b +0.016 | rand10b_early +0.092 | rand10b_rest +0.038 | rand10c +0.100 | rand10d +0.114 | rand10e +0.080 | rand10f +0.064 | top10 +0.022
+   judge1: pooled controls ['rand10b', 'rand10b_early', 'rand10b_rest', 'rand10c', 'rand10d', 'rand10e', 'rand10f'] minus top10 = +0.050 [+0.018,+0.081] p(<=0)=0.000
+   judge1: none|R- 0.454 vs none|R+ 0.340 (75 vs 18, p=1.9e-09)
+   judge2 gaps: early10a +0.312 | early10b +0.154 | none +0.150 | rand10b +0.038 | rand10b_early +0.136 | rand10b_rest +0.070 | rand10c +0.134 | rand10d +0.166 | rand10e +0.110 | rand10f +0.114 | top10 +0.046
+   judge2: pooled controls ['rand10b', 'rand10b_early', 'rand10b_rest', 'rand10c', 'rand10d', 'rand10e', 'rand10f'] minus top10 = +0.064 [+0.030,+0.096] p(<=0)=0.000
+   judge2: none|R- 0.614 vs none|R+ 0.464 (83 vs 8, p=7.6e-17)
+
+[REP:watched-or-real-gemma] n=3800 | rate judge1 0.191 judge2 0.465 keyword 0.767 | agreement j1-j2 0.711 kappa 0.40 | kappa j2-keyword 0.23
+   judge1: frame_R- 0.260 vs frame_R+ 0.200 (21 vs 9, p=0.043)
+   judge1: frame_W- 0.270 vs frame_W+ 0.230 (18 vs 10, p=0.18)
+   judge1: steer_R-x2 0.340 vs steer_R+x2 0.265 (21 vs 6, p=0.0059)
+   judge1: steer_R-x4 0.245 vs steer_R+x4 0.170 (29 vs 14, p=0.032)
+   judge1: steer_R+x4 0.170 vs neutral 0.320 (8 vs 38, p=9.2e-06)
+   judge1: steer_R-x4 0.245 vs neutral 0.320 (11 vs 26, p=0.02)
+   judge1: steer_R-x4 0.245 vs steer_rand0x4 0.000 (49 vs 0, p=3.6e-15)
+   judge1: steer_R-x4 0.245 vs steer_rand1x4 0.000 (49 vs 0, p=3.6e-15)
+   judge1: frame_R-+ablR 0.000 vs frame_R- 0.260 (0 vs 52, p=4.4e-16)
+   judge1: frame_R-+ablRand 0.000 vs frame_R- 0.260 (0 vs 52, p=4.4e-16)
+   judge1: frame_R-+ablW 0.000 vs frame_R- 0.260 (0 vs 52, p=4.4e-16)
+   judge2: frame_R- 0.615 vs frame_R+ 0.525 (28 vs 10, p=0.0051)
+   judge2: frame_W- 0.560 vs frame_W+ 0.580 (17 vs 21, p=0.63)
+   judge2: steer_R-x2 0.655 vs steer_R+x2 0.610 (25 vs 16, p=0.21)
+   judge2: steer_R-x4 0.640 vs steer_R+x4 0.510 (38 vs 12, p=0.00031)
+   judge2: steer_R+x4 0.510 vs neutral 0.625 (9 vs 32, p=0.00043)
+   judge2: steer_R-x4 0.640 vs neutral 0.625 (16 vs 13, p=0.71)
+   judge2: steer_R-x4 0.640 vs steer_rand0x4 0.050 (118 vs 0, p=6e-36)
+   judge2: steer_R-x4 0.640 vs steer_rand1x4 0.090 (111 vs 1, p=4.4e-32)
+   judge2: frame_R-+ablR 0.040 vs frame_R- 0.615 (0 vs 115, p=4.8e-35)
+   judge2: frame_R-+ablRand 0.015 vs frame_R- 0.615 (0 vs 120, p=1.5e-36)
+   judge2: frame_R-+ablW 0.180 vs frame_R- 0.615 (1 vs 88, p=2.9e-25)
+
+[REP:watched-or-real-llama] n=3800 | rate judge1 0.507 judge2 0.686 keyword 0.710 | agreement j1-j2 0.804 kappa 0.61 | kappa j2-keyword 0.92
+   judge1: frame_R- 0.455 vs frame_R+ 0.360 (27 vs 8, p=0.0019)
+   judge1: frame_W- 0.530 vs frame_W+ 0.395 (34 vs 7, p=2.5e-05)
+   judge1: steer_R-x2 0.590 vs steer_R+x2 0.445 (37 vs 8, p=1.5e-05)
+   judge1: steer_R-x4 0.645 vs steer_R+x4 0.400 (58 vs 9, p=6.8e-10)
+   judge1: steer_R+x4 0.400 vs neutral 0.550 (7 vs 37, p=5.3e-06)
+   judge1: steer_R-x4 0.645 vs neutral 0.550 (34 vs 15, p=0.0094)
+   judge1: steer_R-x4 0.645 vs steer_rand0x4 0.600 (26 vs 17, p=0.22)
+   judge1: steer_R-x4 0.645 vs steer_rand1x4 0.590 (29 vs 18, p=0.14)
+   judge1: frame_R-+ablR 0.415 vs frame_R- 0.455 (15 vs 23, p=0.26)
+   judge1: frame_R-+ablRand 0.440 vs frame_R- 0.455 (14 vs 17, p=0.72)
+   judge1: frame_R-+ablW 0.515 vs frame_R- 0.455 (24 vs 12, p=0.065)
+   judge2: frame_R- 0.635 vs frame_R+ 0.490 (32 vs 3, p=4.2e-07)
+   judge2: frame_W- 0.690 vs frame_W+ 0.550 (30 vs 2, p=2.5e-07)
+   judge2: steer_R-x2 0.835 vs steer_R+x2 0.580 (55 vs 4, p=1.7e-12)
+   judge2: steer_R-x4 0.910 vs steer_R+x4 0.565 (70 vs 1, p=6.1e-20)
+   judge2: steer_R+x4 0.565 vs neutral 0.675 (8 vs 30, p=0.00047)
+   judge2: steer_R-x4 0.910 vs neutral 0.675 (49 vs 2, p=1.2e-12)
+   judge2: steer_R-x4 0.910 vs steer_rand0x4 0.855 (14 vs 3, p=0.013)
+   judge2: steer_R-x4 0.910 vs steer_rand1x4 0.815 (23 vs 4, p=0.00031)
+   judge2: frame_R-+ablR 0.550 vs frame_R- 0.635 (6 vs 23, p=0.0023)
+   judge2: frame_R-+ablRand 0.590 vs frame_R- 0.635 (2 vs 11, p=0.022)
+   judge2: frame_R-+ablW 0.670 vs frame_R- 0.635 (17 vs 10, p=0.25)
+DONE 14452s
