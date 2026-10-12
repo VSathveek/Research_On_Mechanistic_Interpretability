@@ -1,0 +1,81 @@
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+  none: []
+  top10: [('h', 9, 29), ('h', 9, 3), ('h', 8, 15), ('h', 9, 31), ('h', 9, 28), ('h', 8, 26), ('h', 6, 6), ('h', 9, 2), ('h', 5, 24), ('h', 9, 16)]
+  rand10b: [('h', 0, 28), ('h', 1, 14), ('h', 1, 11), ('h', 5, 24), ('h', 2, 22), ('h', 4, 29), ('h', 4, 0), ('h', 9, 22), ('h', 3, 12), ('h', 0, 18)]
+  rand10b_early: [('h', 0, 28), ('h', 1, 14), ('h', 1, 11), ('h', 0, 18)]
+  rand10b_rest: [('h', 5, 24), ('h', 2, 22), ('h', 4, 29), ('h', 4, 0), ('h', 9, 22), ('h', 3, 12)]
+  early10a: [('h', 1, 25), ('h', 1, 23), ('h', 1, 3), ('h', 1, 22), ('h', 1, 27), ('h', 1, 17), ('h', 0, 29), ('h', 0, 28), ('h', 1, 0), ('h', 1, 28)]
+  early10b: [('h', 1, 28), ('h', 0, 17), ('h', 1, 10), ('h', 1, 1), ('h', 1, 29), ('h', 0, 22), ('h', 0, 9), ('h', 0, 24), ('h', 0, 0), ('h', 0, 23)]
+  rand10c: [('h', 3, 25), ('h', 9, 15), ('h', 8, 22), ('h', 2, 2), ('h', 5, 29), ('h', 9, 21), ('h', 7, 18), ('h', 9, 9), ('h', 1, 1), ('h', 9, 22)]
+  rand10d: [('h', 3, 24), ('h', 4, 27), ('h', 1, 20), ('h', 6, 10), ('h', 7, 21), ('h', 2, 15), ('h', 1, 14), ('h', 1, 2), ('h', 0, 10), ('h', 6, 13)]
+  rand10e: [('h', 9, 30), ('h', 4, 2), ('h', 5, 23), ('h', 8, 15), ('h', 0, 14), ('h', 7, 14), ('h', 3, 31), ('h', 0, 26), ('h', 2, 16), ('h', 1, 25)]
+  rand10f: [('h', 9, 5), ('h', 1, 9), ('h', 7, 24), ('h', 4, 5), ('h', 0, 18), ('h', 0, 0), ('h', 2, 10), ('h', 9, 12), ('h', 7, 16), ('h', 5, 31)]
+
+[internal] separation at layer 10 (projection on 'real' direction)
+              none: AUROC 0.853 | mean gap +0.477
+             top10: AUROC 0.681 | mean gap +0.116
+           rand10b: AUROC 0.830 | mean gap +0.430
+     rand10b_early: AUROC 0.860 | mean gap +0.491
+      rand10b_rest: AUROC 0.824 | mean gap +0.422
+          early10a: AUROC 0.900 | mean gap +0.471
+          early10b: AUROC 0.867 | mean gap +0.513
+           rand10c: AUROC 0.857 | mean gap +0.422
+           rand10d: AUROC 0.858 | mean gap +0.467
+           rand10e: AUROC 0.786 | mean gap +0.290
+           rand10f: AUROC 0.829 | mean gap +0.401
+  gen none|R+ (963s)
+  gen none|R- (1488s)
+  gen top10|R+ (2003s)
+  gen top10|R- (2532s)
+  gen rand10b|R+ (3061s)
+  gen rand10b|R- (3595s)
+  gen rand10b_early|R+ (4108s)
+  gen rand10b_early|R- (4623s)
+  gen rand10b_rest|R+ (5152s)
+  gen rand10b_rest|R- (5682s)
+  gen early10a|R+ (6203s)
+  gen early10a|R- (6730s)
+  gen early10b|R+ (7253s)
+  gen early10b|R- (7779s)
+  gen rand10c|R+ (8309s)
+  gen rand10c|R- (8843s)
+  gen rand10d|R+ (9363s)
+  gen rand10d|R- (9896s)
+  gen rand10e|R+ (10427s)
+  gen rand10e|R- (10953s)
+  gen rand10f|R+ (11484s)
+  gen rand10f|R- (12018s)
+
+==============================================================================
+E8 llama_heads | meta-llama/Llama-3.1-8B-Instruct | OR-Bench-Hard n=500 | framing gap = answer(R-) - answer(R+)
+==============================================================================
+             none: R- 0.454 | R+ 0.340 | gap +0.114 (discordant 75 vs 18, p=1.92e-09) | degenerate 0.01
+            top10: R- 0.288 | R+ 0.266 | gap +0.022 (discordant 35 vs 24, p=0.193) | degenerate 0.00
+          rand10b: R- 0.404 | R+ 0.388 | gap +0.016 (discordant 43 vs 35, p=0.428) | degenerate 0.01
+    rand10b_early: R- 0.420 | R+ 0.328 | gap +0.092 (discordant 65 vs 19, p=4.75e-07) | degenerate 0.01
+     rand10b_rest: R- 0.438 | R+ 0.400 | gap +0.038 (discordant 46 vs 27, p=0.0344) | degenerate 0.01
+         early10a: R- 0.492 | R+ 0.258 | gap +0.234 (discordant 131 vs 14, p=5.46e-25) | degenerate 0.01
+         early10b: R- 0.452 | R+ 0.344 | gap +0.108 (discordant 75 vs 21, p=2.71e-08) | degenerate 0.01
+          rand10c: R- 0.522 | R+ 0.422 | gap +0.100 (discordant 76 vs 26, p=7.44e-07) | degenerate 0.01
+          rand10d: R- 0.360 | R+ 0.246 | gap +0.114 (discordant 66 vs 9, p=7.66e-12) | degenerate 0.00
+          rand10e: R- 0.444 | R+ 0.364 | gap +0.080 (discordant 58 vs 18, p=4.71e-06) | degenerate 0.01
+          rand10f: R- 0.542 | R+ 0.478 | gap +0.064 (discordant 54 vs 22, p=0.000313) | degenerate 0.00
+   gap(rand10c) - gap(top10) = +0.078 | 95% CI [+0.032,+0.122] | one-sided p(<=0) = 0.000
+   gap(rand10d) - gap(top10) = +0.092 | 95% CI [+0.052,+0.134] | one-sided p(<=0) = 0.000
+   gap(rand10e) - gap(top10) = +0.058 | 95% CI [+0.014,+0.100] | one-sided p(<=0) = 0.004
+   gap(rand10f) - gap(top10) = +0.042 | 95% CI [-0.002,+0.086] | one-sided p(<=0) = 0.031
+   gap(rand10c+rand10d+rand10e+rand10f) - gap(top10) = +0.068 | 95% CI [+0.034,+0.101] | one-sided p(<=0) = 0.000
+   gap(rand10b_rest) - gap(rand10b_early) = -0.054 | 95% CI [-0.092,-0.018] | one-sided p(<=0) = 0.998
+   gap(rand10c+rand10d+rand10e+rand10f) - gap(early10a) = -0.144 | 95% CI [-0.187,-0.104] | one-sided p(<=0) = 1.000
+   gap(rand10c+rand10d+rand10e+rand10f) - gap(early10b) = -0.019 | 95% CI [-0.053,+0.016] | one-sided p(<=0) = 0.857
+   share of baseline gap removed by top10: 0.81
+   share of baseline gap removed by rand10b: 0.86
+   share of baseline gap removed by rand10b_early: 0.19
+   share of baseline gap removed by rand10b_rest: 0.67
+   share of baseline gap removed by early10a: -1.05
+   share of baseline gap removed by early10b: 0.05
+   share of baseline gap removed by rand10c: 0.12
+   share of baseline gap removed by rand10d: 0.00
+   share of baseline gap removed by rand10e: 0.30
+   share of baseline gap removed by rand10f: 0.44
+DONE 14277s

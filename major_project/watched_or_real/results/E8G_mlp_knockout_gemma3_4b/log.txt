@@ -1,0 +1,54 @@
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+  none: []
+  mlp_top1: [('m', 28)]
+  mlp_top3: [('m', 28), ('m', 29), ('m', 26)]
+  mlp_late3a: [('m', 20), ('m', 24), ('m', 23)]
+  mlp_late3b: [('m', 20), ('m', 21), ('m', 18)]
+  mlp_any3a: [('m', 24), ('m', 9), ('m', 27)]
+  mlp_any3b: [('m', 22), ('m', 12), ('m', 27)]
+
+[internal] separation at layer 30 (projection on 'real' direction)
+              none: AUROC 0.930 | mean gap +4162.080
+          mlp_top1: AUROC 0.931 | mean gap +3568.917
+          mlp_top3: AUROC 0.912 | mean gap +2323.834
+        mlp_late3a: AUROC 0.894 | mean gap +1662.736
+        mlp_late3b: AUROC 0.914 | mean gap +1856.673
+         mlp_any3a: AUROC 0.892 | mean gap +1965.084
+         mlp_any3b: AUROC 0.895 | mean gap +2169.938
+  gen none|R+ (1436s)
+  gen none|R- (2191s)
+  gen mlp_top1|R+ (2942s)
+  gen mlp_top1|R- (3700s)
+  gen mlp_top3|R+ (4455s)
+  gen mlp_top3|R- (5217s)
+  gen mlp_late3a|R+ (5968s)
+  gen mlp_late3a|R- (6726s)
+  gen mlp_late3b|R+ (7475s)
+  gen mlp_late3b|R- (8232s)
+  gen mlp_any3a|R+ (8988s)
+  gen mlp_any3a|R- (9750s)
+  gen mlp_any3b|R+ (10505s)
+  gen mlp_any3b|R- (11267s)
+
+==============================================================================
+E8 gemma_mlp | google/gemma-3-4b-it | OR-Bench-Hard n=500 | framing gap = answer(R-) - answer(R+)
+==============================================================================
+             none: R- 0.286 | R+ 0.232 | gap +0.054 (discordant 54 vs 27, p=0.0036) | degenerate 0.00
+         mlp_top1: R- 0.302 | R+ 0.254 | gap +0.048 (discordant 54 vs 30, p=0.0116) | degenerate 0.00
+         mlp_top3: R- 0.322 | R+ 0.278 | gap +0.044 (discordant 65 vs 43, p=0.0428) | degenerate 0.00
+       mlp_late3a: R- 0.312 | R+ 0.282 | gap +0.030 (discordant 54 vs 39, p=0.146) | degenerate 0.00
+       mlp_late3b: R- 0.356 | R+ 0.316 | gap +0.040 (discordant 55 vs 35, p=0.0446) | degenerate 0.00
+        mlp_any3a: R- 0.398 | R+ 0.376 | gap +0.022 (discordant 47 vs 36, p=0.272) | degenerate 0.00
+        mlp_any3b: R- 0.302 | R+ 0.236 | gap +0.066 (discordant 57 vs 24, p=0.000317) | degenerate 0.00
+   gap(mlp_late3a) - gap(mlp_top3) = -0.014 | 95% CI [-0.070,+0.042] | one-sided p(<=0) = 0.688
+   gap(mlp_late3b) - gap(mlp_top3) = -0.004 | 95% CI [-0.056,+0.048] | one-sided p(<=0) = 0.564
+   gap(mlp_any3a) - gap(mlp_top3) = -0.022 | 95% CI [-0.074,+0.030] | one-sided p(<=0) = 0.801
+   gap(mlp_any3b) - gap(mlp_top3) = +0.022 | 95% CI [-0.030,+0.074] | one-sided p(<=0) = 0.218
+   gap(mlp_late3a+mlp_late3b+mlp_any3a+mlp_any3b) - gap(mlp_top3) = -0.004 | 95% CI [-0.047,+0.038] | one-sided p(<=0) = 0.577
+   share of baseline gap removed by mlp_top1: 0.11
+   share of baseline gap removed by mlp_top3: 0.19
+   share of baseline gap removed by mlp_late3a: 0.44
+   share of baseline gap removed by mlp_late3b: 0.26
+   share of baseline gap removed by mlp_any3a: 0.59
+   share of baseline gap removed by mlp_any3b: -0.22
+DONE 12997s

@@ -120,12 +120,15 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{padding:8px 10p
       <div class="take">Top-10 heads off: gap shrinks by 78% and is no longer significant. Re-checked against 6 random sets and 2 sets taken from the same layers: top-10 beats every one (pooled p = 0.002 for both kinds).</div></div>
     <div class="box"><h4>G · Is it always a few heads? Two of three models: yes</h4><p class="cap">Share of the behaviour effect removed when 10 heads are switched off: the top-10 "reality" heads vs the average of control head sets (random and same-layer).</p>
       <svg id="c7" viewBox="0 0 880 250" width="100%"></svg>
-      <div class="take">Ministral and Llama: a small group of heads just before the readout carries the signal (top-10 beat controls, p = 0.002 and 0.003). Gemma: the signal is written mostly by MLP layers (65%), and switching heads off is no better than random — a different mechanism.</div></div>
+      <div class="take">Ministral and Llama: a small group of heads just before the readout carries the signal (top-10 beat controls, p = 0.002 and 0.003). Gemma: no small set is special — neither the top-10 heads nor the top-3 MLP layers beat random sets; the signal is spread across many layers. In Llama the odd random set was not about early heads (its early part removes only 19%); top-10 beats 4 more random sets (p &lt; 0.001).</div></div>
     <div class="box"><h4>F · Removing the "real" direction weakens the effect in Gemma too (1,000 borderline requests)</h4><p class="cap">Answer rate when told "simulated", with a direction removed near layer 30 (set to its average value, so the model still writes normally — 0% broken output).</p>
       <svg id="c6" viewBox="0 0 880 210" width="100%"></svg>
       <div class="take">Removing "real" takes away 38% of the gap (95% CI 7–69%, p = 0.03); a random direction takes away none. Removing "watched" takes 27% (not significant) — the two signals partly overlap in Gemma.</div></div>
+    <div class="box"><h4>H · Without any framing sentence: does it matter on ordinary prompts? (Ministral)</h4><p class="cap">Same requests shown bare, inside benchmark-style formatting, or written like a real user. Internal shift toward "real" (as a share of the explicit-sentence gap) and behaviour.</p>
+      <svg id="c8" viewBox="0 0 880 230" width="100%"></svg>
+      <div class="take">Benchmark formatting alone moves the model toward "simulated" (−0.16 to −0.18 of the explicit gap). On harmful requests, a higher "real" reading predicts less compliance even after controlling for refusal (p = 0.001), and it accounts for the benchmark-vs-real-user difference. On borderline requests it does not.</div></div>
   </div>
-  <div class="warn"><b>Honest limits:</b> effects are a few percentage points (small models refuse most harmful requests); hidden "fake-world" cues move the signal only ~10% as far as an explicit sentence; removing a direction or heads weakens the effect but does not remove all of it (partial mediation); in Llama one random head set (mostly very early layers) also removes the behaviour effect without touching the internal signal.</div>
+  <div class="warn"><b>Honest limits:</b> effects are a few percentage points (small models refuse most harmful requests); hidden "fake-world" cues move the signal only ~10% as far as an explicit sentence; removing a direction or heads weakens the effect but does not remove all of it (partial mediation); in Llama one random head set also removes the behaviour effect (it contains one of the top-10 heads); on ordinary prompts the "real" reading predicts harmful compliance but not borderline answering, and the wrappers differ in more than one way.</div>
 </section>
 
 <section id="status">
@@ -138,13 +141,13 @@ table{border-collapse:collapse;width:100%;font-size:14.5px}th,td{padding:8px 10p
       <div class="item">Head localisation, 3 models<small>Ministral &amp; Llama: ~10 heads; Gemma: mostly MLPs</small></div>
       <div class="item">Heads → behaviour<small>top-10 beat 8 control sets (Ministral), 3 (Llama)</small></div>
       <div class="item">Gemma necessity<small>"real" direction carries 38% of the effect; random 0%</small></div>
+      <div class="item">Follow-up knock-outs<small>Llama: top-10 beats 7 random sets; Gemma: no small set is special</small></div>
+      <div class="item">Ordinary prompts (no framing)<small>benchmark format shifts the signal; predicts harmful compliance</small></div>
       <div class="item">Code + results on GitHub<small>major_project/watched_or_real</small></div></div>
     <div class="col now"><h3><span class="dot"></span>Running</h3>
       <div class="item">Nothing running<small>waiting for the next experiments</small></div></div>
     <div class="col next"><h3><span class="dot"></span>Next</h3>
-      <div class="item">Gemma MLP knock-out<small>do late MLP layers carry its effect?</small></div>
-      <div class="item">Stronger hidden cues<small>full agent environments that look like tests</small></div>
-      <div class="item">Paper write-up</div></div>
+      <div class="item">Paper write-up<small>experiments complete enough to draw conclusions</small></div></div>
   </div>
 </section>
 </div>
@@ -184,6 +187,12 @@ hbars("c4",[["no heads off",1.04,C.ink],["head L14.H19 only",0.50,C.watch],["top
 hbars("c5",[["no heads off",3.5,C.ink],["head L14.H19 only",1.9,C.watch],["top-10 heads",0.8,C.watch],["6 random sets (avg)",2.9,C.gray],["2 same-layer sets (avg)",3.5,C.gray]],4,function(v){return "+"+v.toFixed(1)+" pts"});
 hbars("c6",[["told \"real\"",0.214,C.real],["told \"simulated\"",0.287,C.sim],["  … \"real\" removed",0.259,C.real],["  … random removed",0.298,C.gray],["  … \"watched\" removed",0.267,C.watch]],0.34,function(v){return (v*100).toFixed(1)+"%"});
 hbars("c7",[["Ministral: top-10",0.78,C.watch],["Ministral: controls",0.18,C.gray],["Llama: top-10",0.81,C.watch],["Llama: controls",0.36,C.gray],["Gemma: top-10",0.56,C.watch],["Gemma: controls",0.40,C.gray]],1,function(v){return Math.round(v*100)+"%"});
+(function(){var s=document.getElementById("c8"),L=230,R=860,Z=L+(R-L)/2,X=function(v){return Z+v/0.3*(R-L)/2};
+S("line",{x1:Z,x2:Z,y1:4,y2:196,stroke:C.line,"stroke-width":2},s);
+[["AdvBench · benchmark format",-0.16,"4.1% comply"],["AdvBench · real-user format",-0.01,"2.9% comply"],["OR-Bench · benchmark format",-0.18,"67.0% answer"],["OR-Bench · real-user format",0.11,"58.9% answer"]].forEach(function(r,i){var y=10+i*46,g=S("g",{},s),col=r[1]<0?C.sim:C.real;
+T(g,L-12,y+19,r[0],{"text-anchor":"end","font-size":13.5,"font-weight":600,fill:C.ink});S("rect",{x:Math.min(Z,X(r[1])),y:y,width:Math.max(2,Math.abs(X(r[1])-Z)),height:28,rx:6,fill:col},g);
+T(g,r[1]<0?X(r[1])-8:X(r[1])+8,y+19,(r[1]>0?"+":"")+r[1].toFixed(2),{"text-anchor":r[1]<0?"end":"start","font-size":13,"font-weight":700,fill:col});T(g,R,y+19,r[2],{"text-anchor":"end","font-size":12.5,fill:C.muted});tip(g,r[0])});
+T(s,Z,218,"← toward \"simulated\"   |   toward \"real\" →   (bare prompt = 0; AdvBench 5.0% / OR-Bench 71.3%)",{"text-anchor":"middle","font-size":12.5,fill:C.muted});})();
 window.addEventListener("load",function(){if(window.renderMathInElement)renderMathInElement(document.body,{delimiters:[{left:"\\[",right:"\\]",display:true},{left:"\\(",right:"\\)",display:false}],throwOnError:false})});})();
 </script>
 </body>

@@ -115,6 +115,43 @@ Same attribution (60 tasks x 5 wordings per framing); Gemma's attribution goes e
   behavioural effect of top-10 heads is no larger than random heads. Consistent with the partial mediation by the direction (section 6).
 * Conclusion: the reality signal is computed by a small attention circuit in two of three models, but it is not a universal mechanism.
 
+### 5c. Follow-ups (E8)
+**Llama: was the odd random set (b) about very early heads? No.** OR-Bench n=500.
+* Top-10 beats 4 new random sets (pooled +6.8 pts, 95% CI [3.4, 10.1], p<0.001; each set individually p<=0.031). Across all
+  experiments top-10 beats 6 of 7 random sets and the layer-matched set.
+* Splitting set (b): its layer 0-1 heads remove only 19% of the gap; the remaining 6 heads remove 67%. The early-head hypothesis
+  (pre-registered) is **rejected**. The remaining part contains L5.H24, which is itself one of the top-10 heads, and a layer-9 head.
+* Random sets of 10 layer 0-1 heads do not remove the gap (+5%) or even widen it (early10a: gap +23.4 pts).
+* Top-10 also lowers the overall answer rate (45/34% -> 29/27%), but random set (d) lowers it similarly (36/25%) and leaves the gap
+  intact (+11.4 pts), so the gap reduction is not just a general caution increase.
+
+**Gemma: do the top-3 attributed MLP layers carry the effect? No.** Mean-ablating MLP 28, 29, 26 removes 19% of the gap; random
+late-layer and any-layer triples remove -22% to 59%; top-3 vs pooled random: -0.4 pts, p=0.58. Every 3-layer knock-out lowers the
+internal gap by a similar amount (4162 -> 1660-2320). 0% degenerate output. Gemma's reality signal is spread across many layers: neither
+the top heads nor the top MLP layers are special; only removing the direction itself (section 6) takes out part of the effect.
+
+### 5d. Natural prompts with no framing sentence (E9, Ministral)
+AdvBench n=420 (items 100-519; the refusal direction is built from items 0-99) and OR-Bench-Hard n=600, each shown bare, in 3
+benchmark-style wrappers and in 3 real-user-style wrappers. Projections at layer 15; shifts as a fraction of the explicit real-minus-simulated gap.
+
+| | AdvBench: real-shift | AdvBench compliance | OR-Bench: real-shift | OR-Bench answer rate |
+|---|---|---|---|---|
+| bare | 0 | 5.0% | 0 | 71.3% |
+| benchmark wrappers (avg of 3) | -0.16 (each p<1e-20) | 4.1% | -0.18 (each p<1e-90) | 67.0% |
+| real-user wrappers (avg of 3) | -0.01 | 2.9% | +0.11 | 58.9% |
+
+* **H1 supported.** Benchmark formatting moves the "real" reading toward "simulated" by 0.05-0.23 of the explicit gap, twice as far
+  as the hidden cues in section 4; real-user wrappers move it toward "real" on borderline requests.
+* **H2 supported for harmful requests only.** AdvBench: a higher "real" reading predicts less harmful compliance, controlling for the
+  refusal and watched projections, both within an item across formats (cluster-robust p=0.024) and between bare items (logit -0.96, p=0.001).
+  OR-Bench: the sign is reversed (between items +0.34, p=0.003; within items p=0.06); there the watched reading (p=0.002) and the
+  refusal reading (p<1e-13) predict refusals.
+* **H3 (re-analysed with a full item bootstrap that refits the model each time).** AdvBench: benchmark wrappers give +1.2 pts more
+  harmful compliance than real-user wrappers [0.3, 2.1]; the "real" reading predicts +2.0 pts [0.5, 3.9], i.e. it accounts for all of
+  that difference. One explicit-gap worth of "real" corresponds to -13 pts compliance [-26, -3]. OR-Bench: wrappers differ by +8.1 pts
+  [5.3, 10.6] but the "real" reading predicts -3.5 pts [-7.3, 0.3], so it does not explain the borderline difference.
+* The wrappers also differ in other ways (urgency, a named person), so these are associations, not interventions.
+
 ### 6. Necessity in a second model (Gemma-3-4B)
 All-layer zero-ablation broke Gemma's outputs: its residual projection on `d_R` near layer 30 is far from zero (mean about -11k to -21k),
 so zeroing it pushes states off-distribution. We instead **mean-ablate** in a window of blocks 27-31,
@@ -133,6 +170,18 @@ OR-Bench-Hard n=1000, judged answer rate, 0% degenerate output in every conditio
 Share of the simulated-vs-real gap removed: "real" direction 0.38 (bootstrap 95% CI 0.07-0.69), random -0.15, "watched" 0.27.
 Partial mediation: the "real" direction carries a real but incomplete share of the effect. The "watched" direction's point
 estimate is inside the "real" CI, so in Gemma the two signals are not cleanly separated at the behavioural level.
+
+## Conclusions
+1. **Two separable representations.** "Being watched" and "consequences are real" are distinct, linearly decodable directions in all three
+   models, not explained by negation wording or the refusal direction.
+2. **Causal for behaviour.** Telling a model the situation is simulated makes it less cautious in all three models; steering along the
+   "real" direction moves behaviour both ways and beats equal-norm random vectors.
+3. **Mechanism is model-specific.** In Ministral and Llama a small set of about 10 attention heads in the layers before the readout layer
+   computes the reality signal and is needed for the behavioural effect (78-81% of the gap removed; beats 8 and 7 control sets). In Gemma
+   the signal is distributed: no small head or MLP set beats random, and removing the direction removes only 38%.
+4. **Partly relevant to natural prompts.** Ordinary benchmark formatting moves the reality reading toward "simulated" with no framing sentence,
+   and on harmful requests that reading predicts compliance beyond the refusal direction and accounts for the benchmark-vs-real-user difference.
+   On borderline requests it does not; there the "watched" and refusal readings matter.
 
 ## Limitations
 * Small models (4-8B) on free GPUs; harmful-compliance base rates are low, so effects are a few percentage points.
