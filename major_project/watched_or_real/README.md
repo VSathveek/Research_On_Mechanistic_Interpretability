@@ -186,6 +186,37 @@ All three pre-registered predictions hold: toward "simulated" beats both random 
   the "watched" framing effect is not present in Gemma under either judge.
 * For Gemma we therefore report Granite as the primary judge.
 
+### 5g. Disentanglement: 2x2 factorial, eval/format controls, head patching (E11, Ministral)
+Combined framings (watched/unwatched x real/simulated) on 60 neutral tasks; behaviour on OR-Bench-Hard n=500.
+* **Each direction is selective for its own factor.** "Real" direction: real/simulated effect +0.75 vs watched/unwatched +0.17
+  (4.5x; AUROC 0.997 on its own factor vs 0.62 on the other). "Watched" direction: +0.53 vs +0.26 (2x; AUROC 0.987 vs 0.71).
+  Distinct but partly entangled, not orthogonal.
+* **Not a generic evaluation-awareness or format direction.** cos(real, eval-awareness) = -0.14; cos(real, benchmark format) = -0.11;
+  removing both keeps 99% of the "real" direction and its AUROC (1.000). The "watched" direction does overlap eval-awareness (cos 0.31).
+* **The top-10 heads carry both signals.** Mean-ablating them cuts the internal real/simulated effect 0.75 -> 0.21 **and** the
+  watched/unwatched effect 0.53 -> 0.16 (10 random heads: 0.74, 0.51). Ablating the "watched" direction cuts only the watched effect
+  (0.53 -> 0.34) and leaves the real effect (0.74). So the heads are a shared "situation-framing" circuit; the two concepts separate
+  in the directions the heads write, not in different heads.
+* **Behaviour: no double dissociation in Ministral.** On OR-Bench the framing effects are small (real/simulated +2.9 pts, watched/unwatched
+  +3.9 pts). Mean-ablating the top-10 heads removes both (4.4 pts [0.9, 7.6] and 3.7 pts [1.0, 6.6]); ablating the "watched" direction also
+  removes both (3.1 [-0.4, 6.6] and 3.7 [0.6, 6.9]). Pre-registered B1 is **not** supported in this model.
+* **Steering on borderline requests is not direction-specific in Ministral:** both pushes x4 lower the answer rate (71% -> 39% toward "real",
+  33% toward "simulated"), with the eval/format-orthogonalised direction behaving the same. Pre-registered B2 is **not** supported on
+  OR-Bench (on harmful requests, E10, steering is strongly direction-specific and beats random vectors).
+* **Cross-prompt patching (B3, supported in direction):** setting the top-10 heads to their mean output under "real" framing (from other,
+  neutral tasks) lowers the "simulated" answer rate 70.0% -> 60.0% (16 vs 66, p=2e-8); 10 random heads: 71.2% (n.s.); top-10 vs random
+  -11.2 pts [-15.2, -7.4]. The shift overshoots the "real" level (66.2%), consistent with a general caution effect of these heads.
+* The Llama version of E11 (strong effects for both factors) is pending GPU quota.
+
+### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
+* **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
+  and the negation direction; cos with refusal -0.04 / -0.02.
+* **Behaviour does not:** 0% harmful compliance on AdvBench in every condition (floor). On OR-Bench, real vs simulated framing has no
+  effect (60.5% vs 60.0%, p=1) and steering along "real" x4 is indistinguishable from random vectors. Ablating "real" at all layers
+  drops answering to 23% (random direction: 60%), so the direction matters for the computation, but not in the framing direction.
+* Interpretation: in this more strongly safety-tuned 14B model the reality representation exists but no longer drives refusal behaviour
+  under these prompts. Generality of the behavioural effect beyond 4-9B models is therefore not established.
+
 ### 6. Necessity in a second model (Gemma-3-4B)
 All-layer zero-ablation broke Gemma's outputs: its residual projection on `d_R` near layer 30 is far from zero (mean about -11k to -21k),
 so zeroing it pushes states off-distribution. We instead **mean-ablate** in a window of blocks 27-31,
@@ -205,7 +236,15 @@ Share of the simulated-vs-real gap removed: "real" direction 0.38 (bootstrap 95%
 Partial mediation: the "real" direction carries a real but incomplete share of the effect. The "watched" direction's point
 estimate is inside the "real" CI, so in Gemma the two signals are not cleanly separated at the behavioural level.
 
-## Conclusions
+## Conclusions (updated after E10, E11, J2 and the 14B replication)
+* Representation: distinct, factor-selective "watched" and "real" directions in all four models (incl. Qwen2.5-14B), not explained by
+  negation, refusal, generic evaluation awareness or benchmark format.
+* Causation: the "real" direction drives harmful compliance on natural prompts in Ministral (0.2% -> 28.7%, random ~6%), and framing
+  effects hold under independent judges in Ministral, Llama and Gemma. In Qwen2.5-14B the representation is present but behaviourally inert.
+* Mechanism: in Ministral, ~10 late heads form a shared situation-framing circuit carrying both signals; the concepts separate in the
+  directions written, and behaviourally the two effects are not dissociable in Ministral on borderline requests.
+
+### Earlier summary
 1. **Two separable representations.** "Being watched" and "consequences are real" are distinct, linearly decodable directions in all three
    models, not explained by negation wording or the refusal direction.
 2. **Causal for behaviour.** Telling a model the situation is simulated makes it less cautious in all three models; steering along the
