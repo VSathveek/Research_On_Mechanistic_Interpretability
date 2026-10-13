@@ -206,7 +206,26 @@ Combined framings (watched/unwatched x real/simulated) on 60 neutral tasks; beha
 * **Cross-prompt patching (B3, supported in direction):** setting the top-10 heads to their mean output under "real" framing (from other,
   neutral tasks) lowers the "simulated" answer rate 70.0% -> 60.0% (16 vs 66, p=2e-8); 10 random heads: 71.2% (n.s.); top-10 vs random
   -11.2 pts [-15.2, -7.4]. The shift overshoots the "real" level (66.2%), consistent with a general caution effect of these heads.
-* The Llama version of E11 (strong effects for both factors) is pending GPU quota.
+
+**E11 on Llama-3.1-8B (60 tasks; OR-Bench n=500):**
+* **Selectivity is stronger:** "real" direction responds 7.8x more to real/simulated (+0.32) than to watched/unwatched (+0.04)
+  (AUROC 0.857 vs 0.546); "watched" direction 2.9x more to its own factor (+0.21 vs +0.08; AUROC 0.926 vs 0.635).
+* **Not eval-awareness or format:** cos(real, eval) = -0.13, cos(real, format) = +0.11; removing both keeps 98% (AUROC 0.857 -> 0.833).
+  "Watched" overlaps eval-awareness (cos 0.31).
+* **Internal crossed dissociation holds:** mean-ablating the top-10 heads cuts the real/simulated signal by 56% (0.32 -> 0.14) and the
+  watched signal by 23% (0.21 -> 0.17); ablating the "watched" direction cuts the watched signal by 60% and the real signal by 13%;
+  10 random heads change neither.
+* **Steering (B2, supported):** with no framing sentence, toward "real" x4 37.8% vs none 51.2% vs toward "simulated" x4 64.0%
+  (real vs simulated 22 vs 153, p=2e-25). The direction with eval-awareness and format removed does the same (39.2% vs 62.2%, p=3e-21).
+* **Cross-prompt patching (B3, supported):** setting the top-10 heads to their "real"-framing mean (from other, neutral tasks) under
+  "simulated" framing gives 33.4% vs 51.2% (13 vs 102, p=3e-18), i.e. 114% of the way to the "real" level (35.6%); 10 random heads: 12%.
+  Top-10 minus random: -16.0 pts [-19.6, -12.4].
+* **Behavioural double dissociation (B1, not supported):** with both sentences present, the real/simulated effect is +3.3 pts and the
+  watched effect +9.3 pts. Ablating the "watched" direction removes both (9.1 pts [5.6, 12.8] and 3.8 pts [0.7, 6.9]); mean-ablating the
+  top-10 heads lowers answering overall (to 18-32%) but leaves both framing effects (R +5.0, W +8.6).
+* Summary: the two concepts are separable as representations (selectivity, crossed internal dissociation, eval/format controls) and the
+  "real" direction and heads are causal on their own, but at the level of behaviour, removing the watched direction also removes the
+  reality effect, so the downstream behavioural pathways are shared.
 
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
@@ -241,8 +260,12 @@ estimate is inside the "real" CI, so in Gemma the two signals are not cleanly se
   negation, refusal, generic evaluation awareness or benchmark format.
 * Causation: the "real" direction drives harmful compliance on natural prompts in Ministral (0.2% -> 28.7%, random ~6%), and framing
   effects hold under independent judges in Ministral, Llama and Gemma. In Qwen2.5-14B the representation is present but behaviourally inert.
-* Mechanism: in Ministral, ~10 late heads form a shared situation-framing circuit carrying both signals; the concepts separate in the
-  directions written, and behaviourally the two effects are not dissociable in Ministral on borderline requests.
+* Mechanism: ~10 late attention heads compute the framing signal. Patching them to their "real" state (from other prompts) moves
+  behaviour to the "real" level in Llama (114%) and Ministral; random heads do nothing. In Llama these heads carry mostly the reality
+  signal (56% vs 23% reduction) and the watched direction mostly the watched signal (60% vs 13%): a crossed internal dissociation.
+  In Ministral the heads carry both signals equally. Gemma's signal is distributed.
+* Limit: behaviourally, ablating the watched direction removes both framing effects (Llama, Ministral), so watched and real are
+  separable representations that feed a shared behavioural pathway; we do not claim behaviourally independent mechanisms.
 
 ### Earlier summary
 1. **Two separable representations.** "Being watched" and "consequences are real" are distinct, linearly decodable directions in all three
