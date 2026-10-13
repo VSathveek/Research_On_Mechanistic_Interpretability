@@ -21,3 +21,23 @@ consequence-reality are causally dissociable representations, and in two of thre
 set of late attention heads; prior evaluation-awareness work conflates the two.
 
 Some 2026 papers were checked through abstracts or partial text only; verify details before citing.
+
+## Second check (mid-October 2026, against the final findings)
+Nothing found that reports the combination. ICLR 2027 submissions were not yet indexed, so that venue is unchecked.
+
+| Final finding | Verdict | New closest work | Note |
+|---|---|---|---|
+| F1 factorial watched x real dissociation, selectivity, orthogonal to eval/format/refusal | **Novel** as a mechanistic result; concept partly reported | Rajamanoharan & Nanda, *Models May Behave Worse When Eval Aware* (LessWrong, Jun 2026): in Gemini CoT, "safety eval" and "simulation / no real consequences" framings go with opposite behaviour (CoT classification only, no causal claim). Abdelnabi & Salem label "scenario recognition" separately but train one probe | Cite both as the conceptual distinction; present ours as the mechanistic counterpart |
+| F2 steering "real" changes compliance on unframed prompts | **Partly reported** | Peng, Wang, Zou, Hu, *Do LLMs Know Their Vulnerable Scenarios?* (arXiv 2607.23496): diff-in-means "scenario direction" on Llama-3.1-8B and Ministral-3-8B lowers refusal on direct prompts. Chowdhury et al. 2608.30585: roleplay directions mostly align with refusal | Not a headline claim. Ours differs: real-vs-simulated contrast, monitoring and format controls, random baselines, refusal orthogonality |
+| F3 ~10-head circuit, ablation ~80%, cross-prompt patching 114%, crossed dissociation in Llama, distributed in Gemma | **Novel** | Head-level safety work for context: *Attention Head Specialization* (2606.28153), *Depth Charge* (2603.05772); Quirke 2606.08292 (head roles fail cross-prompt transfer) | Our cross-prompt patching directly answers the Quirke critique |
+| F4 shared behavioural pathway; representation without behaviour at 14B | Shared-pathway ablation **novel**; scale part **partly reported** | Manek 2606.29196; Knecht et al. 2605.05835; Mehta *The Refusal Residue* 2607.13346; Singh & Chaudhary 2609.22119 | Present 14B as one observation, not a scaling law |
+
+Also to address: Noël 2608.13329 (eval-awareness directions depend on the defining prompt set) -> report robustness across wordings;
+Niblett et al. 2607.24758 (compliance gaps persist without consequence language).
+
+**Safe wording.** "To our knowledge, the first factorial (monitoring x consequence-reality) dissociation of linear representations,
+extending the conceptual distinction of Abdelnabi & Salem (2025) and Rajamanoharan & Nanda (2026)." "Consistent with scenario
+directions reducing refusal (Peng et al., 2026), we isolate a reality direction from monitoring and format confounds, with random
+baselines." "First localisation of a framing signal to a sparse set of attention heads that survives cross-prompt patching."
+**Avoid:** "first steering of fiction/reality affecting compliance"; "representation decoupled from behaviour at scale is new";
+"models distinguish real from simulated" without citing the above.

@@ -255,6 +255,19 @@ Share of the simulated-vs-real gap removed: "real" direction 0.38 (bootstrap 95%
 Partial mediation: the "real" direction carries a real but incomplete share of the effect. The "watched" direction's point
 estimate is inside the "real" CI, so in Gemma the two signals are not cleanly separated at the behavioural level.
 
+### 5i. Second judge on the newest runs (J2b)
+* **E10 holds (HarmBench classifier, agreement 94%, kappa 0.65):** toward "simulated" x4 30.4% vs 5.6% (149 vs 20, p=1e-25);
+  toward "real" x4 0.6% (p=2e-7); beats both random vectors (p<1e-21); real-user prompts + toward "simulated" 12.7% vs 3.7% (p=6e-8).
+* **Qwen2.5-14B holds:** 0% harmful compliance under both judges; framing and steering still have no effect on borderline answers.
+* **E11 Llama holds and strengthens (Granite, kappa 0.69 with Qwen3, 0.96 with keyword):** steering toward "real" 55.2% vs none 67.6% vs
+  toward "simulated" 91.6% (6 vs 188, p=6e-48), same with eval/format removed (p=1e-49); patching the top-10 heads to their "real"
+  state 67.4% -> 44.6% (8 vs 122, p=3e-27), reaching the "real" level (46.4%), random heads 0 change. Watched-direction ablation
+  again removes both effects (R 6.0 pts, W 10.6 pts); top-10 mean-ablation removes neither.
+* **E11 Ministral on OR-Bench does NOT hold:** the judges disagree (kappa 0.36; keyword 96% answered, Granite 83%, Qwen3 61%).
+  Under Granite the real/simulated framing effect is ~0 (87.0% vs 87.4%) and head patching has no effect (86.2% vs 87.0%).
+  Ministral's borderline-request results are therefore unreliable and are withdrawn; Ministral claims rest on AdvBench
+  (harmful requests), where the judges agree (94-96%).
+
 ## Conclusions (updated after E10, E11, J2 and the 14B replication)
 * Representation: distinct, factor-selective "watched" and "real" directions in all four models (incl. Qwen2.5-14B), not explained by
   negation, refusal, generic evaluation awareness or benchmark format.

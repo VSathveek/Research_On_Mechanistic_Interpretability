@@ -1,0 +1,123 @@
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.1/43.1 MB 44.1 MB/s eta 0:00:00
+
+GPUs: Tesla T4, 15360 MiB | Tesla T4, 15360 MiB
+loaded E11 /kaggle/input/notebooks/vanamalaaravind/watched-or-real-disentangle-llama/e11_gen.jsonl 10500
+loaded E11 /kaggle/input/notebooks/vanamalaaravind/watched-or-real-disentangle/e11_gen.jsonl 10500
+loaded Q14 /kaggle/input/datasets/vanamalaaravind/watched-or-real-q14-gen/q14_gen.jsonl 3000
+  judged 8/24000 (4s) e.g. 'yes'
+  judged 808/24000 (263s) e.g. 'no'
+  judged 1608/24000 (556s) e.g. 'no'
+  judged 2408/24000 (838s) e.g. 'no'
+  judged 3208/24000 (1118s) e.g. 'yes.'
+  judged 4008/24000 (1400s) e.g. 'yes.'
+  judged 4808/24000 (1701s) e.g. 'yes.'
+  judged 5608/24000 (2000s) e.g. 'no'
+  judged 6408/24000 (2299s) e.g. 'yes'
+  judged 7208/24000 (2602s) e.g. 'yes.'
+  judged 8008/24000 (2901s) e.g. 'yes'
+  judged 8808/24000 (3202s) e.g. 'no'
+  judged 9608/24000 (3501s) e.g. 'no'
+  judged 10408/24000 (3794s) e.g. 'yes.'
+  judged 11208/24000 (4095s) e.g. 'yes.'
+  judged 12008/24000 (4396s) e.g. 'yes'
+  judged 12808/24000 (4701s) e.g. 'yes.'
+  judged 13608/24000 (5005s) e.g. 'no.'
+  judged 14408/24000 (5307s) e.g. 'yes.'
+  judged 15208/24000 (5612s) e.g. 'no.'
+  judged 16008/24000 (5916s) e.g. 'yes'
+  judged 16808/24000 (6220s) e.g. 'yes.'
+  judged 17608/24000 (6499s) e.g. 'no.'
+  judged 18408/24000 (6775s) e.g. 'yes.'
+  judged 19208/24000 (7050s) e.g. 'yes.'
+  judged 20008/24000 (7326s) e.g. 'yes'
+  judged 20808/24000 (7602s) e.g. 'yes.'
+  judged 21608/24000 (7885s) e.g. 'yes'
+  judged 22408/24000 (8195s) e.g. 'yes'
+  judged 23208/24000 (8504s) e.g. 'yes.'
+
+==============================================================================
+J2 orb | second judge ibm-granite/granite-3.3-8b-instruct
+==============================================================================
+
+[E11:watched-or-real-disentangle-llama] n=10500 | rate judge1 0.423 judge2 0.573 keyword 0.583 | agreement j1-j2 0.841 kappa 0.69 | kappa j2-keyword 0.96
+   judge1 none: R effect +0.033 | W effect +0.093
+   judge1 mablTop10: R effect +0.050 | W effect +0.086
+   judge1 ablW: R effect -0.005 | W effect +0.001
+   judge1 R removed by top10: -0.017 [-0.047,+0.014] p(<=0)=0.861
+   judge1 W removed by top10: +0.007 [-0.027,+0.040] p(<=0)=0.353
+   judge1 R removed by ablW: +0.038 [+0.007,+0.070] p(<=0)=0.006
+   judge1 W removed by ablW: +0.091 [+0.057,+0.127] p(<=0)=0.000
+   judge1: steer|real_x4 0.378 vs steer|none 0.512 (18 vs 85, p=1.4e-11)
+   judge1: steer|sim_x4 0.640 vs steer|none 0.512 (94 vs 30, p=7.1e-09)
+   judge1: steer|real_x4 0.378 vs steer|sim_x4 0.640 (22 vs 153, p=2.4e-25)
+   judge1: steer|realC_x4 0.392 vs steer|simC_x4 0.622 (23 vs 138, p=3.5e-21)
+   judge1: patch|R- 0.512 vs patch|R+ 0.356 (92 vs 14, p=3.1e-15)
+   judge1: patch|R-_top10toReal 0.334 vs patch|R- 0.512 (13 vs 102, p=2.7e-18)
+   judge1: patch|R-_rand10toReal 0.494 vs patch|R- 0.512 (33 vs 42, p=0.36)
+   judge2 none: R effect +0.040 | W effect +0.118
+   judge2 mablTop10: R effect +0.057 | W effect +0.093
+   judge2 ablW: R effect -0.020 | W effect +0.012
+   judge2 R removed by top10: -0.017 [-0.044,+0.010] p(<=0)=0.889
+   judge2 W removed by top10: +0.024 [-0.009,+0.061] p(<=0)=0.075
+   judge2 R removed by ablW: +0.060 [+0.037,+0.085] p(<=0)=0.000
+   judge2 W removed by ablW: +0.106 [+0.072,+0.138] p(<=0)=0.000
+   judge2: steer|real_x4 0.552 vs steer|none 0.676 (14 vs 76, p=1.8e-11)
+   judge2: steer|sim_x4 0.916 vs steer|none 0.676 (128 vs 8, p=5.8e-29)
+   judge2: steer|real_x4 0.552 vs steer|sim_x4 0.916 (6 vs 188, p=5.6e-48)
+   judge2: steer|realC_x4 0.556 vs steer|simC_x4 0.918 (4 vs 185, p=1.3e-49)
+   judge2: patch|R- 0.674 vs patch|R+ 0.464 (108 vs 3, p=1.8e-28)
+   judge2: patch|R-_top10toReal 0.446 vs patch|R- 0.674 (8 vs 122, p=2.6e-27)
+   judge2: patch|R-_rand10toReal 0.674 vs patch|R- 0.674 (26 vs 26, p=1)
+
+[E11:watched-or-real-disentangle] n=10500 | rate judge1 0.605 judge2 0.832 keyword 0.960 | agreement j1-j2 0.723 kappa 0.36 | kappa j2-keyword 0.23
+   judge1 none: R effect +0.029 | W effect +0.039
+   judge1 mablTop10: R effect -0.014 | W effect +0.002
+   judge1 ablW: R effect -0.002 | W effect +0.002
+   judge1 R removed by top10: +0.043 [+0.009,+0.076] p(<=0)=0.011
+   judge1 W removed by top10: +0.037 [+0.009,+0.066] p(<=0)=0.003
+   judge1 R removed by ablW: +0.032 [-0.004,+0.067] p(<=0)=0.049
+   judge1 W removed by ablW: +0.037 [+0.006,+0.070] p(<=0)=0.011
+   judge1: steer|real_x4 0.386 vs steer|none 0.714 (9 vs 173, p=1.7e-40)
+   judge1: steer|sim_x4 0.332 vs steer|none 0.714 (12 vs 203, p=6e-46)
+   judge1: steer|real_x4 0.386 vs steer|sim_x4 0.332 (114 vs 87, p=0.066)
+   judge1: steer|realC_x4 0.390 vs steer|simC_x4 0.314 (117 vs 79, p=0.0081)
+   judge1: patch|R- 0.700 vs patch|R+ 0.662 (51 vs 32, p=0.048)
+   judge1: patch|R-_top10toReal 0.600 vs patch|R- 0.700 (16 vs 66, p=2.3e-08)
+   judge1: patch|R-_rand10toReal 0.712 vs patch|R- 0.700 (37 vs 31, p=0.54)
+   judge2 none: R effect +0.012 | W effect +0.036
+   judge2 mablTop10: R effect +0.012 | W effect +0.014
+   judge2 ablW: R effect +0.007 | W effect -0.003
+   judge2 R removed by top10: -0.001 [-0.029,+0.028] p(<=0)=0.530
+   judge2 W removed by top10: +0.022 [+0.000,+0.044] p(<=0)=0.027
+   judge2 R removed by ablW: +0.005 [-0.023,+0.034] p(<=0)=0.381
+   judge2 W removed by ablW: +0.039 [+0.018,+0.062] p(<=0)=0.001
+   judge2: steer|real_x4 0.726 vs steer|none 0.898 (3 vs 89, p=5.2e-23)
+   judge2: steer|sim_x4 0.658 vs steer|none 0.898 (5 vs 125, p=4.4e-31)
+   judge2: steer|real_x4 0.726 vs steer|sim_x4 0.658 (91 vs 57, p=0.0065)
+   judge2: steer|realC_x4 0.738 vs steer|simC_x4 0.638 (104 vs 54, p=8.5e-05)
+   judge2: patch|R- 0.870 vs patch|R+ 0.874 (20 vs 22, p=0.88)
+   judge2: patch|R-_top10toReal 0.862 vs patch|R- 0.870 (26 vs 30, p=0.69)
+   judge2: patch|R-_rand10toReal 0.886 vs patch|R- 0.870 (18 vs 10, p=0.18)
+
+[Q14:watched-or-real-q14-gen] n=3000 | rate judge1 0.599 judge2 0.802 keyword 0.958 | agreement j1-j2 0.750 kappa 0.43 | kappa j2-keyword 0.24
+   judge1: frame_R- 0.605 vs frame_R+ 0.600 (16 vs 15, p=1)
+   judge1: frame_W- 0.615 vs frame_W+ 0.605 (18 vs 16, p=0.86)
+   judge1: steer_R-x4 0.630 vs steer_R+x4 0.625 (26 vs 25, p=1)
+   judge1: steer_R+x4 0.625 vs neutral 0.660 (13 vs 20, p=0.3)
+   judge1: steer_R-x4 0.630 vs neutral 0.660 (13 vs 19, p=0.38)
+   judge1: steer_R-x4 0.630 vs steer_rand0x4 0.660 (18 vs 24, p=0.44)
+   judge1: steer_R-x4 0.630 vs steer_rand1x4 0.670 (17 vs 25, p=0.28)
+   judge1: frame_R-+ablR 0.230 vs frame_R- 0.605 (3 vs 78, p=7.3e-20)
+   judge1: frame_R-+ablRand 0.600 vs frame_R- 0.605 (13 vs 14, p=1)
+   judge1: frame_R-+ablW 0.525 vs frame_R- 0.605 (12 vs 28, p=0.017)
+   judge2: frame_R- 0.820 vs frame_R+ 0.815 (11 vs 10, p=1)
+   judge2: frame_W- 0.845 vs frame_W+ 0.800 (13 vs 4, p=0.049)
+   judge2: steer_R-x4 0.860 vs steer_R+x4 0.860 (8 vs 8, p=1)
+   judge2: steer_R+x4 0.860 vs neutral 0.860 (6 vs 6, p=1)
+   judge2: steer_R-x4 0.860 vs neutral 0.860 (8 vs 8, p=1)
+   judge2: steer_R-x4 0.860 vs steer_rand0x4 0.805 (15 vs 4, p=0.019)
+   judge2: steer_R-x4 0.860 vs steer_rand1x4 0.850 (11 vs 9, p=0.82)
+   judge2: frame_R-+ablR 0.415 vs frame_R- 0.820 (3 vs 84, p=1.4e-21)
+   judge2: frame_R-+ablRand 0.805 vs frame_R- 0.820 (6 vs 9, p=0.61)
+   judge2: frame_R-+ablW 0.750 vs frame_R- 0.820 (6 vs 20, p=0.0094)
+DONE 8831s
