@@ -227,6 +227,15 @@ Combined framings (watched/unwatched x real/simulated) on 60 neutral tasks; beha
   "real" direction and heads are causal on their own, but at the level of behaviour, removing the watched direction also removes the
   reality effect, so the downstream behavioural pathways are shared.
 
+### 5j. Not a harmfulness direction (E12, Ministral, CPU run)
+Protocol of "LLMs Encode Harmfulness and Refusal Separately" (Zhao et al., 2025): harmfulness direction at the last instruction token,
+refusal direction at the last post-instruction token, 120 AdvBench vs 120 Alpaca requests.
+* cos(real, harmfulness) is ~0 at every analysed layer (|cos| <= 0.10; +0.015 at layer 15); cos(watched, harmfulness) +0.03.
+* The harmfulness projection cannot separate real from simulated framing (AUROC 0.498; the real direction: 0.997).
+* But at the decision token the real projection separates harmful from harmless requests (AUROC 0.942; 0.626 at the instruction token):
+  request content shifts the reality reading where the model decides. Pre-registered near-chance separation holds at t_inst only.
+* The watched direction aligns increasingly with refusal in later layers (cos 0.31 at layer 32).
+
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
   and the negation direction; cos with refusal -0.04 / -0.02.

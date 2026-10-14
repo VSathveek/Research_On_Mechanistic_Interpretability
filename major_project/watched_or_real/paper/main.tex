@@ -235,7 +235,7 @@ Ministral-8B-Instruct-2410 (fp16), Llama-3.1-8B-Instruct (fp16), Gemma-3-4B-it (
 \label{tab:summary}
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}}\toprule
 Claim & Key evidence & Status\\\midrule
-Two distinct directions & Held-out AUROC up to 0.99 in 4 models; factorial selectivity 2--8$\times$; $\hR$ orthogonal to refusal, eval-awareness, format (Fig.~\ref{fig:geom}, \ref{fig:fact}) & Supported\\
+Two distinct directions & Held-out AUROC up to 0.99 in 4 models; factorial selectivity 2--8$\times$; $\hR$ orthogonal to refusal, eval-awareness, format, harmfulness (Fig.~\ref{fig:geom}, \ref{fig:fact}) & Supported\\
 ``Simulated'' framing lowers caution & 3 of 4 models, two judges (Table~\ref{tab:framing}) & Supported (not at 14B)\\
 $\hR$ causally controls compliance & Ordinary prompts 0.6\%$\leftrightarrow$30.4\%, random ${\approx}$6--8\% (Fig.~\ref{fig:e10}, \ref{fig:dose}) & Supported\\
 Sparse head circuit & Top-10 heads remove 78--81\% of the gap, beat 8/8 and 6/7 controls (Fig.~\ref{fig:heads}, \ref{fig:ko}) & Supported (Ministral, Llama); not Gemma\\
@@ -287,7 +287,15 @@ validation-selected layer. (b) Cosine between the two directions and between the
 (60 neutral tasks). Each direction responds mainly to its own factor.}
 \label{fig:fact}
 \end{figure}
-% E12 harmfulness check: result to be inserted (cos(real, harmfulness) at t_inst, Zhao et al. 2025 protocol).
+\paragraph{Not a harmfulness direction (E12).} Following the protocol of \cite{zhao2025}, we build a harmfulness direction at the last
+instruction token ($t_{\mathrm{inst}}$) and a refusal direction at the last post-instruction token ($t_{\mathrm{post}}$) from 120 AdvBench vs 120 Alpaca
+requests (Ministral). The reality direction is orthogonal to the harmfulness direction at every analysed layer ($|\cos|\le0.10$; $\cos=0.015$ at
+$\ell^*=15$), and the watched direction nearly so ($\cos=0.03$). The harmfulness projection does not separate \real{} from \simu{} framing
+(AUROC $0.498$, vs $0.997$ for $\hR$). However, at the decision position $t_{\mathrm{post}}$ the reality projection does separate harmful from
+harmless requests (AUROC $0.942$; $0.626$ at $t_{\mathrm{inst}}$), so the content of a request shifts the model's reality reading where it decides,
+even though the two directions are geometrically unrelated. Our pre-registered prediction of near-chance separation therefore holds at
+$t_{\mathrm{inst}}$ but not at $t_{\mathrm{post}}$; the reality and harmfulness concepts are distinct, but they interact at the decision token.
+The watched direction aligns increasingly with refusal in later layers ($\cos=0.31$ at layer 32).
 
 \subsection{Q2: framing and steering change behaviour}
 \begin{table}[h]\centering\small

@@ -1,0 +1,20 @@
+device cpu
+
+E12 | mistralai/Ministral-8B-Instruct-2410 | n=120 harmful (AdvBench) vs harmless (Alpaca); framing on 120 neutral tasks
+ layer | cos(real,harm) cos(watched,harm) cos(real,refusal) cos(watched,refusal) cos(harm,refusal)
+     4 | -0.011          -0.016             +0.108            -0.023               -0.001
+     8 | -0.101          -0.081             +0.044            +0.047               +0.134
+    12 | -0.003          +0.006             +0.068            +0.088               +0.235
+    16 | +0.018          +0.034             +0.136            +0.147               +0.233
+    20 | -0.013          +0.098             +0.101            +0.200               +0.132
+    24 | -0.009          +0.147             +0.128            +0.282               +0.081
+    28 | -0.002          +0.123             +0.148            +0.289               +0.071
+    32 | +0.002          +0.071             +0.117            +0.305               +0.091
+    36 | -0.056          -0.067             +0.130            +0.332               +0.045
+
+ layer 15: cos(real, harmfulness) +0.015 | cos(watched, harmfulness) +0.030
+   'real' projection separating harmful vs harmless (t_inst): AUROC 0.626 | (t_post): 0.942
+   harmfulness projection separating real vs simulated framing: AUROC 0.498
+   'real' projection separating real vs simulated framing (reference): AUROC 0.997
+   harmfulness projection separating harmful vs harmless (reference): AUROC 0.999
+DONE

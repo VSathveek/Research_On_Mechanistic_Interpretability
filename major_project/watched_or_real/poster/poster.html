@@ -183,7 +183,7 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
     <h2>SUMMARY OF CLAIMS</h2>
     <table>
       <tr><th>Claim</th><th>Key evidence</th><th>Status</th></tr>
-      <tr><td>Two distinct directions</td><td>AUROC ≤ 0.99; 2–8× selective; ⟂ refusal / eval / format</td><td class="st y">Supported</td></tr>
+      <tr><td>Two distinct directions</td><td>AUROC ≤ 0.99; 2–8× selective; ⟂ refusal / eval / format / harmfulness</td><td class="st y">Supported</td></tr>
       <tr><td>Causal on ordinary prompts</td><td>0.6% ↔ 30.4% vs random ≈ 6–8%</td><td class="st y">Supported</td></tr>
       <tr><td>Sparse head circuit</td><td>78–81% of gap removed; patching 109%</td><td class="st y">Supported</td></tr>
       <tr><td>Behavioural double dissociation</td><td>Watched ablation removes both effects</td><td class="st n">Not supported</td></tr>
@@ -205,7 +205,7 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
     </div>
 
     <h3><span class="tag">1</span>Two distinct beliefs, in all four models</h3>
-    <p>Both directions are decodable on unseen tasks <i>and</i> wordings (AUROC up to 0.99 in all 4 models) and respond mainly to their own factor. The “real” direction is nearly orthogonal to <b>refusal</b> (cos ≈ 0.1), a generic <b>evaluation-awareness</b> direction (−0.13) and a <b>benchmark-format</b> direction (≈ 0.1).</p>
+    <p>Both directions are decodable on unseen tasks <i>and</i> wordings (AUROC up to 0.99 in all 4 models) and respond mainly to their own factor. The “real” direction is nearly orthogonal to <b>refusal</b> (cos ≈ 0.1), a generic <b>evaluation-awareness</b> direction (−0.13), a <b>benchmark-format</b> direction (≈ 0.1) and a <b>harmfulness</b> direction (0.02).</p>
     <div class="two">
       <div class="fig"><img src="assets/fig2_geometry.png" alt="Decodability and distinctness"><div class="cap"><b>Fig 4:</b> Held-out AUROC and cosines, 4 models.</div></div>
       <div class="fig"><img src="assets/fig3_factorial.png" alt="Factorial selectivity"><div class="cap"><b>Fig 5:</b> Each direction tracks its own factor.</div></div>
