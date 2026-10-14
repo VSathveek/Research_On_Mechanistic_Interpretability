@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Watched or Real? Poster</title>
+<style>
+/* Layout: same skeleton as the CSE Project EXPO template (header band, EXPO band, title band, two boxed columns, footer). 24 x 31.06 in = template aspect. */
+@page { size: 24in 31.0588in; margin: 0; }
+:root{
+  --band-blue:#dee3f6; --band-green:#e2f2e2; --band-green-ink:#16a34a; --band-title:#fde2da; --title-red:#e3191c;
+  --ink:#111318; --ink2:#4b5060; --line:#1d1f24; --soft:#f5f6f9; --real:#eb6834; --watch:#2a78d6; --ok:#13804a; --no:#b42318; --gray:#9b9a95;
+  --serif:"Cambria","Georgia","Times New Roman",serif; --sans:"Calibri","Segoe UI","Arial",sans-serif; --mono:"Consolas","Cascadia Mono",monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink)}
+body{width:2304px;height:2981px;font-family:var(--sans);font-size:20.5px;line-height:1.28;padding:36px 54px 0;position:relative;overflow:hidden}
+/* header */
+.hdr{background:var(--band-blue);height:206px;display:grid;grid-template-columns:200px 1fr 170px;align-items:center;padding:0 26px}
+.hdr img{height:180px;display:block}
+.hdr .emb{justify-self:end;height:186px}
+.hdr .nm{text-align:center;font-family:"Segoe UI Semibold","Segoe UI",var(--sans);color:#1d2b4f}
+.hdr .nm b{display:block;font-size:57px;letter-spacing:.3px;font-weight:700;white-space:nowrap}
+.hdr .nm span{display:block;font-size:31px;margin-top:6px;font-weight:600;color:#27324d}
+.expo{background:var(--band-green);text-align:center;font-family:var(--serif);font-weight:700;color:var(--band-green-ink);font-size:44px;padding:8px 0}
+.ttl{background:var(--band-title);text-align:center;font-family:var(--serif);font-weight:700;color:var(--title-red);font-size:50px;line-height:1.1;padding:12px 24px 14px;margin-top:6px;white-space:nowrap}
+.ttl small{display:block;font-size:29px;color:#9b1c1c;font-weight:700;margin-top:4px}
+/* columns */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:22px;align-items:stretch}
+.col>.box:last-child{flex:1}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.box{border:2.5px solid var(--line);padding:18px 24px 20px;background:#fff}
+.box h2{font-family:var(--serif);text-align:center;font-size:36px;margin:0 0 12px;letter-spacing:.5px}
+.box h3{font-family:var(--serif);font-size:28px;margin:16px 0 6px;color:#1d2b4f}
+.box h3 .tag{font-family:var(--sans);font-size:19px;font-weight:700;color:#fff;background:#1d2b4f;border-radius:6px;padding:2px 10px;margin-right:10px;vertical-align:3px}
+p{margin:0 0 8px}
+.lead{font-size:21.5px}
+b.r{color:var(--real)} b.w{color:var(--watch)}
+.fig{margin:10px 0 4px;text-align:center}
+.fig img{width:100%;display:block}
+.cap{font-size:19.5px;color:var(--ink2);text-align:center;margin-top:4px}
+.cap b{color:var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.eqs{display:grid;grid-template-columns:auto 1fr;gap:3px 16px;background:var(--soft);border:1.5px solid #d7d9e0;border-radius:10px;padding:10px 16px;font-size:19.5px;align-items:baseline}
+.eqs .k{font-weight:700;color:#1d2b4f;white-space:nowrap}
+.eqs .m{font-family:"Cambria Math",var(--serif);font-size:21.5px}
+.exps{display:grid;grid-template-columns:1fr 1fr;gap:4px 22px;font-size:20px;margin-top:6px}
+.exps div{padding:3px 0;border-bottom:1px dashed #d4d6dd}
+.exps i{font-style:normal;font-weight:700;color:#1d2b4f;display:inline-block;min-width:54px}
+table{border-collapse:collapse;width:100%;font-size:19px}
+th,td{border:1.5px solid #3b3f4a;padding:4px 9px;text-align:left;vertical-align:top}
+th{background:#eef0f5;font-family:var(--serif)}
+.st{font-weight:700;white-space:nowrap} .st.y{color:var(--ok)} .st.n{color:var(--no)} .st.p{color:#a15c00}
+.tcap{font-size:19px;color:var(--ink2);text-align:center;margin-top:6px}
+ul{margin:4px 0 6px;padding-left:26px} li{margin:2px 0}
+.key{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 10px}
+.key div{border:2px solid #d7d9e0;border-radius:10px;padding:8px 10px;text-align:center;background:var(--soft)}
+.key b{display:block;font-family:var(--serif);font-size:38px;line-height:1.05}
+.key span{font-size:17.5px;color:var(--ink2)}
+.nov{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:21px}
+.nov .s{font-weight:700;white-space:nowrap}
+/* footer */
+.foot{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:18px;font-size:17.5px}
+.refs b{font-family:var(--serif);font-size:23px}
+.refs ol{margin:4px 0 0;padding-left:26px} .refs li{margin:1px 0}
+.pres{display:grid;grid-template-columns:1fr 170px;align-items:start;font-size:24px}
+.pres .who{line-height:1.45}
+.batch{width:140px;height:86px;border-radius:50%;background:#4a86d8;border:3px solid #2a5aa8;color:#111;font-weight:700;font-size:38px;display:flex;align-items:center;justify-content:center;margin-left:auto}
+.bl{text-align:right;font-weight:700;font-size:20px;margin-top:6px}
+.ph{background:#fff3c4;padding:0 6px;border-radius:4px}
+svg text{font-family:"Calibri","Segoe UI",sans-serif}
+</style></head><body>
+
+<div class="hdr">
+  <img src="assets/logo_nitap.png" alt="NIT Andhra Pradesh logo">
+  <div class="nm"><b>NATIONAL INSTITUTE OF TECHNOLOGY ANDHRA PRADESH</b><span>(An autonomous Institute under the aegis of Ministry of Education, Government of India)</span></div>
+  <img class="emb" src="assets/emblem.png" alt="State emblem of India">
+</div>
+<div class="expo">CSE Project EXPO</div>
+<div class="ttl">Watched or Real? How Language Models Separate “Being Observed” from “Real Consequences”
+<small>Distinct internal representations, the attention heads that compute them, and their causal effect on AI safety behaviour</small></div>
+
+<div class="cols">
+<!-- ============================ LEFT ============================ -->
+<div class="col">
+  <div class="box">
+    <h2>ABSTRACT</h2>
+    <p class="lead">Safety evaluations assume a model behaves the same whether or not it is tested, yet models act differently when they think a situation is a test. Prior work treats this as one “evaluation-awareness” signal. With mechanistic interpretability on four open models we show that models hold <b>two distinct internal beliefs</b>, <b class="w">“am I being watched?”</b> and <b class="r">“are the consequences real?”</b>. The reality direction <b>causally controls harmful compliance</b> on ordinary prompts (0.6% ↔ 30.4%), and a <b>circuit of ~10 attention heads</b> computes it. All results are re-checked by independent judges; failures are reported.</p>
+  </div>
+
+  <div class="box">
+    <h2>PROPOSED METHODOLOGY</h2>
+    <p>Each belief is modelled as a <b>linear direction</b> in the residual stream, read at the last prompt token. We build it from neutral tasks with one framing sentence, then test whether it is <b>decodable</b>, <b>distinct</b>, <b>sufficient</b> (steering), <b>necessary</b> (ablation) and <b>where it is computed</b> (heads).</p>
+
+    <!-- Pipeline diagram -->
+    <svg viewBox="0 0 1060 300" width="92%" style="display:block;margin:0 auto" role="img" aria-label="Pipeline">
+      <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#4b5060"/></marker></defs>
+      <g font-size="20">
+      <rect x="4" y="18" width="250" height="56" rx="12" fill="#fdece5" stroke="#eb6834" stroke-width="2.5"/><text x="129" y="43" text-anchor="middle" font-weight="700">“This is a real request”</text><text x="129" y="66" text-anchor="middle" fill="#4b5060" font-size="17">framing R+</text>
+      <rect x="4" y="86" width="250" height="56" rx="12" fill="#fdece5" stroke="#eb6834" stroke-width="2.5"/><text x="129" y="111" text-anchor="middle" font-weight="700">“This is a simulation”</text><text x="129" y="134" text-anchor="middle" fill="#4b5060" font-size="17">framing R−</text>
+      <rect x="4" y="154" width="250" height="56" rx="12" fill="#e7f0fb" stroke="#2a78d6" stroke-width="2.5"/><text x="129" y="179" text-anchor="middle" font-weight="700">“You are being watched”</text><text x="129" y="202" text-anchor="middle" fill="#4b5060" font-size="17">framing W±</text>
+      <rect x="4" y="222" width="250" height="56" rx="12" fill="#f5f6f9" stroke="#b7bac4" stroke-width="2"/><text x="129" y="247" text-anchor="middle" font-weight="700">+ the same task</text><text x="129" y="270" text-anchor="middle" fill="#4b5060" font-size="17">Alpaca · AdvBench · OR-Bench</text>
+      <path d="M258 46 L318 140" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/><path d="M258 114 L318 145" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/>
+      <path d="M258 182 L318 155" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/><path d="M258 250 L318 160" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/>
+      <rect x="322" y="70" width="230" height="160" rx="14" fill="#f5f6f9" stroke="#1d2b4f" stroke-width="2.5"/>
+      <text x="437" y="106" text-anchor="middle" font-weight="700" font-size="23">Language model</text>
+      <g fill="#ffd6c7" stroke="#eb6834"><rect x="350" y="124" width="34" height="22" rx="4"/><rect x="392" y="124" width="34" height="22" rx="4"/><rect x="434" y="124" width="34" height="22" rx="4"/><rect x="476" y="124" width="34" height="22" rx="4"/></g>
+      <text x="437" y="176" text-anchor="middle" fill="#4b5060" font-size="17">~10 late attention heads</text><text x="437" y="198" text-anchor="middle" fill="#4b5060" font-size="17">write the framing signal</text>
+      <text x="437" y="220" text-anchor="middle" fill="#4b5060" font-size="17">into residual stream h</text>
+      <path d="M556 125 L640 84" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/><path d="M556 175 L640 214" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/>
+      <rect x="644" y="46" width="200" height="72" rx="12" fill="#fdece5" stroke="#eb6834" stroke-width="2.5"/><text x="744" y="76" text-anchor="middle" font-weight="700">“real” direction d̂<tspan font-size="14" dy="5">R</tspan></text><text x="744" y="102" text-anchor="middle" fill="#4b5060" font-size="17">mean(real) − mean(sim)</text>
+      <rect x="644" y="180" width="200" height="72" rx="12" fill="#e7f0fb" stroke="#2a78d6" stroke-width="2.5"/><text x="744" y="210" text-anchor="middle" font-weight="700">“watched” direction d̂<tspan font-size="14" dy="5">W</tspan></text><text x="744" y="236" text-anchor="middle" fill="#4b5060" font-size="17">mean(watched) − mean(not)</text>
+      <path d="M848 84 L912 140" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/><path d="M848 214 L912 160" stroke="#4b5060" stroke-width="2" marker-end="url(#a)"/>
+      <rect x="916" y="104" width="140" height="92" rx="12" fill="#fff" stroke="#1d2b4f" stroke-width="2.5"/><text x="986" y="142" text-anchor="middle" font-weight="700">Behaviour</text><text x="986" y="166" text-anchor="middle" fill="#4b5060" font-size="16">comply / answer</text><text x="986" y="186" text-anchor="middle" fill="#4b5060" font-size="16">/ refuse</text>
+      </g>
+    </svg>
+    <div class="cap"><b>Fig 1:</b> Framing sentence + task → model → two directions → behaviour. We read, steer, ablate and localise each direction.</div>
+
+    <div class="two" style="margin-top:14px">
+      <div>
+        <!-- 2x2 factorial diagram -->
+        <svg viewBox="0 0 520 330" width="100%" role="img" aria-label="2 by 2 factorial design">
+          <g font-size="19">
+          <text x="300" y="24" text-anchor="middle" font-weight="700" fill="#2a78d6">observation factor</text>
+          <text x="210" y="52" text-anchor="middle" font-weight="700">watched (W+)</text><text x="400" y="52" text-anchor="middle" font-weight="700">unwatched (W−)</text>
+          <text x="20" y="180" text-anchor="middle" font-weight="700" fill="#eb6834" transform="rotate(-90 20 180)">reality factor</text>
+          <text x="66" y="128" text-anchor="middle" font-weight="700">real</text><text x="66" y="150" text-anchor="middle" font-weight="700">(R+)</text>
+          <text x="66" y="248" text-anchor="middle" font-weight="700">simulated</text><text x="66" y="270" text-anchor="middle" font-weight="700">(R−)</text>
+          <rect x="120" y="66" width="180" height="112" fill="#f3e9f6" stroke="#1d2b4f" stroke-width="2"/><rect x="310" y="66" width="180" height="112" fill="#fdece5" stroke="#1d2b4f" stroke-width="2"/>
+          <rect x="120" y="188" width="180" height="112" fill="#e7f0fb" stroke="#1d2b4f" stroke-width="2"/><rect x="310" y="188" width="180" height="112" fill="#f5f6f9" stroke="#1d2b4f" stroke-width="2"/>
+          <text x="210" y="112" text-anchor="middle" font-size="17">“logged &amp; reviewed”</text><text x="210" y="136" text-anchor="middle" font-size="17">+ “real user,</text><text x="210" y="158" text-anchor="middle" font-size="17">real consequences”</text>
+          <text x="400" y="112" text-anchor="middle" font-size="17">“no one reviews”</text><text x="400" y="136" text-anchor="middle" font-size="17">+ “real user,</text><text x="400" y="158" text-anchor="middle" font-size="17">real consequences”</text>
+          <text x="210" y="234" text-anchor="middle" font-size="17">“logged &amp; reviewed”</text><text x="210" y="258" text-anchor="middle" font-size="17">+ “simulated,</text><text x="210" y="280" text-anchor="middle" font-size="17">no consequences”</text>
+          <text x="400" y="234" text-anchor="middle" font-size="17">“no one reviews”</text><text x="400" y="258" text-anchor="middle" font-size="17">+ “simulated,</text><text x="400" y="280" text-anchor="middle" font-size="17">no consequences”</text>
+          <text x="305" y="322" text-anchor="middle" font-size="17" fill="#4b5060">same 60 tasks in every cell → main effect of each factor</text>
+          </g>
+        </svg>
+        <div class="cap"><b>Fig 2:</b> 2×2 factorial design used to disentangle the two beliefs.</div>
+      </div>
+      <div>
+        <!-- circuit diagram -->
+        <svg viewBox="0 0 520 330" width="100%" role="img" aria-label="Circuit schematic">
+          <defs><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#4b5060"/></marker></defs>
+          <g font-size="18">
+          <text x="260" y="22" text-anchor="middle" font-weight="700">Where the reality signal is computed</text>
+          <rect x="10" y="44" width="150" height="54" rx="10" fill="#fdece5" stroke="#eb6834" stroke-width="2"/><text x="85" y="68" text-anchor="middle" font-weight="700">framing words</text><text x="85" y="88" text-anchor="middle" font-size="15" fill="#4b5060">“simulated…”</text>
+          <rect x="10" y="232" width="150" height="54" rx="10" fill="#f5f6f9" stroke="#b7bac4" stroke-width="2"/><text x="85" y="256" text-anchor="middle" font-weight="700">last token</text><text x="85" y="276" text-anchor="middle" font-size="15" fill="#4b5060">decision position</text>
+          <rect x="200" y="96" width="140" height="150" rx="12" fill="#fff" stroke="#1d2b4f" stroke-width="2"/>
+          <text x="270" y="120" text-anchor="middle" font-weight="700" font-size="17">top-10 heads</text>
+          <text x="270" y="146" text-anchor="middle" font-size="15">Llama: L9.H29, L9.H3,</text><text x="270" y="166" text-anchor="middle" font-size="15">L8.H15 … (59%)</text>
+          <text x="270" y="194" text-anchor="middle" font-size="15">Ministral: L14.H19,</text><text x="270" y="214" text-anchor="middle" font-size="15">L11.H24 … (50%)</text>
+          <path d="M162 72 Q190 80 204 120" stroke="#eb6834" stroke-width="2.5" fill="none" marker-end="url(#b)"/>
+          <path d="M162 258 Q190 250 204 214" stroke="#4b5060" stroke-width="2" fill="none" marker-end="url(#b)"/>
+          <text x="180" y="166" text-anchor="middle" font-size="14" fill="#4b5060" transform="rotate(-90 180 166)">attend</text>
+          <rect x="378" y="118" width="134" height="100" rx="12" fill="#fdece5" stroke="#eb6834" stroke-width="2"/><text x="445" y="152" text-anchor="middle" font-weight="700">write along</text><text x="445" y="176" text-anchor="middle" font-weight="700">“real” dir.</text><text x="445" y="200" text-anchor="middle" font-size="15" fill="#4b5060">layer 10 / 15</text>
+          <path d="M342 168 L374 168" stroke="#4b5060" stroke-width="2" marker-end="url(#b)"/>
+          <text x="260" y="300" text-anchor="middle" font-size="15.5" fill="#4b5060">knock out → gap −78…81% · patch “real” state → behaviour = real</text>
+          </g>
+        </svg>
+        <div class="cap"><b>Fig 3:</b> A sparse late-attention circuit writes the reality signal.</div>
+      </div>
+    </div>
+
+    <h3>Key formulas</h3>
+    <div class="eqs">
+      <span class="k">Direction</span><span class="m">d<sub>R</sub><sup>(ℓ)</sup> = 𝔼[h<sup>(ℓ)</sup> | real] − 𝔼[h<sup>(ℓ)</sup> | simulated],  d̂ = d / ‖d‖</span>
+      <span class="k">Decodability</span><span class="m">AUROC of s = h · d̂ on unseen tasks &amp; wordings;  ℓ* = argmax min(AUROC<sub>W</sub>, AUROC<sub>R</sub>) (validation)</span>
+      <span class="k">Selectivity</span><span class="m">e<sub>R</sub>(d̂) / e<sub>W</sub>(d̂) — main effect of own factor vs other factor in the 2×2 design</span>
+      <span class="k">Steering</span><span class="m">h′ = h + α · g · d̂,   α ∈ {±2, ±4},  g = ‖d<sub>R</sub>‖</span>
+      <span class="k">Ablation</span><span class="m">h′ = h − ((h·d̂) − m) d̂   (m = 0: zero-ablation; m = mean: mean-ablation)</span>
+      <span class="k">Head attribution</span><span class="m">a<sub>ℓ,h</sub> = 𝔼<sub>real</sub>[z<sub>ℓ,h</sub><sup>⊤</sup>W<sub>O</sub><sup>(ℓ,h)⊤</sup>d̂] − 𝔼<sub>sim</sub>[ · ]   (Gemma: × (1+w)/rms)</span>
+      <span class="k">Patching</span><span class="m">z<sub>ℓ,h</sub> ← z̄<sub>ℓ,h</sub><sup>real</sup> (mean from <i>other</i> prompts), under simulated framing</span>
+      <span class="k">Gap removed</span><span class="m">M = (Δ<sub>none</sub> − Δ<sub>int</sub>) / Δ<sub>none</sub>,  Δ = P(yes | sim) − P(yes | real);  paired McNemar, bootstrap CI, Cohen’s κ</span>
+    </div>
+    <p style="margin-top:10px;font-size:19.5px"><b>Experiments (pre-registered, smoke-tested, then full):</b> E1 directions + negation/refusal controls · E2 framing effects · E3 steering vs random · E4 hidden cues · E5 direction ablation · E6 replication (Llama, Gemma, Qwen-14B) · E7 head attribution &amp; knock-outs · E8 early-head / Gemma-MLP follow-ups · E9 benchmark vs real-user wrappers · E10 steering on ordinary prompts · E11 2×2 disentanglement + patching · J2 independent re-grading.</p>
+  </div>
+
+  <div class="box">
+    <h2>MODELS, DATASETS &amp; ERROR ANALYSIS</h2>
+    <p><b>Models:</b> Ministral-8B, Llama-3.1-8B, Gemma-3-4B (fp32), Qwen2.5-14B (4-bit) on 2× T4 GPUs. <b>Datasets:</b> AdvBench (520 harmful → compliance rate), OR-Bench-Hard (borderline → answer rate), Alpaca (neutral tasks). <b>Judges:</b> Qwen3-8B, plus independent HarmBench classifier and IBM Granite-3.3-8B.</p>
+    <p><b>Error analysis:</b> Qwen3 scored caveated Gemma answers as refusals (κ 0.28–0.40) → Granite used for Gemma; HarmBench agrees 94–96% on harmful requests. Ministral borderline results withdrawn (κ 0.36). Gemma zero-ablation broke text (projections ≈ −10⁴) → mean-ablation.</p>
+  </div>
+
+  <div class="box">
+    <h2>SUMMARY OF CLAIMS</h2>
+    <table>
+      <tr><th>Claim</th><th>Key evidence</th><th>Status</th></tr>
+      <tr><td>Two distinct directions</td><td>AUROC ≤ 0.99; 2–8× selective; ⟂ refusal / eval / format</td><td class="st y">Supported</td></tr>
+      <tr><td>Causal on ordinary prompts</td><td>0.6% ↔ 30.4% vs random ≈ 6–8%</td><td class="st y">Supported</td></tr>
+      <tr><td>Sparse head circuit</td><td>78–81% of gap removed; patching 109%</td><td class="st y">Supported</td></tr>
+      <tr><td>Behavioural double dissociation</td><td>Watched ablation removes both effects</td><td class="st n">Not supported</td></tr>
+      <tr><td>Holds at 14B</td><td>Representation yes, behaviour no</td><td class="st p">Partial</td></tr>
+    </table>
+    <div class="tcap"><b>Table 1:</b> Pre-registered claims and outcomes (failures reported, not hidden).</div>
+  </div>
+</div>
+
+<!-- ============================ RIGHT ============================ -->
+<div class="col">
+  <div class="box">
+    <h2>RESULTS AND DISCUSSION</h2>
+    <div class="key">
+      <div><b>0.99</b><span>held-out AUROC of the directions</span></div>
+      <div><b>7.8×</b><span>selectivity of “real” direction (Llama)</span></div>
+      <div><b>0.6→30%</b><span>harmful compliance by steering one direction</span></div>
+      <div><b>81%</b><span>of the framing gap removed by 10 heads</span></div>
+    </div>
+
+    <h3><span class="tag">1</span>Two distinct beliefs, in all four models</h3>
+    <div class="two" style="grid-template-columns:1fr 1.15fr;align-items:center">
+      <p>Both directions are decodable on unseen tasks <i>and</i> wordings (AUROC up to 0.99 in all 4 models) and respond mainly to their own factor. The “real” direction is nearly orthogonal to <b>refusal</b> (cos ≈ 0.1), a generic <b>evaluation-awareness</b> direction (−0.13) and a <b>benchmark-format</b> direction (≈ 0.1).</p>
+      <div class="fig"><img src="assets/fig3_factorial.png" alt="Factorial selectivity"><div class="cap"><b>Fig 4:</b> Each direction tracks its own factor.</div></div>
+    </div>
+
+    <h3><span class="tag">2</span>The “real” direction causally controls safety behaviour</h3>
+    <div class="two" style="grid-template-columns:0.8fr 1.4fr;align-items:center">
+      <p>With <b>no framing sentence</b>, steering on benchmark-formatted requests moves Ministral’s harmful compliance from <b>0.2%</b> (toward “real”) to <b>28.7%</b> (toward “simulated”); random vectors stay near 6%. Independent HarmBench classifier: <b>0.6% / 5.6% / 30.4%</b>.</p>
+      <div class="fig"><img src="assets/fig4_natural_steering.png" alt="Steering on ordinary prompts"><div class="cap"><b>Fig 5:</b> Steering on ordinary prompts (n = 520, 95% CI).</div></div>
+    </div>
+
+    <h3><span class="tag">3</span>A sparse attention-head circuit computes the signal</h3>
+    <p>About 10 late heads write it. Knocking them out removes <b>78–81%</b> of the framing gap and beats <b>8/8</b> (Ministral) and <b>6/7</b> (Llama) random and same-layer head sets. Patching them with their “real” state <b>from other prompts</b> moves behaviour to the real level (<b>109%</b>). In Gemma the signal is spread over many layers.</p>
+    <div class="fig"><img src="assets/fig6_head_attribution.png" alt="Head attribution heatmaps"><div class="cap"><b>Fig 6:</b> Head attribution: hot spots in Ministral &amp; Llama, diffuse in Gemma.</div></div>
+    <div class="two" style="grid-template-columns:1.55fr 1fr">
+      <div class="fig"><img src="assets/fig7_knockouts.png" alt="Knock-outs"><div class="cap"><b>Fig 7:</b> Top-10 heads vs random / same-layer sets.</div></div>
+      <div class="fig"><img src="assets/fig8_patching.png" alt="Patching"><div class="cap"><b>Fig 8:</b> Cross-prompt patching (Llama).</div></div>
+    </div>
+
+    <h3><span class="tag">4</span>Separable inside, shared in behaviour</h3>
+    <div class="two" style="grid-template-columns:1.25fr 0.95fr;align-items:center">
+      <p>In Llama the internal dissociation is <b>crossed</b>: the heads mostly carry “real” (−56% vs −23%) and the watched direction mostly “watched” (−60% vs −13%). But ablating the watched direction removes <b>both</b> behavioural effects, so the two beliefs feed a <b>shared decision pathway</b>.</p>
+      <div class="fig"><img src="assets/fig9_dissociation.png" alt="Crossed internal dissociation and shared behavioural pathway"><div class="cap"><b>Fig 9:</b> Crossed inside, shared in behaviour (Llama).</div></div>
+    </div>
+
+    
+  </div>
+
+  <div class="box">
+    <h2>CONCLUSION – Novelty &amp; Impact</h2>
+    <p class="lead">“Evaluation awareness” is <b>not one variable</b>. Models encode <b class="w">being watched</b> and <b class="r">consequences being real</b> as distinct directions; a <b>small set of attention heads</b> computes the reality signal, which transfers across prompts and <b>causally sets how cautious the model is</b>. No prior work we found separates these beliefs inside a model or localises them to heads.</p>
+    <div class="nov">
+      <span class="s" style="color:var(--ok)">Novel</span><span>Factorial watched × real dissociation · head circuit with cross-prompt patching · shared-pathway result</span>
+      <span class="s" style="color:#a15c00">Builds on</span><span>evaluation-awareness steering (Abdelnabi &amp; Salem 2025; Hua et al. 2026) · scenario directions (Peng et al. 2026)</span>
+      <span class="s" style="color:#1d2b4f">Impact</span><span>Safety evaluations can measure — and control for — what a model believes about its situation, from its activations.</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="foot">
+  <div class="refs"><b>References</b>
+    <ol>
+      <li>Abdelnabi &amp; Salem (2025). The Hawthorne Effect in Reasoning Models: Evaluating and Steering Test Awareness. NeurIPS.</li>
+      <li>Arditi et al. (2024). Refusal in Language Models Is Mediated by a Single Direction. NeurIPS.</li>
+      <li>Hua et al. (2026). Steering Evaluation-Aware Language Models to Act Like They Are Deployed. ICLR.</li>
+      <li>Rajamanoharan &amp; Nanda (2026). Models May Behave Worse When Eval Aware. GDM · Peng et al. (2026). arXiv:2607.23496.</li>
+      <li>Mazeika et al. (2024). HarmBench · Zou et al. (2023). AdvBench · Cui et al. (2024). OR-Bench.</li>
+    </ol>
+  </div>
+  <div class="pres">
+    <div class="who">Presentation By: &nbsp;Varanasi Sathveek (<span class="ph">Roll No.</span>)<br>
+      <span style="display:inline-block;margin-top:34px">Supervisor: <b class="ph">Supervisor name</b></span><br>
+      <span style="font-size:18px;color:#4b5060">Code &amp; results: github.com/VSathveek/Research_On_Mechanistic_Interpretability</span></div>
+    <div><div class="batch"><span class="ph" style="background:none">—</span></div><div class="bl">(Batch No.)</div></div>
+  </div>
+</div>
+</body></html>
