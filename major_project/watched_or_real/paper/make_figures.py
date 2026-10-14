@@ -169,7 +169,7 @@ fig.tight_layout(); save(fig, "fig9_dissociation")
 # ---------- Fig 10: judge agreement ----------
 fig, ax = plt.subplots(figsize=(4.4, 2.3))
 rows = [("Ministral, AdvBench\n(HarmBench clf.)", 0.55, 0.65), ("Llama, OR-Bench\n(Granite)", 0.61, 0.72), ("Qwen-14B, OR-Bench\n(Granite)", 0.43, 0.43),
-        ("Ministral, OR-Bench\n(Granite) — withdrawn", 0.36, 0.36), ("Gemma, OR-Bench\n(Granite) — judge replaced", 0.28, 0.40)]
+        ("Ministral, OR-Bench\n(Granite), withdrawn", 0.36, 0.36), ("Gemma, OR-Bench\n(Granite), judge replaced", 0.28, 0.40)]
 for i, (l, lo, hi) in enumerate(rows):
     ax.plot([lo, hi], [i, i], color=GRAY, lw=3, solid_capstyle="round", zorder=2); ax.scatter([lo, hi], [i, i], color=INK2, s=14, zorder=3)
 ax.axvline(0.6, color=INK2, lw=0.8, ls=":"); ax.text(0.61, -0.45, "κ ≥ 0.6: substantial", fontsize=6.5, color=INK2)

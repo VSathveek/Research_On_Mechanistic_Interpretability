@@ -3,7 +3,7 @@
 <title>Watched or Real? Poster</title>
 <style>
 /* Layout: same skeleton as the CSE Project EXPO template (header band, EXPO band, title band, two boxed columns, footer). 24 x 31.06 in = template aspect. */
-@page { size: 24in 31.0588in; margin: 0; }
+@page { size: A3 portrait; margin: 0; }
 :root{
   --band-blue:#dee3f6; --band-green:#e2f2e2; --band-green-ink:#16a34a; --band-title:#fde2da; --title-red:#e3191c;
   --ink:#111318; --ink2:#4b5060; --line:#1d1f24; --soft:#f5f6f9; --real:#eb6834; --watch:#2a78d6; --ok:#13804a; --no:#b42318; --gray:#9b9a95;
@@ -11,7 +11,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:var(--ink)}
-body{width:2304px;height:2981px;font-family:var(--sans);font-size:20.5px;line-height:1.28;padding:36px 54px 0;position:relative;overflow:hidden}
+html{zoom:0.48719}  /* 2304 design px -> 297 mm (A3 width) */
+body{width:2304px;height:3258px;font-family:var(--sans);font-size:22px;line-height:1.3;padding:36px 54px 0;position:relative;overflow:hidden}
 /* header */
 .hdr{background:var(--band-blue);height:206px;display:grid;grid-template-columns:200px 1fr 170px;align-items:center;padding:0 26px}
 .hdr img{height:180px;display:block}
@@ -31,11 +32,11 @@ body{width:2304px;height:2981px;font-family:var(--sans);font-size:20.5px;line-he
 .box h3{font-family:var(--serif);font-size:28px;margin:16px 0 6px;color:#1d2b4f}
 .box h3 .tag{font-family:var(--sans);font-size:19px;font-weight:700;color:#fff;background:#1d2b4f;border-radius:6px;padding:2px 10px;margin-right:10px;vertical-align:3px}
 p{margin:0 0 8px}
-.lead{font-size:21.5px}
+.lead{font-size:23px}
 b.r{color:var(--real)} b.w{color:var(--watch)}
 .fig{margin:10px 0 4px;text-align:center}
 .fig img{width:100%;display:block}
-.cap{font-size:19.5px;color:var(--ink2);text-align:center;margin-top:4px}
+.cap{font-size:20.5px;color:var(--ink2);text-align:center;margin-top:4px}
 .cap b{color:var(--ink)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
 .eqs{display:grid;grid-template-columns:auto 1fr;gap:3px 16px;background:var(--soft);border:1.5px solid #d7d9e0;border-radius:10px;padding:10px 16px;font-size:19.5px;align-items:baseline}
@@ -44,7 +45,7 @@ b.r{color:var(--real)} b.w{color:var(--watch)}
 .exps{display:grid;grid-template-columns:1fr 1fr;gap:4px 22px;font-size:20px;margin-top:6px}
 .exps div{padding:3px 0;border-bottom:1px dashed #d4d6dd}
 .exps i{font-style:normal;font-weight:700;color:#1d2b4f;display:inline-block;min-width:54px}
-table{border-collapse:collapse;width:100%;font-size:19px}
+table{border-collapse:collapse;width:100%;font-size:20px}
 th,td{border:1.5px solid #3b3f4a;padding:4px 9px;text-align:left;vertical-align:top}
 th{background:#eef0f5;font-family:var(--serif)}
 .st{font-weight:700;white-space:nowrap} .st.y{color:var(--ok)} .st.n{color:var(--no)} .st.p{color:#a15c00}
@@ -162,7 +163,7 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
     <div class="eqs">
       <span class="k">Direction</span><span class="m">d<sub>R</sub><sup>(ℓ)</sup> = 𝔼[h<sup>(ℓ)</sup> | real] − 𝔼[h<sup>(ℓ)</sup> | simulated],  d̂ = d / ‖d‖</span>
       <span class="k">Decodability</span><span class="m">AUROC of s = h · d̂ on unseen tasks &amp; wordings;  ℓ* = argmax min(AUROC<sub>W</sub>, AUROC<sub>R</sub>) (validation)</span>
-      <span class="k">Selectivity</span><span class="m">e<sub>R</sub>(d̂) / e<sub>W</sub>(d̂) — main effect of own factor vs other factor in the 2×2 design</span>
+      <span class="k">Selectivity</span><span class="m">e<sub>R</sub>(d̂) / e<sub>W</sub>(d̂): main effect of own factor vs other factor in the 2×2 design</span>
       <span class="k">Steering</span><span class="m">h′ = h + α · g · d̂,   α ∈ {±2, ±4},  g = ‖d<sub>R</sub>‖</span>
       <span class="k">Ablation</span><span class="m">h′ = h − ((h·d̂) − m) d̂   (m = 0: zero-ablation; m = mean: mean-ablation)</span>
       <span class="k">Head attribution</span><span class="m">a<sub>ℓ,h</sub> = 𝔼<sub>real</sub>[z<sub>ℓ,h</sub><sup>⊤</sup>W<sub>O</sub><sup>(ℓ,h)⊤</sup>d̂] − 𝔼<sub>sim</sub>[ · ]   (Gemma: × (1+w)/rms)</span>
@@ -204,29 +205,30 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
     </div>
 
     <h3><span class="tag">1</span>Two distinct beliefs, in all four models</h3>
-    <div class="two" style="grid-template-columns:1fr 1.15fr;align-items:center">
-      <p>Both directions are decodable on unseen tasks <i>and</i> wordings (AUROC up to 0.99 in all 4 models) and respond mainly to their own factor. The “real” direction is nearly orthogonal to <b>refusal</b> (cos ≈ 0.1), a generic <b>evaluation-awareness</b> direction (−0.13) and a <b>benchmark-format</b> direction (≈ 0.1).</p>
-      <div class="fig"><img src="assets/fig3_factorial.png" alt="Factorial selectivity"><div class="cap"><b>Fig 4:</b> Each direction tracks its own factor.</div></div>
+    <p>Both directions are decodable on unseen tasks <i>and</i> wordings (AUROC up to 0.99 in all 4 models) and respond mainly to their own factor. The “real” direction is nearly orthogonal to <b>refusal</b> (cos ≈ 0.1), a generic <b>evaluation-awareness</b> direction (−0.13) and a <b>benchmark-format</b> direction (≈ 0.1).</p>
+    <div class="two">
+      <div class="fig"><img src="assets/fig2_geometry.png" alt="Decodability and distinctness"><div class="cap"><b>Fig 4:</b> Held-out AUROC and cosines, 4 models.</div></div>
+      <div class="fig"><img src="assets/fig3_factorial.png" alt="Factorial selectivity"><div class="cap"><b>Fig 5:</b> Each direction tracks its own factor.</div></div>
     </div>
 
     <h3><span class="tag">2</span>The “real” direction causally controls safety behaviour</h3>
     <div class="two" style="grid-template-columns:0.8fr 1.4fr;align-items:center">
       <p>With <b>no framing sentence</b>, steering on benchmark-formatted requests moves Ministral’s harmful compliance from <b>0.2%</b> (toward “real”) to <b>28.7%</b> (toward “simulated”); random vectors stay near 6%. Independent HarmBench classifier: <b>0.6% / 5.6% / 30.4%</b>.</p>
-      <div class="fig"><img src="assets/fig4_natural_steering.png" alt="Steering on ordinary prompts"><div class="cap"><b>Fig 5:</b> Steering on ordinary prompts (n = 520, 95% CI).</div></div>
+      <div class="fig"><img src="assets/fig4_natural_steering.png" alt="Steering on ordinary prompts"><div class="cap"><b>Fig 6:</b> Steering on ordinary prompts (n = 520, 95% CI).</div></div>
     </div>
 
     <h3><span class="tag">3</span>A sparse attention-head circuit computes the signal</h3>
     <p>About 10 late heads write it. Knocking them out removes <b>78–81%</b> of the framing gap and beats <b>8/8</b> (Ministral) and <b>6/7</b> (Llama) random and same-layer head sets. Patching them with their “real” state <b>from other prompts</b> moves behaviour to the real level (<b>109%</b>). In Gemma the signal is spread over many layers.</p>
-    <div class="fig"><img src="assets/fig6_head_attribution.png" alt="Head attribution heatmaps"><div class="cap"><b>Fig 6:</b> Head attribution: hot spots in Ministral &amp; Llama, diffuse in Gemma.</div></div>
+    <div class="fig"><img src="assets/fig6_head_attribution.png" alt="Head attribution heatmaps"><div class="cap"><b>Fig 7:</b> Head attribution: hot spots in Ministral &amp; Llama, diffuse in Gemma.</div></div>
     <div class="two" style="grid-template-columns:1.55fr 1fr">
-      <div class="fig"><img src="assets/fig7_knockouts.png" alt="Knock-outs"><div class="cap"><b>Fig 7:</b> Top-10 heads vs random / same-layer sets.</div></div>
-      <div class="fig"><img src="assets/fig8_patching.png" alt="Patching"><div class="cap"><b>Fig 8:</b> Cross-prompt patching (Llama).</div></div>
+      <div class="fig"><img src="assets/fig7_knockouts.png" alt="Knock-outs"><div class="cap"><b>Fig 8:</b> Top-10 heads vs random / same-layer sets.</div></div>
+      <div class="fig"><img src="assets/fig8_patching.png" alt="Patching"><div class="cap"><b>Fig 9:</b> Cross-prompt patching (Llama).</div></div>
     </div>
 
     <h3><span class="tag">4</span>Separable inside, shared in behaviour</h3>
     <div class="two" style="grid-template-columns:1.25fr 0.95fr;align-items:center">
       <p>In Llama the internal dissociation is <b>crossed</b>: the heads mostly carry “real” (−56% vs −23%) and the watched direction mostly “watched” (−60% vs −13%). But ablating the watched direction removes <b>both</b> behavioural effects, so the two beliefs feed a <b>shared decision pathway</b>.</p>
-      <div class="fig"><img src="assets/fig9_dissociation.png" alt="Crossed internal dissociation and shared behavioural pathway"><div class="cap"><b>Fig 9:</b> Crossed inside, shared in behaviour (Llama).</div></div>
+      <div class="fig"><img src="assets/fig9_dissociation.png" alt="Crossed internal dissociation and shared behavioural pathway"><div class="cap"><b>Fig 10:</b> Crossed inside, shared in behaviour (Llama).</div></div>
     </div>
 
     
@@ -238,7 +240,7 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
     <div class="nov">
       <span class="s" style="color:var(--ok)">Novel</span><span>Factorial watched × real dissociation · head circuit with cross-prompt patching · shared-pathway result</span>
       <span class="s" style="color:#a15c00">Builds on</span><span>evaluation-awareness steering (Abdelnabi &amp; Salem 2025; Hua et al. 2026) · scenario directions (Peng et al. 2026)</span>
-      <span class="s" style="color:#1d2b4f">Impact</span><span>Safety evaluations can measure — and control for — what a model believes about its situation, from its activations.</span>
+      <span class="s" style="color:#1d2b4f">Impact</span><span>Safety evaluations can measure and control for what a model believes about its situation, using its activations.</span>
     </div>
   </div>
 </div>
@@ -256,7 +258,8 @@ svg text{font-family:"Calibri","Segoe UI",sans-serif}
   </div>
   <div class="pres">
     <div class="who"><div style="display:grid;grid-template-columns:auto 1fr;gap:0 10px"><span>Presentation By:</span><span>1. Varanasi Sathveek (423189)<br>2. Vanamala Aravind (423188)<br>3. Pula Naga Manikanta (423171)</span></div>
-      <span style="display:inline-block;margin-top:8px">Supervisor: <b>Dr. K. Hima Bindu</b></span></div>
+      <span style="display:inline-block;margin-top:8px">Supervisor: <b>Dr. K. Hima Bindu</b></span><br>
+      <span style="font-size:17px;color:#4b5060">Code, data &amp; paper: github.com/VSathveek/Research_On_Mechanistic_Interpretability</span></div>
     <div><div class="batch">16</div><div class="bl">(Batch No.)</div></div>
   </div>
 </div>
