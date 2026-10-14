@@ -24,6 +24,10 @@ td.n{text-align:right} td.b{font-weight:700}
 img.fig{max-width:100%;display:block;margin:4px auto}
 .cap{font-size:17px;color:#444;text-align:center}
 .big{font-size:44px;font-weight:700;text-align:center;margin-top:300px}
+.mrow{display:grid;grid-template-columns:600px 1fr;gap:28px;align-items:center;margin:4px 0}
+.mrow .what{font-size:19.5px;line-height:1.32}
+.mrow .eq{font-size:21px;margin:3px 0;padding:9px 22px;justify-self:start;white-space:nowrap}
+.step{font-size:21px;font-weight:700;margin:12px 0 2px}
 </style></head><body>
 
 <!-- Experiment 2 -->
@@ -42,6 +46,18 @@ img.fig{max-width:100%;display:block;margin:4px auto}
     <li>$\alpha$ negative → push toward <b>Simulated</b>; $\alpha$ positive → push toward <b>Real</b>.</li>
     <li>As a control, we also added random directions of the same size.</li>
   </ul>
+</section>
+
+<section class="slide">
+  <h1>Mathematical Formulation</h1>
+  <div class="step">1. The Real-vs-Simulated direction (from E1)</div>
+  <div class="mrow"><span class="eq">$d_R=\mu_{\text{real}}-\mu_{\text{simulated}}$</span><div class="what">The average activation under “real” framing minus the average under “simulated” framing.</div></div>
+  <div class="mrow"><span class="eq">$\hat d_R=\dfrac{d_R}{\|d_R\|_2},\quad g=\|d_R\|_2$</span><div class="what">$\hat d_R$ is the direction with length 1; $g$ is the natural size of the real-vs-simulated difference.</div></div>
+  <div class="step">2. Steering the model</div>
+  <div class="mrow"><span class="eq">$h'=h+\alpha\,g\,\hat d_R,\quad \alpha\in\{-4,-2,+2,+4\}$</span><div class="what">Added to every token's activation at layer 15. $\alpha=-4$ pushes 4 gap-sizes toward Simulated; $\alpha=+4$ toward Real.</div></div>
+  <div class="mrow"><span class="eq">$h'=h+\alpha\,g\,\hat u,\quad \hat u\sim\text{random}$</span><div class="what">Control: a random direction $\hat u$ of exactly the same size.</div></div>
+  <div class="step">3. Measuring behaviour</div>
+  <div class="mrow"><span class="eq">$C=\dfrac{\#\,\text{harmful requests complied with}}{\#\,\text{harmful requests}}\times100$</span><div class="what">Harmful-compliance rate, judged by the HarmBench classifier.</div></div>
 </section>
 
 <section class="slide">
@@ -84,6 +100,19 @@ img.fig{max-width:100%;display:block;margin:4px auto}
     <li>We then measured how much of the gap between “simulated” and “real” behaviour disappeared.</li>
     <li>As a control, we also switched off 10 <b>random</b> heads.</li>
   </ul>
+</section>
+
+<section class="slide">
+  <h1>Mathematical Formulation</h1>
+  <div class="step">1. How much each head writes the Real signal</div>
+  <div class="mrow"><span class="eq">$c_{\ell,h}=z_{\ell,h}^{\top}\,W_O^{(\ell,h)\top}\,\hat d_R$</span><div class="what">$z_{\ell,h}$: output of head $h$ in layer $\ell$; $W_O$: the matrix that writes it into the model. $c$ = how far it pushes along the Real direction.</div></div>
+  <div class="mrow"><span class="eq">$a_{\ell,h}=\mathbb{E}_{\text{real}}[c_{\ell,h}]-\mathbb{E}_{\text{simulated}}[c_{\ell,h}]$</span><div class="what">Attribution: the difference between real and simulated framing. We rank heads by $|a_{\ell,h}|$ and keep the top 10.</div></div>
+  <div class="step">2. Switching heads off</div>
+  <div class="mrow"><span class="eq">$z_{\ell,h}\leftarrow 0\quad\text{for the 10 selected heads}$</span><div class="what">The head's output never reaches the rest of the model.</div></div>
+  <div class="step">3. Measuring the effect</div>
+  <div class="mrow"><span class="eq">$\Delta=C_{\text{simulated}}-C_{\text{real}}$</span><div class="what">Framing gap: how much more the model complies when told the situation is simulated.</div></div>
+  <div class="mrow"><span class="eq">$\text{Gap removed}=\dfrac{\Delta_{\text{before}}-\Delta_{\text{after}}}{\Delta_{\text{before}}}\times100\%$</span><div class="what">Share of the gap that disappears when the heads are switched off.</div></div>
+  <div class="mrow"><span class="eq">$\text{Patching}=\dfrac{A_{\text{sim}}-A_{\text{patched}}}{A_{\text{sim}}-A_{\text{real}}}\times100\%$</span><div class="what">Heads set to their “real” state instead: how far simulated behaviour moves to the real level.</div></div>
 </section>
 
 <section class="slide">
