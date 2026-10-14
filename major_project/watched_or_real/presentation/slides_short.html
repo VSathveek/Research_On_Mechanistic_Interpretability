@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Watched or Real? key experiments</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+@page { size: 1440px 810px; margin: 0; }
+html,body{margin:0;background:#fff}
+.slide{width:1440px;height:810px;overflow:hidden;page-break-after:always;break-after:page;box-sizing:border-box;padding:52px 70px 40px;
+  font-family:"Open Sans","Segoe UI",Arial,sans-serif;color:#111}
+.slide:last-child{page-break-after:auto;break-after:auto}
+h1{font-size:34px;font-weight:700;margin:0 0 26px}
+h2{font-size:26px;font-weight:700;margin:20px 0 8px}
+p,li{font-size:24px;line-height:1.4;margin:0 0 8px}
+ul,ol{margin:0 0 10px;padding-left:34px}
+.eq{display:inline-block;background:#000;color:#fff;border-radius:22px;padding:14px 28px;margin:10px 0;font-size:26px}
+.two{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:start}
+table{border-collapse:collapse;font-size:20px;margin:6px 0 16px}
+th,td{border:1px solid #c9c9c9;padding:10px 18px;text-align:left}
+th{font-weight:400;color:#222}
+td.n{text-align:right} td.b{font-weight:700}
+img.fig{max-width:100%;display:block;margin:4px auto}
+.cap{font-size:17px;color:#444;text-align:center}
+.big{font-size:44px;font-weight:700;text-align:center;margin-top:300px}
+</style></head><body>
+
+<!-- Experiment 1 -->
+<section class="slide">
+  <h1>Key Experiment 1: Activation Steering</h1>
+  <h2>Aim:</h2>
+  <p>E1 showed that the model has a “Real vs. Simulated” direction inside it. Here we asked: <b>if we push the model along this direction, does its behaviour change?</b></p>
+  <h2>How we did?</h2>
+  <ul>
+    <li>Model: Ministral-8B. Dataset: 520 harmful requests (AdvBench).</li>
+    <li>The requests had <b>no</b> real/simulated sentence; they looked like ordinary test questions.</li>
+    <li>While the model was answering, we added the direction to its internal activations:</li>
+  </ul>
+  <p style="text-align:center"><span class="eq">$h' = h + \alpha\, g\, \hat d_R$</span></p>
+  <ul>
+    <li>$\alpha$ negative → push toward <b>Simulated</b>; $\alpha$ positive → push toward <b>Real</b>.</li>
+    <li>As a control, we also added random directions of the same size.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th>Condition</th><th>Harmful compliance</th></tr>
+        <tr><td>No push</td><td class="n">5.6%</td></tr>
+        <tr><td>Push toward Simulated</td><td class="n b">30.4%</td></tr>
+        <tr><td>Push toward Real</td><td class="n b">0.6%</td></tr>
+        <tr><td>Random push</td><td class="n">6–8%</td></tr>
+      </table>
+      <p>What this means:</p>
+      <ol>
+        <li>Making the model “think” the situation is simulated made it about <b>5× more willing</b> to help with harmful requests.</li>
+        <li>Making it “think” the situation is real made it refuse almost everything.</li>
+        <li>Random pushes did almost nothing, so the effect comes from this specific direction.</li>
+      </ol>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig4_natural_steering.png" alt="Steering results">
+      <div class="cap">Harmful compliance under each push (Ministral-8B, 520 requests). Table: HarmBench judge; chart: Qwen3 judge. Both show the same pattern.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Experiment 2 -->
+<section class="slide">
+  <h1>Key Experiment 2: Attention-Head Knockout</h1>
+  <h2>Aim:</h2>
+  <p>Experiment 1 showed the direction changes behaviour. Here we asked: <b>which parts of the model create this signal?</b></p>
+  <h2>How we did?</h2>
+  <ul>
+    <li>A model has hundreds of small units called <b>attention heads</b>. For each one, we measured how much it writes the Real-vs-Simulated signal.</li>
+    <li>We took the <b>top 10</b> heads and switched them off (set their output to zero):</li>
+  </ul>
+  <p style="text-align:center"><span class="eq">$o'_{\text{head}} = 0$</span></p>
+  <ul>
+    <li>We then measured how much of the gap between “simulated” and “real” behaviour disappeared.</li>
+    <li>As a control, we also switched off 10 <b>random</b> heads.</li>
+  </ul>
+</section>
+
+<section class="slide">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th>Model</th><th>Top-10 heads off</th><th>10 random heads off</th></tr>
+        <tr><td>Ministral-8B</td><td class="n b">78% of gap removed</td><td class="n">up to 39%</td></tr>
+        <tr><td>Llama-3.1-8B</td><td class="n b">81% of gap removed</td><td class="n">0–44%*</td></tr>
+      </table>
+      <p style="font-size:17px;color:#444;margin-top:-8px">*one random set also removed the gap; it contained one of the top-10 heads.</p>
+      <p>What this means:</p>
+      <ol>
+        <li>Just <b>10 attention heads</b> create most of the Real-vs-Simulated signal.</li>
+        <li>Switching them off removes most of the behaviour difference; random heads do much less.</li>
+        <li>Setting these heads to their “real” state makes a simulated scenario behave like a real one (Llama: 67.4% → 44.6%, real = 46.4%).</li>
+      </ol>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig7_knockouts.png" alt="Knockout results">
+      <div class="cap">Framing gap after switching off the top-10 heads (orange) vs random heads (grey).</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <h1>Conclusion</h1>
+  <ol>
+    <li>Language models keep two separate signals inside: <b>“Am I being watched?”</b> and <b>“Are the consequences real?”</b> (E1).</li>
+    <li>The “real” signal <b>controls how cautious the model is</b>: pushing it changes harmful compliance from 0.6% to 30.4%.</li>
+    <li>About <b>10 attention heads</b> create this signal; switching them off removes about 80% of the effect.</li>
+  </ol>
+  <h2>Why it matters</h2>
+  <p>AI safety tests assume models behave the same whether or not they think the situation is real. Our results show this belief can be read, and controlled, from inside the model.</p>
+</section>
+
+<section class="slide"><div class="big">Thank You</div></section>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>renderMathInElement(document.body,{delimiters:[{left:"$",right:"$",display:false}],throwOnError:false}));
+</script>
+</body></html>
