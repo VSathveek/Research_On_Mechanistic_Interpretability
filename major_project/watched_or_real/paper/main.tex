@@ -75,6 +75,14 @@ Gemma, and a representation that is behaviourally inert at 14B.
 \item A complete record of failed and withdrawn experiments, including a judge that under-counted answers by about 35 points.
 \end{enumerate}
 
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig1_method.pdf}
+\caption{\textbf{Overview.} The same task is presented with a framing sentence about reality ($R^\pm$) or observation ($W^\pm$).
+We read a ``real'' and a ``watched'' direction from the residual stream at the last token, test whether each is decodable and distinct,
+then intervene (steering, ablation, head knock-out and patching) and measure safety behaviour.}
+\label{fig:method}
+\end{figure}
+
 %=====================================================================
 \section{Related work}
 \paragraph{Evaluation awareness.} \cite{abdelnabi2025} steer a single ``test awareness'' direction in reasoning models and show that
@@ -222,6 +230,21 @@ Ministral-8B-Instruct-2410 (fp16), Llama-3.1-8B-Instruct (fp16), Gemma-3-4B-it (
 
 %=====================================================================
 \section{Results}
+\begin{table}[h]\centering\small
+\caption{Summary of results. ``Status'' refers to the pre-registered criterion of each test.}
+\label{tab:summary}
+\begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}p{2.2cm}}\toprule
+Claim & Key evidence & Status\\\midrule
+Two distinct directions & Held-out AUROC up to 0.99 in 4 models; factorial selectivity 2--8$\times$; $\hR$ orthogonal to refusal, eval-awareness, format (Fig.~\ref{fig:geom}, \ref{fig:fact}) & Supported\\
+``Simulated'' framing lowers caution & 3 of 4 models, two judges (Table~\ref{tab:framing}) & Supported (not at 14B)\\
+$\hR$ causally controls compliance & Ordinary prompts 0.6\%$\leftrightarrow$30.4\%, random ${\approx}$6--8\% (Fig.~\ref{fig:e10}, \ref{fig:dose}) & Supported\\
+Sparse head circuit & Top-10 heads remove 78--81\% of the gap, beat 8/8 and 6/7 controls (Fig.~\ref{fig:heads}, \ref{fig:ko}) & Supported (Ministral, Llama); not Gemma\\
+Heads transfer across prompts & Patching to ``real'' state reaches the real level, 109\% (Fig.~\ref{fig:patch}) & Supported (Llama); Ministral withdrawn\\
+Crossed internal dissociation & Heads $-56\%$ real vs $-23\%$ watched; $\hW$ ablation $-60\%$ vs $-13\%$ (Fig.~\ref{fig:diss}a) & Supported (Llama)\\
+Behavioural double dissociation & Ablating $\hW$ removes both effects (Fig.~\ref{fig:diss}b) & \textbf{Not supported}\\
+Holds at 14B & Representation yes, behaviour no & \textbf{Not supported}\\\bottomrule
+\end{tabularx}\end{table}
+
 \subsection{Q1: two distinct representations}
 \begin{table}[h]\centering\small
 \caption{Held-out decodability (unseen tasks and wordings) at the selected layer, distinctness and controls.}
@@ -251,6 +274,19 @@ Both directions are decodable on unseen tasks and wordings, survive removal of t
 and are nearly orthogonal to the refusal direction (Table~\ref{tab:geom}). In the factorial design each direction is selective for its own
 factor (Table~\ref{tab:fact}); the reality direction is not a generic evaluation-awareness or format direction, whereas the watched direction
 overlaps evaluation awareness ($\cos=0.31$). We describe the directions as \emph{distinct but correlated}, not orthogonal.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig2_geometry.pdf}
+\caption{\textbf{Two distinct directions in four models.} (a) AUROC of each direction on unseen tasks \emph{and} unseen wordings at the
+validation-selected layer. (b) Cosine between the two directions and between the reality and refusal directions.}
+\label{fig:geom}
+\end{figure}
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig3_factorial.pdf}
+\caption{\textbf{Factorial selectivity.} Main effect of each factor on the projection onto each direction, from the $2\times2$ design
+(60 neutral tasks). Each direction responds mainly to its own factor.}
+\label{fig:fact}
+\end{figure}
 % E12 harmfulness check: result to be inserted (cos(real, harmfulness) at t_inst, Zhao et al. 2025 protocol).
 
 \subsection{Q2: framing and steering change behaviour}
@@ -293,6 +329,21 @@ Steering along the reality direction controls harmful compliance on realistic pr
 In Llama, the cleaned direction $\hR^{\mathrm C}$ steers as strongly as $\hR$ on OR-Bench with no framing (toward \real{} 55.6\%, toward \simu{}
 91.8\%, $p=10^{-49}$, Granite), so the effect is not carried by evaluation-awareness or format components.
 
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig4_natural_steering.pdf}
+\caption{\textbf{Causal control on ordinary prompts (E10).} Harmful compliance on 520 benchmark-formatted AdvBench requests with no framing
+sentence, under steering along the reality direction or equal-norm random vectors (primary judge; 95\% Wilson intervals). Under the HarmBench
+classifier: toward \real{} $\times4$ 0.6\%, none 5.6\%, toward \simu{} $\times4$ 30.4\%.}
+\label{fig:e10}
+\end{figure}
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig5_dose_response.pdf}
+\caption{\textbf{Dose--response of steering.} Behaviour as a function of steering strength $\alpha$ along $\hR$ (Eq.~\ref{eq:steer}). Grey squares:
+equal-norm random vector at $|\alpha|=4$. Ministral: harmful compliance on ordinary prompts ($n=520$); Llama and Gemma: OR-Bench answer rate
+with an explicit-framing-free prompt ($n=200$, Granite judge).}
+\label{fig:dose}
+\end{figure}
+
 \subsection{Q3: where is the signal computed?}
 \begin{table}[h]\centering\small
 \caption{Attribution and knock-outs (60 tasks $\times$ 5 wordings; OR-Bench $n=500$ for Llama/Gemma; AdvBench $n=520$ for Ministral).}
@@ -316,6 +367,20 @@ while the remaining six (including top-10 head L5.H24) remove 67\%, so an early-
 In Gemma, mean-ablating the top-3 attributed MLP layers (28, 29, 26) removes 19\% of the gap, no better than random triples ($-0.4$ pts, $p=0.58$):
 the signal is distributed.
 
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig6_head_attribution.pdf}
+\caption{\textbf{Where the reality signal is written.} Attribution $a_{\ell,h}$ of each attention head to the reality direction (as a share of
+total absolute attention attribution; red = writes toward ``real'' under \real{} framing). Ministral and Llama concentrate the signal in a few
+heads in the layers just before the readout layer; Gemma spreads it over many heads, and 65\% of its attribution is in MLPs.}
+\label{fig:heads}
+\end{figure}
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig7_knockouts.pdf}
+\caption{\textbf{Knock-out of the top-10 heads vs controls.} Behavioural framing gap (\simu{} minus \real{}) after zero-ablating the top-10
+attributed heads (orange), 10 random heads (grey) or 10 heads from the same layers (outlined). Dashed line: no knock-out.}
+\label{fig:ko}
+\end{figure}
+
 \paragraph{Necessity of the direction.} In Ministral, all-layer zero-ablation of $\hR$ does not cancel the \simu{} effect (5.8\%$\to$5.2\%), while
 ablating $\hW$ cancels the protective effect of being watched (2.2\%$\to$4.3\%, 8 vs 0, $p=0.008$). In Gemma, mean-ablation of $\hR$ on blocks 27--31
 (OR-Bench $n=1000$, 0\% degenerate) removes $M=57\%$ [25, 99] of the gap under Granite (primary judge: 38\%), against $-29\%$ for a random direction
@@ -327,11 +392,26 @@ level (46.4\%; 109\% of the gap; primary judge 114\%); patching ten random heads
 reality main effect by 56\% and the watched effect by 23\%, while ablating $\hW$ reduces the watched effect by 60\% and the reality effect by 13\%; random
 heads change neither.
 
+\begin{figure}[t]\centering
+\includegraphics[width=0.62\linewidth]{figures/fig8_patching.pdf}
+\caption{\textbf{Cross-prompt patching (Llama, OR-Bench $n=500$, Granite judge).} Setting the top-10 heads to their mean state under \real{}
+framing, computed on different neutral tasks, moves the answer rate under \simu{} framing to the \real{} level; patching 10 random heads does nothing.}
+\label{fig:patch}
+\end{figure}
+
 \subsection{Shared behavioural pathway}
 With both framing sentences present (Llama, OR-Bench $n=500$, Granite), the reality effect is +4.0 pts and the watched effect +11.8 pts. Ablating $\hW$
 removes both (6.0 pts [3.7, 8.5] and 10.6 pts [7.2, 13.8]); mean-ablating the top-10 heads lowers answering overall but removes neither.
 The pre-registered behavioural double dissociation is therefore \emph{not} supported: the two beliefs are separable representations feeding a
 shared decision pathway.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\linewidth]{figures/fig9_dissociation.pdf}
+\caption{\textbf{Separable inside, shared in behaviour (Llama).} (a) Share of each internal signal removed by each intervention: a crossed
+dissociation. (b) Behavioural main effects (OR-Bench $n=500$, Granite) with both framing sentences present: ablating the watched direction
+removes both effects.}
+\label{fig:diss}
+\end{figure}
 
 \subsection{Natural cues and benchmark formatting}\label{sec:e9}
 Hidden cues (sandbox tools, placeholder names, \texttt{example.com}, lorem ipsum) move Ministral's reality projection toward \simu{} by 8--15\% of the
@@ -362,6 +442,12 @@ Qwen2.5-14B, AdvBench / OR-Bench & HarmBench / Granite & 100\% / 75\% & -- / 0.4
 Granite agrees with the keyword check at $\kappa=0.92$--$0.97$ on Llama. On Gemma, inspection showed that Qwen3 scored caveated but complete answers as
 refusals, under-counting answers by about 35 points; Granite is the primary judge for Gemma. Every conclusion reported above holds under the
 independent judge, except Ministral on OR-Bench, where judges disagree and the framing effect is null under Granite; those results are withdrawn.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.62\linewidth]{figures/fig10_judges.pdf}
+\caption{\textbf{Judge agreement.} Cohen's $\kappa$ between the primary judge and the independent judge, as a range over runs.}
+\label{fig:judges}
+\end{figure}
 
 %=====================================================================
 \section{Negative and withdrawn results}
