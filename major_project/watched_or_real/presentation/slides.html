@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Watched or Real? remaining slides</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* Matches the existing deck: plain white 16:9 slides, bold title top-left, regular body, black rounded formula boxes, thin grey tables. */
+@page { size: 1440px 810px; margin: 0; }
+html,body{margin:0;background:#fff}
+.slide{width:1440px;height:810px;position:relative;overflow:hidden;page-break-after:always;break-after:page;
+  font-family:"Open Sans","Segoe UI",Arial,sans-serif;color:#111;padding:52px 70px 40px;box-sizing:border-box}
+.slide:last-child{page-break-after:auto;break-after:auto}
+h1{font-size:34px;font-weight:700;margin:0 0 30px}
+h2{font-size:27px;font-weight:700;margin:22px 0 10px}
+p,li{font-size:24px;line-height:1.38;margin:0 0 8px}
+.sm p,.sm li{font-size:21px;line-height:1.35}
+.xs p,.xs li{font-size:19px;line-height:1.32}
+ul,ol{margin:0 0 10px;padding-left:34px}
+.lbl{display:inline-block;background:#000;color:#fff;font-weight:600;font-size:20px;padding:6px 12px;margin:6px 0}
+.eq{display:inline-block;background:#000;color:#fff;border-radius:22px;padding:14px 26px;margin:8px 0;font-size:24px}
+.eq .katex{font-size:1.15em}
+.eqrow{display:flex;gap:26px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.center{text-align:center}
+table{border-collapse:collapse;font-size:18px;margin:6px 0 14px}
+th,td{border:1px solid #c9c9c9;padding:10px 16px;text-align:left;vertical-align:top}
+th{font-weight:400;color:#222}
+td.n{text-align:right}
+td.b{font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+.two.wide{grid-template-columns:1.1fr 1fr}
+img.fig{max-width:100%;display:block;margin:6px auto}
+.cap{font-size:16px;color:#444;text-align:center;margin-top:2px}
+.note{font-size:19px;line-height:1.35}
+.big{font-size:44px;font-weight:700;text-align:center;margin-top:300px}
+</style></head><body>
+
+<!-- ======================= E2 ======================= -->
+<section class="slide">
+  <h1>E2: Behavioural Framing</h1>
+  <h2>Aim:</h2>
+  <p>We wanted to test whether changing a scenario's framing from real to simulated changes how often a model complies with harmful requests, and whether being watched or unwatched also influences its behaviour.</p>
+  <p>Unlike E1, which examined internal activations, E2 measured the model's actual responses.</p>
+  <h2>Main question:</h2>
+  <p>If only one framing sentence in the system prompt changes, does the model behave differently on exactly the same requests?</p>
+</section>
+
+<section class="slide sm">
+  <h1>How we did?</h1>
+  <p><b>Step 1: Select datasets</b></p>
+  <ul><li>AdvBench: 520 harmful requests, used to measure harmful compliance.</li>
+      <li>OR-Bench-Hard-1k: Borderline requests, used to measure the model's answer rate.</li></ul>
+  <p><b>Step 2: Create different framings</b> &nbsp;We presented the same requests under contrasting conditions: Real consequences, Simulated consequences, Watched and Unwatched.</p>
+  <p><b>Step 3: Generate model responses</b> &nbsp;We tested Ministral-8B-Instruct, Llama-3.1-8B-Instruct and Gemma-3-4B-it under these conditions, using greedy decoding with a maximum response length of 160 tokens to reduce variation in response generation.</p>
+  <p><b>Step 4: Evaluate responses</b> &nbsp;We used Qwen3-8B as a yes/no judge to classify whether each response complied (later re-checked by independent judges, see J2). We compared the conditions using paired statistical tests (McNemar test), because the same requests were evaluated under every framing.</p>
+  <div class="eqrow" style="margin-top:14px">
+    <span class="eq">$\text{Harmful Compliance Rate}=\dfrac{\text{Harmful requests complied with}}{\text{Total harmful requests tested}}\times100$</span>
+    <span class="eq">$\text{Answer Rate}=\dfrac{\text{Requests answered}}{\text{Total requests tested}}\times100$</span>
+  </div>
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <div class="two wide">
+    <div>
+      <table>
+        <tr><th>Model</th><th>Dataset</th><th>Simulated</th><th>Real</th><th>p-value</th></tr>
+        <tr><td>Ministral-8B</td><td>AdvBench</td><td class="n b">4.8%</td><td class="n">2.1%</td><td class="n">0.00002</td></tr>
+        <tr><td>Llama-3.1-8B</td><td>OR-Bench-Hard-1k</td><td class="n b">45.5%</td><td class="n">36.0%</td><td class="n">0.002</td></tr>
+        <tr><td>Gemma-3-4B</td><td>OR-Bench-Hard-1k</td><td class="n b">28.7%</td><td class="n">21.4%</td><td class="n">5×10⁻⁸</td></tr>
+      </table>
+      <p><b>Monitoring effect:</b> for Llama-3.1-8B on OR-Bench, the answer rate was 39.5% when watched vs 53.0% when unwatched (p = 0.00003). It was not statistically significant for Ministral and Gemma.</p>
+      <p><b>Independent judge (J2):</b> the HarmBench classifier gives 10.6% vs 3.3% for Ministral (p = 4×10⁻¹⁰), and IBM Granite confirms Llama and Gemma.</p>
+    </div>
+    <div>
+      <p>We concluded:</p>
+      <ol>
+        <li>Consequence framing matters: simulated framing gave higher response rates than real framing in all three models.</li>
+        <li>Monitoring may also matter: Llama answered more borderline requests when unwatched than when watched.</li>
+        <li>Effects depend on the model and task: the results do not establish a universal effect across every model or dataset.</li>
+      </ol>
+      <p class="note">The limitation: higher answer rates on OR-Bench do not necessarily mean higher harmful compliance, because its requests are borderline rather than harmful. E2 shows that framing changes behaviour; the next experiments investigate the mechanism.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= E3 ======================= -->
+<section class="slide">
+  <h1>E3: Activation Steering</h1>
+  <h2>Aim:</h2>
+  <p>In E1, we identified internal activation directions associated with Real vs. Simulated conditions. In E3, we wanted to test whether deliberately manipulating these directions changes the model's behaviour.</p>
+  <h2>Main question:</h2>
+  <p>Can we influence harmful-request compliance by steering the model's internal activations towards the Real or Simulated direction, without explicitly changing the prompt?</p>
+  <p>To make the test realistic, the requests contained <b>no framing sentence at all</b>: they were written like ordinary benchmark items (for example “[Benchmark item 137/1000] Prompt: … Response:”).</p>
+</section>
+
+<section class="slide sm">
+  <h1>How we did?</h1>
+  <p><b>Step 1: Select the model and dataset</b> &nbsp;Model: Ministral-8B-Instruct. Dataset: AdvBench (520 harmful requests). Evaluation: HarmBench classifier, with the Qwen3-8B judge as a second check.</p>
+  <p><b>Step 2: Identify the activation direction</b> using the E1 method, and normalise it:</p>
+  <div class="eqrow"><span class="eq">$d_R=\mu_{\text{real}}-\mu_{\text{simulated}}$</span><span class="eq">$\hat d_R=\dfrac{d_R}{\|d_R\|_2}$</span></div>
+  <p><b>Step 3: Modify the internal activations</b> &nbsp;During inference we added the direction to the residual stream at layer 15, at every token position:</p>
+  <div class="eqrow"><span class="eq">$h'=h+\alpha\, g\, \hat d_R$</span>
+    <div class="xs"><p>$h$: original activation, $h'$: modified activation, $g=\|d_R\|$: size of the real-vs-simulated gap, $\alpha\in\{-4,-2,+2,+4\}$: negative steers towards Simulated, positive towards Real.</p></div></div>
+  <p><b>Step 4: Controls and measurement</b> &nbsp;We also added two random vectors of the same size, to check that the effect is specific to the identified direction, and then measured the harmful-compliance rate in every condition.</p>
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th>Condition (Ministral-8B, AdvBench)</th><th>Harmful compliance</th></tr>
+        <tr><td>No steering (baseline)</td><td class="n">5.6%</td></tr>
+        <tr><td>Simulated-direction steering (α = −4)</td><td class="n b">30.4%</td></tr>
+        <tr><td>Real-direction steering (α = +4)</td><td class="n b">0.6%</td></tr>
+        <tr><td>Random-vector control 1</td><td class="n">7.7%</td></tr>
+        <tr><td>Random-vector control 2</td><td class="n">6.3%</td></tr>
+      </table>
+      <p>Key observations:</p>
+      <ul><li>Simulated-direction steering increased harmful compliance from 5.6% to 30.4% (p = 10⁻²⁵).</li>
+          <li>Real-direction steering reduced it from 5.6% to 0.6%.</li>
+          <li>Random-vector controls did not produce comparable changes.</li></ul>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig5_dose_response.png" alt="Steering dose response">
+      <div class="cap">The effect grows with steering strength and repeats in Llama and Gemma.</div>
+      <p style="margin-top:14px">E3 provides causal evidence that manipulating the identified direction changes harmful-request compliance, even on ordinary prompts.</p>
+      <p class="note">The limitation: this does not prove that the model holds human-like beliefs about reality; steering may affect several correlated computations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= E5 Ablation ======================= -->
+<section class="slide">
+  <h1>E5: Ablation and Causal Necessity Tests</h1>
+  <h2>Aim:</h2>
+  <p>In E3, steering the Real-vs-Simulated direction changed harmful-request compliance. Next, we wanted to investigate whether this direction is <b>necessary</b> for the behavioural effect.</p>
+  <h2>Main question:</h2>
+  <p>If we remove the identified representation from the model's activations, does the effect of real-versus-simulated framing decrease?</p>
+</section>
+
+<section class="slide sm">
+  <h1>How we did?</h1>
+  <p><b>Step 1: Identify the direction</b> &nbsp;We used the normalised Real-vs-Simulated direction $\hat d_R$ from E1.</p>
+  <p><b>Step 2: Remove the direction from activations</b> &nbsp;We projected each activation onto the direction and subtracted that component:</p>
+  <div class="eqrow"><span class="eq">$h'=h-(h^\top\hat d_R)\,\hat d_R$</span>
+    <div class="xs"><p>This removes the component along the direction and keeps everything orthogonal to it.</p></div></div>
+  <p>For Gemma, the activations along this direction are very large (around −10,000), so setting them to zero broke the model's text. We therefore set them to their <b>average value</b> $m$ instead (mean-ablation, layers 27–31):</p>
+  <div class="eqrow"><span class="eq">$h'=h-\big((h^\top\hat d_R)-m\big)\,\hat d_R$</span></div>
+  <p><b>Step 3: Test model behaviour</b> &nbsp;We compared answer rates under simulated and real framing before and after ablation (1,000 OR-Bench requests), and repeated it with a random direction and with the Watched direction as controls.</p>
+  <div class="eqrow"><span class="eq">$\text{Effect Removed (\%)}=\dfrac{\Delta_{\text{before}}-\Delta_{\text{after}}}{\Delta_{\text{before}}}\times100,\quad \Delta=C_{\text{simulated}}-C_{\text{real}}$</span></div>
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <table>
+    <tr><th>Gemma-3-4B-it (OR-Bench, n = 1000)</th><th>Effect removed</th></tr>
+    <tr><td>Ablation of the Real-related direction</td><td class="n b">≈ 57% (95% CI 25–99%)</td></tr>
+    <tr><td>Random-direction control</td><td class="n">0% (no reduction)</td></tr>
+    <tr><td>Ablation of the Watched direction</td><td class="n">24% (not significant)</td></tr>
+  </table>
+  <p>The targeted ablation removed approximately 57% of the measured behavioural effect, whereas the random control showed no reduction. In Ministral, the “watched” ablation cancelled the protective effect of being watched (p = 0.008).</p>
+  <p>We concluded:</p>
+  <ol>
+    <li>Evidence of causal contribution: removing the Real-related direction substantially reduced the associated behavioural effect.</li>
+    <li>Specificity: the random-direction control did not produce the same reduction.</li>
+    <li>Partial necessity: the direction contributes to the effect, but removing it did not eliminate the entire effect.</li>
+  </ol>
+  <p class="note">The limitation: in Ministral, removing the single direction did not remove the effect, which pointed us to the attention heads that rebuild the signal (next experiment).</p>
+</section>
+
+<!-- ======================= E7 Heads ======================= -->
+<section class="slide">
+  <h1>E7: Attention-Head Localisation and Knockout</h1>
+  <h2>Aim:</h2>
+  <p>In the previous experiments, we identified activation directions associated with Real vs. Simulated conditions and found that manipulating them changed model behaviour. Now we wanted to identify <b>which attention heads</b> produce this signal.</p>
+  <h2>Main question:</h2>
+  <p>If we disable selected attention heads, does the difference in model behaviour between real and simulated scenarios decrease?</p>
+</section>
+
+<section class="slide sm">
+  <h1>How we did?</h1>
+  <p><b>Step 1: Identify candidate attention heads</b> &nbsp;For every head we measured how much it writes along the Real direction at the final token, under real minus simulated framing (60 tasks × 5 wordings):</p>
+  <div class="eqrow"><span class="eq">$a_{\ell,h}=\mathbb{E}_{\text{real}}\big[z_{\ell,h}^\top W_O^{(\ell,h)\top}\hat d_R\big]-\mathbb{E}_{\text{simulated}}\big[\,\cdot\,\big]$</span>
+    <div class="xs"><p>$z_{\ell,h}$: output of head $h$ in layer $\ell$; $W_O$: output projection. We ranked heads by $|a_{\ell,h}|$ and took the top 10.</p></div></div>
+  <p><b>Step 2: Knock out selected attention heads</b> &nbsp;We set the output of each selected head to zero, so its contribution never reaches the rest of the model:</p>
+  <div class="eqrow"><span class="eq">$o'_j=0$</span></div>
+  <p><b>Step 3: Measure behavioural changes</b> &nbsp;We measured the framing gap before and after the knockout: Ministral on 520 AdvBench requests, Llama on 500 OR-Bench requests.</p>
+  <div class="eqrow"><span class="eq">$\text{Gap Removed (\%)}=\dfrac{\Delta_{\text{before}}-\Delta_{\text{after}}}{\Delta_{\text{before}}}\times100$</span></div>
+  <p><b>Step 4: Compare against controls</b> &nbsp;We repeated the knockout with sets of 10 random heads and 10 heads from the same layers.</p>
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th>Model</th><th>Top heads</th><th>Gap removed</th><th>Controls beaten</th></tr>
+        <tr><td>Ministral-8B</td><td>L14.H19, L11.H24, L14.H29 …</td><td class="n b">78%</td><td class="n">8 of 8</td></tr>
+        <tr><td>Llama-3.1-8B</td><td>L9.H29, L9.H3, L8.H15 …</td><td class="n b">81%</td><td class="n">6 of 7</td></tr>
+        <tr><td>Gemma-3-4B</td><td>spread over many layers</td><td class="n">no better than random</td><td class="n">–</td></tr>
+      </table>
+      <p>We concluded:</p>
+      <ol>
+        <li>Localisation: about 10 late attention heads produce the real-vs-simulated signal in Ministral and Llama.</li>
+        <li>Causal evidence: knocking them out removed most of the framing gap, far more than random heads.</li>
+        <li>Not universal: in Gemma the signal is spread across many layers.</li>
+      </ol>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig6_head_attribution.png" alt="Head attribution heatmaps">
+      <div class="cap">Which heads write the Real signal (red = strongest).</div>
+      <img class="fig" src="../paper/figures/fig7_knockouts.png" alt="Knockouts vs controls" style="margin-top:10px">
+      <div class="cap">Top-10 heads (orange) vs random and same-layer head sets.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= E11 patching ======================= -->
+<section class="slide">
+  <h1>Cross-Prompt Activation Patching</h1>
+  <h2>Aim:</h2>
+  <p>We wanted to test whether the internal state of these attention heads under <b>real</b> framing can change the model's behaviour when it is inserted into a <b>simulated</b> scenario.</p>
+  <p>A recent paper found that heads which pass knockout tests often fail when moved across prompts, so we took the “real” state from <b>different prompts</b> than the ones being tested.</p>
+  <h2>Main question:</h2>
+  <p>If the top-10 heads are forced into their “real” state, does the simulated scenario start behaving like a real one?</p>
+</section>
+
+<section class="slide sm">
+  <h1>How we did?</h1>
+  <p><b>Step 1: Select the model</b> &nbsp;We used Llama-3.1-8B-Instruct and 500 OR-Bench-Hard requests.</p>
+  <p><b>Step 2: Establish the baseline</b> &nbsp;We measured the answer rate under simulated framing and under real framing. The simulated condition had a higher answer rate.</p>
+  <p><b>Step 3: Patch the activations</b> &nbsp;We computed the average output of each of the top-10 heads under real framing, using other, neutral tasks, and inserted it while the model processed the simulated-framing requests:</p>
+  <div class="eqrow"><span class="eq">$z_{\ell,h}\;\leftarrow\;\bar z^{\,\text{real}}_{\ell,h}\quad\text{(mean over other prompts)}$</span></div>
+  <p>As a control, we did the same with 10 random heads.</p>
+  <p><b>Step 4: Measure the answer rate</b> and the reduction of the simulated-vs-real gap:</p>
+  <div class="eqrow"><span class="eq">$\text{Gap Reduction (\%)}=\dfrac{A_{\text{sim}}-A_{\text{patched}}}{A_{\text{sim}}-A_{\text{real}}}\times100$</span></div>
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th>Condition (Llama-3.1-8B)</th><th>Answer rate</th></tr>
+        <tr><td>Simulated, before patching</td><td class="n">67.4%</td></tr>
+        <tr><td>Simulated, top-10 heads patched</td><td class="n b">44.6%</td></tr>
+        <tr><td>Simulated, 10 random heads patched</td><td class="n">67.4%</td></tr>
+        <tr><td>Real condition</td><td class="n">46.4%</td></tr>
+      </table>
+      <div class="eqrow"><span class="eq">$\dfrac{67.4-44.6}{67.4-46.4}\times100=\dfrac{22.8}{21.0}\times100\approx108.6\%$</span></div>
+      <p class="note">The result exceeds 100% because the patched answer rate fell slightly below the real-condition rate.</p>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig8_patching.png" alt="Patching" style="max-width:88%">
+      <p>We concluded:</p>
+      <ol>
+        <li>The heads' role transfers across prompts: their “real” state alone moves simulated behaviour to the real level.</li>
+        <li>Specificity: patching random heads changed nothing.</li>
+      </ol>
+      <p class="note">The limitation: this concerns answer rate on borderline requests in Llama; the same test was unreliable for Ministral (see J2).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= E11 2x2 ======================= -->
+<section class="slide sm">
+  <h1>E11: 2×2 Factor Disentanglement</h1>
+  <h2 style="margin-top:0">Aim:</h2>
+  <p>We wanted to check that the Watched and Real directions really respond to different things, and that the Real direction is not just a known “evaluation-awareness” or “benchmark format” signal.</p>
+  <h2>How we did?</h2>
+  <p>We combined both framings in one prompt, giving four conditions: watched + real, watched + simulated, unwatched + real, unwatched + simulated (60 tasks each). For each direction we measured the <b>main effect</b> of its own factor and of the other factor:</p>
+  <div class="eqrow"><span class="eq">$e_R=\tfrac12\big[\bar s(W^{+}R^{+})-\bar s(W^{+}R^{-})+\bar s(W^{-}R^{+})-\bar s(W^{-}R^{-})\big]$</span><span class="eq">$\text{Selectivity}=\dfrac{|e_{\text{own}}|}{|e_{\text{other}}|}$</span></div>
+  <p>We also built an evaluation-awareness direction (“you are being tested” vs “you are deployed”) and a benchmark-format direction, and checked their cosine similarity with the Real direction.</p>
+  <img class="fig" src="../paper/figures/fig3_factorial.png" alt="Factorial selectivity" style="max-width:62%">
+</section>
+
+<section class="slide sm">
+  <h1>Results</h1>
+  <div class="two">
+    <div>
+      <table>
+        <tr><th></th><th>Llama-3.1-8B</th><th>Ministral-8B</th></tr>
+        <tr><td>Real direction selectivity</td><td class="n b">7.8×</td><td class="n b">4.5×</td></tr>
+        <tr><td>Watched direction selectivity</td><td class="n">2.9×</td><td class="n">2.1×</td></tr>
+        <tr><td>cos(Real, evaluation-awareness)</td><td class="n">−0.13</td><td class="n">−0.14</td></tr>
+        <tr><td>cos(Real, benchmark format)</td><td class="n">+0.11</td><td class="n">−0.11</td></tr>
+        <tr><td>Steering: toward Real / none / toward Simulated</td><td class="n">55% / 68% / 92%</td><td class="n">–</td></tr>
+      </table>
+      <p>We concluded:</p>
+      <ol>
+        <li>Each direction responds mainly to its own factor.</li>
+        <li>The Real direction is not an evaluation-awareness or format direction; with both removed it still steers behaviour equally well.</li>
+        <li>Inside Llama the separation is crossed: the heads mostly carry “real” (−56% vs −23%), the Watched direction mostly “watched” (−60% vs −13%).</li>
+      </ol>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig9_dissociation.png" alt="Dissociation">
+      <div class="cap">(a) crossed inside the model; (b) shared in behaviour.</div>
+      <p class="note" style="margin-top:12px">The limitation: behaviourally, removing the Watched direction also removed the Real effect, so the two beliefs feed a shared decision pathway rather than two independent ones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= E12 harmfulness ======================= -->
+<section class="slide sm">
+  <h1>E12: Is the Real Direction Just Harmfulness?</h1>
+  <h2 style="margin-top:0">Aim:</h2>
+  <p>A known paper shows that models encode harmfulness and refusal separately. We wanted to make sure our Real direction is not simply a harmfulness direction in disguise.</p>
+  <h2>How we did?</h2>
+  <p>Following that paper's method, we built a harmfulness direction from 120 AdvBench vs 120 Alpaca requests at the last token of the instruction, and compared it with our Real direction in Ministral at every layer.</p>
+  <div class="eqrow"><span class="eq">$d_{\text{harm}}=\mu_{\text{harmful}}-\mu_{\text{harmless}}$</span><span class="eq">$\cos(\hat d_R,\hat d_{\text{harm}})=\hat d_R^\top\hat d_{\text{harm}}$</span></div>
+  <h2>Results</h2>
+  <table>
+    <tr><th>Test (Ministral-8B, layer 15)</th><th>Result</th></tr>
+    <tr><td>cos(Real, harmfulness)</td><td class="n b">0.015 (≤ 0.10 at every layer)</td></tr>
+    <tr><td>Harmfulness direction separating real vs simulated (AUROC)</td><td class="n">0.498 (chance)</td></tr>
+    <tr><td>Real direction separating harmful vs harmless, at the decision token (AUROC)</td><td class="n">0.942</td></tr>
+  </table>
+  <p>The Real direction is a different concept from harmfulness. However, at the decision point, harmful requests do shift the model's reality reading, so the two interact where the model decides.</p>
+</section>
+
+<!-- ======================= J2 judges ======================= -->
+<section class="slide xs">
+  <h1>J2: Independent-Judge Evaluation</h1>
+  <div class="two" style="grid-template-columns:1.35fr 1fr">
+    <div>
+      <h2 style="margin-top:0">Aim:</h2>
+      <p>All behavioural results depended on one judge model (Qwen3-8B). We re-graded every response with independent judges to make sure the conclusions are not an artefact of the judge.</p>
+      <h2>How we did?</h2>
+      <p>Harmful requests: the official <b>HarmBench Llama-2-13B classifier</b>. Borderline requests: <b>IBM Granite-3.3-8B</b> and a keyword refusal check. We measured agreement with Cohen's kappa:</p>
+      <div class="eqrow"><span class="eq">$\kappa=\dfrac{p_o-p_e}{1-p_e}$</span><div class="xs"><p>$p_o$: observed agreement, $p_e$: agreement expected by chance.</p></div></div>
+      <h2>Results</h2>
+      <ul>
+        <li>Ministral (harmful): 94–96% agreement; every conclusion holds.</li>
+        <li>Llama: every conclusion holds, most become stronger.</li>
+        <li>Gemma: Qwen3 counted caveated answers as refusals (κ 0.28–0.40), so we use Granite for Gemma; conclusions hold.</li>
+        <li>Ministral on borderline requests: judges disagree (κ 0.36), so those results were withdrawn.</li>
+      </ul>
+    </div>
+    <div>
+      <img class="fig" src="../paper/figures/fig10_judges.png" alt="Judge agreement" style="margin-top:20px">
+      <div class="cap">Agreement between the primary and independent judges.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= Did not hold ======================= -->
+<section class="slide sm">
+  <h1>Results That Did Not Hold</h1>
+  <p>We reported every pre-registered test, including those that failed:</p>
+  <table>
+    <tr><th>Test</th><th>Outcome</th><th>Likely reason</th></tr>
+    <tr><td>Behavioural double dissociation (E11)</td><td>Not supported</td><td>Removing the Watched direction also removed the Real effect: shared decision pathway</td></tr>
+    <tr><td>Head localisation in Gemma</td><td>Not supported</td><td>Signal spread across many layers and MLPs</td></tr>
+    <tr><td>Qwen2.5-14B behaviour</td><td>Not supported</td><td>Representation present (AUROC 0.97–0.98) but behaviour unchanged; stronger safety training</td></tr>
+    <tr><td>Hidden cues (fake names, sandbox tools)</td><td>Too weak</td><td>Moved the signal only 8–15% as far as an explicit sentence</td></tr>
+    <tr><td>Removing one direction in Ministral</td><td>No effect</td><td>Several heads rebuild the signal, which led to the head analysis</td></tr>
+    <tr><td>Ministral borderline results</td><td>Withdrawn</td><td>Judges disagreed (κ 0.36)</td></tr>
+  </table>
+</section>
+
+<!-- ======================= Summary / Conclusion ======================= -->
+<section class="slide sm">
+  <h1>Summary of Findings</h1>
+  <table>
+    <tr><th>Claim</th><th>Key evidence</th><th>Status</th></tr>
+    <tr><td>Two distinct directions</td><td>Held-out AUROC up to 0.99; 2–8× selective; unrelated to refusal, evaluation-awareness, format and harmfulness</td><td class="b">Supported</td></tr>
+    <tr><td>Simulated framing lowers caution</td><td>3 of 4 models, confirmed by two independent judges</td><td class="b">Supported</td></tr>
+    <tr><td>Real direction causally controls compliance</td><td>0.6% ↔ 30.4% harmful compliance; random vectors ≈ 6–8%</td><td class="b">Supported</td></tr>
+    <tr><td>Small attention-head circuit</td><td>78–81% of the gap removed; patching reaches the real level (109%)</td><td class="b">Supported (Ministral, Llama)</td></tr>
+    <tr><td>Behavioural double dissociation</td><td>Removing Watched removes both effects</td><td>Not supported</td></tr>
+    <tr><td>Holds at 14B</td><td>Representation yes, behaviour no</td><td>Partial</td></tr>
+  </table>
+  <p><b>Novelty:</b> two literature checks (October 2026) found no prior work that separates “being watched” from “real consequences” inside a model, or that localises the signal to attention heads.</p>
+</section>
+
+<section class="slide">
+  <h1>Conclusion</h1>
+  <ol>
+    <li>“Evaluation awareness” is not one variable: language models encode <b>being watched</b> and <b>consequences being real</b> as two distinct internal directions.</li>
+    <li>The Real direction <b>causally controls</b> how cautious a model is, even on ordinary benchmark prompts with no framing sentence.</li>
+    <li>A <b>small circuit of about 10 attention heads</b> computes this signal in Ministral and Llama, and its role transfers across prompts.</li>
+    <li>The two beliefs are separable inside the model but feed a <b>shared decision pathway</b>, and the effect fades in a larger, more safety-tuned model.</li>
+  </ol>
+  <p style="margin-top:18px"><b>Why it matters:</b> safety evaluations can measure, and control for, what a model believes about its situation directly from its activations.</p>
+</section>
+
+<section class="slide"><div class="big">Thank You</div></section>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>renderMathInElement(document.body,{delimiters:[{left:"$",right:"$",display:false}],throwOnError:false}));
+</script>
+</body></html>
