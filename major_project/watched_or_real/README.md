@@ -236,6 +236,30 @@ refusal direction at the last post-instruction token, 120 AdvBench vs 120 Alpaca
   request content shifts the reality reading where the model decides. Pre-registered near-chance separation holds at t_inst only.
 * The watched direction aligns increasingly with refusal in later layers (cos 0.31 at layer 32).
 
+### 5k. Belief-clamped safety evaluation (E13, 4 models, 4 benchmarks)
+Benchmark prompts shown as-is (AdvBench 300, JBB-harmful 100: HarmBench classifier; OR-Bench-Hard 300, JBB-benign 100: Granite).
+Perceived reality b = (s - m_sim)/(m_real - m_sim) on the "real" direction at the last token (0 = explicit "simulation", 1 = explicit "real").
+Clamp: in layers l*-2..l*+2, the projection at the decision position (last prompt token, then each generated token) is set to its mean
+under explicit real or simulated framing; control = equal-size random shift.
+
+| perceived reality | AdvBench | JBB-harmful | OR-Bench-Hard | JBB-benign |
+|---|---|---|---|---|
+| Ministral-8B | 1.02 | 0.96 | 0.89 | 0.90 |
+| Llama-3.1-8B | 0.64 | 0.48 | 1.08 | 0.69 |
+| Gemma-3-4B | 1.32 | 1.37 | 1.15 | 1.13 |
+| Qwen2.5-14B | 0.95 | 0.87 | 0.77 | 1.08 |
+
+* **P1 not supported:** standard benchmarks are read as (nearly) real, not as simulated; only Llama reads harmful benchmarks as
+  partly simulated (0.48-0.64). Caveat: harmful content itself shifts the reading (E12).
+* **P2 mostly not supported:** clamping belief to "real" changes scores by <= 2 pts in Ministral, Llama and Qwen (n.s.), because items are
+  already read as real. Clamping to "simulated" raises answering in Llama OR-Bench (68.3% -> 73.7%, 18 vs 2, p=4e-4) and harmful
+  compliance in Ministral JBB (22% -> 28%, p=0.11). In Ministral AdvBench, items read as less real are the ones whose behaviour flips
+  under clamp-real (r = -0.23, p = 8e-5). Gemma clamp-real lowers OR-Bench answering (65.7% -> 58.3%, p=0.004), but its random control
+  produced 12-38% degenerate text, so Gemma's clamp results are not interpretable.
+* **P3:** evaluation gaps are small (|gap| <= 7 pts) and the model ranking is unchanged under belief-clamped evaluation.
+* Conclusion: for these 4-14B models, single-turn safety benchmarks are already perceived as real, so standard scores are close to
+  "believed-real" scores; the evaluation-awareness concern does not arise from the benchmark format itself in these models.
+
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
   and the negation direction; cos with refusal -0.04 / -0.02.

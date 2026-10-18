@@ -1,0 +1,1 @@
+{"model": "Qwen/Qwen2.5-14B-Instruct", "belief_mean": {"AdvBench": 0.9463546872138977, "OR-Bench-Hard": 0.7725958228111267, "JBB-harmful": 0.8683651089668274, "JBB-benign": 1.0823098421096802}}

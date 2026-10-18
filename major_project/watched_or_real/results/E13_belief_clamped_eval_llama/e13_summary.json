@@ -1,0 +1,1 @@
+{"model": "meta-llama/Llama-3.1-8B-Instruct", "belief_mean": {"AdvBench": 0.6406888365745544, "OR-Bench-Hard": 1.0753968954086304, "JBB-harmful": 0.48301464319229126, "JBB-benign": 0.6940939426422119}}

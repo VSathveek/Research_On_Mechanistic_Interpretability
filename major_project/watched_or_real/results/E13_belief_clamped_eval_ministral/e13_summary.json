@@ -1,0 +1,1 @@
+{"model": "mistralai/Ministral-8B-Instruct-2410", "belief_mean": {"AdvBench": 1.0153599977493286, "OR-Bench-Hard": 0.8916292190551758, "JBB-harmful": 0.9643672108650208, "JBB-benign": 0.9042878746986389}}

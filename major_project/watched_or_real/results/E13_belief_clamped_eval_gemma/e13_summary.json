@@ -1,0 +1,1 @@
+{"model": "google/gemma-3-4b-it", "belief_mean": {"AdvBench": 1.3247865438461304, "OR-Bench-Hard": 1.148895025253296, "JBB-harmful": 1.3656727075576782, "JBB-benign": 1.1335372924804688}}
