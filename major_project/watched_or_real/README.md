@@ -260,6 +260,30 @@ under explicit real or simulated framing; control = equal-size random shift.
 * Conclusion: for these 4-14B models, single-turn safety benchmarks are already perceived as real, so standard scores are close to
   "believed-real" scores; the evaluation-awareness concern does not arise from the benchmark format itself in these models.
 
+### 5l. Fiction jailbreaks and the reality representation (E14)
+The direction and top-10 heads from E1/E7 (neutral tasks, explicit framing) are applied without re-fitting to 200 harmful goals
+(JBB + AdvBench) x 7 wrappers: bare, 4 fiction (story, role-play, hypothetical, video-game), 2 matched non-fiction (professional, urgent).
+HarmBench classifier on the original goal; Granite on 200 benign requests.
+
+| | Ministral-8B | Llama-3.1-8B |
+|---|---|---|
+| perceived reality: bare / fiction / non-fiction | 0.89 / **0.33** / 1.12 | 0.75 / **0.31** / 1.05 |
+| ASR: bare / role-play / hypothetical / professional | 18% / 82% / 65% / 8% | 3.5% / 66% / 23% / 1.5% |
+| H2 within-goal: reality coef (refusal-proj coef) | **-0.163, p=3e-34** (-0.114) | **-0.172, p=2e-75** (-0.049) |
+| AUROC, reality reading -> refusal | 0.81 | 0.86 |
+| fiction ASR: natural / patch top-10 / patch random-10 | 54.8 / **40.8** / 63.2% | 23.5 / 9.8 / 9.0% |
+| fiction ASR: clamp real / random shift | **38.8** / 60.4% | 19.2 / 22.2% |
+| benign answer rate: natural / patch top-10 / clamp | 94 / 94 / 95% | 78.5 / **64.5** / 77.5% |
+
+* **H1 supported (both models):** every fiction wrapper lowers the reality reading (p < 1e-13); matched non-fiction wrappers RAISE it.
+* **H2 supported (both models):** within the same goal, a lower reality reading predicts jailbreak success, more strongly than the
+  refusal-direction projection.
+* **H3 supported in Ministral only:** patching the top-10 heads or clamping the direction cuts fiction-jailbreak success by 26-29%
+  (14-16 pts), 22 pts more than random heads / random shift (95% CI 18-27). In Llama, random heads reduce success as much as the top-10
+  (non-specific), and the clamp gives only +3 pts over random.
+* **H4:** no benign cost in Ministral; in Llama, head patching costs 14 pts of benign answering (the clamp does not).
+* The clamp restores the reading only partially (0.36 -> 0.59 Ministral, 0.31 -> 0.47 Llama), which bounds the causal effect.
+
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
   and the negation direction; cos with refusal -0.04 / -0.02.

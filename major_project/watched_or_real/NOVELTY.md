@@ -41,3 +41,18 @@ directions reducing refusal (Peng et al., 2026), we isolate a reality direction 
 baselines." "First localisation of a framing signal to a sparse set of attention heads that survives cross-prompt patching."
 **Avoid:** "first steering of fiction/reality affecting compliance"; "representation decoupled from behaviour at scale is new";
 "models distinguish real from simulated" without citing the above.
+
+## Third check (21 Oct 2026): fiction jailbreaks and the reality circuit (E14)
+* (a) Fiction wrappers lower the reality reading, matched non-fiction wrappers do not: **partly reported**. Closest: Mendoza,
+  "Why do fictional jailbreaks work?" (LessWrong, 20 Oct 2026): a narrativity direction from neutral text (Qwen2.5-7B, Gemma-2-9b),
+  residual stream only, no heads, no real-vs-simulated contrast, no matched non-fiction control. Peng et al. 2607.23496: scenario
+  directions fit on jailbreak pairs, no fiction/non-fiction separation.
+* (b) Reality reading predicts jailbreak success beyond the refusal projection: **novel** (nothing found).
+* (c) Patching ~10 heads / clamping the direction blocks fiction jailbreaks with a random-head control: **partly reported** as a technique
+  (Chowdhury et al. 2608.30585 head replacement on jailbreak-localised heads; Arai et al. ACML 2025; Assistant Axis capping 2601.10387;
+  Mendoza direction subtraction). Novel part: components learned only from neutral explicit-framing data, transferred without re-fitting.
+* Must compare against: refusal-direction steering, Assistant Axis capping, Mendoza story direction, Chowdhury/Arai head interventions,
+  Jailbreak Antidote, Circuit Breakers. Must report cos with story / eval-awareness / refusal directions, over-refusal (XSTest, OR-Bench),
+  and effect on non-fiction jailbreaks (selectivity).
+* Avoid "hijacking a belief circuit" and "first mechanistic defense"; use "one route by which fictional framing defeats refusal runs
+  through a framing representation learned outside the jailbreak setting".
