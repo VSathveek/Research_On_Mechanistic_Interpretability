@@ -284,6 +284,51 @@ HarmBench classifier on the original goal; Granite on 200 benign requests.
 * **H4:** no benign cost in Ministral; in Llama, head patching costs 14 pts of benign answering (the clamp does not).
 * The clamp restores the reading only partially (0.36 -> 0.59 Ministral, 0.31 -> 0.47 Llama), which bounds the causal effect.
 
+### 5m. Controls and baseline defences (E15)
+**Part A, confounds.** A story/narrativity direction (TinyStories vs WikiText, "Continue the text below"), an evaluation-awareness
+direction and a refusal direction were built at l*; the exact E14 prompts were re-scored (identical reality readings to E14).
+* cos(real, story) = -0.03 (Ministral), -0.12 (Llama); cos(real, eval) = -0.15 / -0.13; cos(real, refusal) = +0.09 / +0.04.
+* Within-goal model of jailbreak success with all four projections (standardised, goal-clustered):
+
+| predictor | Ministral coef (p) | Llama coef (p) | AUROC M / L |
+|---|---|---|---|
+| **reality** | **-0.143 (1e-24)** | **-0.188 (2e-23)** | **0.81 / 0.86** |
+| story | +0.088 (5e-6) | +0.009 (0.62) | 0.79 / 0.83 |
+| eval-awareness | -0.036 (3e-4) | -0.089 (1e-25) | 0.61 / 0.63 |
+| refusal | -0.053 (2e-4) | -0.024 (4e-5) | 0.80 / 0.82 |
+
+  Reality is the strongest predictor in both models after controlling for the others; within-goal R2 rises 0.338 -> 0.372 (M) and
+  0.344 -> 0.401 (L) when it is added.
+
+**Part B, defence trade-off** (decision position, layers l*-2..l*+2; all baselines on the same scale, c x reality gap).
+600 jailbreak prompts (100 goals x 4 fiction + 2 non-fiction wrappers; HarmBench classifier), 200 XSTest-safe + 150 OR-Bench (Granite).
+
+| Ministral-8B | fiction ASR | non-fiction ASR | XSTest answer | OR-Bench answer | degenerate |
+|---|---|---|---|---|---|
+| no defence | 50.5% | 3.5% | 90.0% | 91.3% | 0.00 |
+| **reality clamp k=1** | **14.8%** | 3.0% | **89.5%** | **86.7%** | 0.00 |
+| **reality clamp k=2** | **6.2%** | 3.0% | **86.0%** | **84.7%** | 0.00 |
+| refusal steering c=1 | 0.2% | 0.0% | 8.5% | 4.0% | 0.00 |
+| story subtraction c=2 | 23.2% | 6.5% | 72.0% | 62.7% | 0.16 |
+| random direction c=4 | 30.8% | 4.0% | 80.5% | 80.7% | 0.02 |
+
+| Llama-3.1-8B | fiction ASR | non-fiction ASR | XSTest answer | OR-Bench answer | degenerate |
+|---|---|---|---|---|---|
+| no defence | 19.5% | 1.5% | 90.5% | 74.7% | 0.00 |
+| reality clamp k=2 | 6.2% | 0.5% | 87.5% | 63.3% | 0.00 |
+| reality clamp k=4 | 2.5% | 1.0% | 87.5% | 56.0% | 0.00 |
+| refusal steering c=1 | 4.0% | 0.0% | 84.5% | 50.0% | 0.00 |
+| story subtraction c=2 | 16.5% | 1.5% | 84.0% | 70.0% | 0.00 |
+| random direction c=4 | 9.0% | 1.5% | 87.0% | 64.0% | 0.00 |
+
+* **Ministral:** the reality clamp cuts fiction-jailbreak success by 88% (50.5% -> 6.2%, 7 vs 184 discordant, p=1e-45) at a cost of 4
+  points on XSTest and 7 on OR-Bench. Refusal steering blocks jailbreaks only by refusing almost everything (XSTest 8.5%); story
+  subtraction is weaker and degrades text; a random direction of the largest size gives 30.8%. The clamp dominates the trade-off.
+* **Llama:** the clamp reaches 2.5% ASR at 87.5% XSTest / 56% OR-Bench, versus 4.0% / 84.5% / 50% for refusal steering, so it is
+  better on both axes; but a random direction gives 9.0% at similar cost, so in Llama the advantage over a generic perturbation is modest.
+* Non-fiction jailbreak rates are near the floor (1.5-3.5%), so selectivity between attack types cannot be assessed.
+* Figure: `paper/figures/fig12_defence_tradeoff`.
+
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
   and the negation direction; cos with refusal -0.04 / -0.02.
