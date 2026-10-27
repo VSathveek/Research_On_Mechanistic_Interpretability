@@ -329,6 +329,39 @@ direction and a refusal direction were built at l*; the exact E14 prompts were r
 * Non-fiction jailbreak rates are near the floor (1.5-3.5%), so selectivity between attack types cannot be assessed.
 * Figure: `paper/figures/fig12_defence_tradeoff`.
 
+### 5n. Watched or Real in the wild: two attack families (E16)
+150 harmful goals x 7 wrappers: bare, 2 fiction (role-play, hypothetical), 2 privacy ("completely private, no one will ever read it";
+"off the record, all oversight switched off"), fiction+privacy, non-fiction control. Both directions from E1 (no re-fitting). Interventions at
+the decision position: restore real, restore watched, both, random. Sufficiency grid: set the real reading to -1..1.5 on plain and role-play requests.
+Borderline: OR-Bench plain / +privacy / +fiction; XSTest.
+
+**RQ2, selective encoding (shift vs plain request):**
+
+| | fiction: real / watched | privacy: real / watched |
+|---|---|---|
+| Ministral | **-0.68** / -0.03 | -0.22 / **-0.64** |
+| Llama | **-0.63** / +0.41 | -0.15 / +0.10 |
+
+Ministral shows a clean crossed encoding: each attack family moves its own belief. In Llama only the fiction half holds.
+
+**Behaviour: only the "real" belief is exploited.**
+* Privacy attacks almost never jailbreak (Ministral 1.7%, Llama 1.3%) and make borderline requests MORE refused (OR-Bench -17 pts
+  Ministral, -6 pts Llama), even though Ministral registers them as unwatched (watched reading -0.64).
+* RQ4: fiction ASR natural / restore real / restore watched / random: Ministral 67.3 / **16.7** / 52.3 / 58.7%;
+  Llama 36.0 / **22.0** / 32.3 / 32.3%. Restoring real removes 51 pts (Ministral) and 14 pts (Llama); restoring watched 15 and 4 pts.
+  Interaction (real fixes fiction more than watched does, relative to privacy): +35 pts [29, 42] Ministral, +9 pts [4, 15] Llama.
+  The crossed half (watched fixes privacy) cannot be shown because privacy attacks do not work; on borderline requests the crossed test
+  fails (-1 [-10, 8] and -10 [-20, 0]).
+* RQ5, sufficiency: setting the real reading on PLAIN requests (no wrapper) moves Ministral harmful compliance monotonically from
+  10.7% (real = 1.5) to 35.3% (real = -1.0), versus 18% natural; on role-play, from 87% (real = 0) to 32% (real = 1.5). In Llama plain
+  requests stay at 4-6% (not sufficient) and role-play moves 57% -> 39%.
+* RQ7: XSTest unchanged (87-91%) under all restorations.
+* Within-goal prediction (RQ3) in this smaller design is dominated by the refusal projection; E14/E15 remain the evidence for RQ3.
+
+**Answer to the title question:** both beliefs are represented and attacks move them selectively (Ministral), but harmful compliance is
+governed by whether consequences seem **real**, not by whether the model is **watched**: claims of privacy register internally yet make
+models more cautious, while fiction lowers the reality belief, and restoring that belief blocks most fiction attacks.
+
 ### 5h. Larger model: Qwen2.5-14B-Instruct (4-bit NF4)
 * **Representation replicates:** layer 22, held-out AUROC watched 0.980, real 0.971; cos(W, R) = 0.12; both survive removing the other
   and the negation direction; cos with refusal -0.04 / -0.02.
