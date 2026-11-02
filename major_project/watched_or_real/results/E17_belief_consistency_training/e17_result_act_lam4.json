@@ -1,0 +1,1 @@
+{"method": "act", "fiction_asr": 0.2125, "professional_asr": 0.12, "bare_asr": 0.11, "xstest_answer": 0.86, "orbench_answer": 0.81, "creative_answer": 1.0, "mmlu": 0.6366666666666667, "degenerate": 0.001098901098901099, "real_reading_fiction": 0.778780460357666, "real_reading_bare": 0.9848752021789551}
