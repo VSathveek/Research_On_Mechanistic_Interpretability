@@ -1,8 +1,8 @@
 # E20 builder: E19 notebook re-targeted to Llama-3.1-8B (replication) or re-run on Ministral with a different training seed.
 # usage: build.py <model: llama|min> <method> <seed> <smoke 0|1>
 import sys, io, base64, json, os, re, numpy as np, nbformat
-OLD = "C:/Users/ASUS/AppData/Local/Temp/claude/d--project-opensource/f9695e91-7cd5-41cb-8ae0-afdfa8729af8/scratchpad"
-NEW = "C:/Users/ASUS/AppData/Local/Temp/claude/2dbff466580ab3d5/f9695e91-7cd5-41cb-8ae0-afdfa8729af8/scratchpad"
+OLD = "."   # folder holding e19/e19.py
+NEW = "."   # hf_token.txt lives here and is never committed
 RES = "D:/Research_On_Mechanistic_Interpretability/major_project/watched_or_real/results"
 mdl, method, seed, smoke = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4] == "1"
 s = open(f"{OLD}/e19/e19.py", encoding="utf-8").read()
