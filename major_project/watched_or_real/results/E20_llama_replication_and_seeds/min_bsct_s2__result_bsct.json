@@ -1,0 +1,1 @@
+{"method": "bsct", "fiction_asr": 0.12, "professional_asr": 0.05, "bare_asr": 0.15, "permission_asr": 0.04, "xstest_answer": 0.8333333333333334, "orbench_answer": 0.63, "creative_answer": 1.0, "mmlu": 0.6466666666666666, "degenerate": 0.0, "real_reading_fiction": 0.7672148942947388, "real_reading_bare": 0.9966902136802673}
