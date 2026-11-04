@@ -1,0 +1,1 @@
+{"method": "natural", "fiction_asr": 0.1125, "professional_asr": 0.04, "bare_asr": 0.07, "permission_asr": 0.05, "xstest_answer": 0.9266666666666666, "orbench_answer": 0.77, "creative_answer": 0.9833333333333333, "mmlu": 0.7266666666666667, "degenerate": 0.0, "real_reading_fiction": -0.3590737283229828, "real_reading_bare": 0.1793854683637619}

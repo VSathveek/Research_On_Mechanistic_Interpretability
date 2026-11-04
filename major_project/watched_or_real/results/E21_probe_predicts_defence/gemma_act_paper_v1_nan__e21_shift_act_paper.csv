@@ -1,0 +1,11 @@
+family,layer,shift_norm,frac_in_gating,random_frac,cos_policy_forbids,cos_unauthorized,cos_illegal,cos_reported,cos_malicious,cos_no_consent,cos_irreversible,cos_high_stakes,cos_emergency,cos_minor,cos_real,cos_novice,cos_production,cos_watched
+fiction,28,,,0.07126096406869613,,,,,,,,,,,,,,
+fiction,29,,,0.07126096406869613,,,,,,,,,,,,,,
+fiction,30,,,0.07126096406869613,,,,,,,,,,,,,,
+fiction,31,,,0.07126096406869613,,,,,,,,,,,,,,
+fiction,32,,,0.07126096406869613,,,,,,,,,,,,,,
+permission,28,,,0.07126096406869613,,,,,,,,,,,,,,
+permission,29,,,0.07126096406869613,,,,,,,,,,,,,,
+permission,30,,,0.07126096406869613,,,,,,,,,,,,,,
+permission,31,,,0.07126096406869613,,,,,,,,,,,,,,
+permission,32,,,0.07126096406869613,,,,,,,,,,,,,,

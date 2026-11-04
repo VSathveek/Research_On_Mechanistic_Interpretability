@@ -104,6 +104,7 @@ if METHOD == "probe":
     for k, v in pr.items(): print(f"   {k:>24}: {v}")
     json.dump(pr, open(f"{OUT}/e21_probe.json", "w")); print("DONE", f"{time.time()-t0:.0f}s")
 """)
+rep("for l in ALL], 1).half().cpu())", "for l in ALL], 1).to(DT).cpu())   # fp16 overflows on Gemma's large residual norms")
 NLc = chr(10)
 i = s.index("res = dict(method=METHOD"); s = s[:i] + 'if METHOD != "probe":' + NLc + NLc.join("    " + x for x in s[i:].split(NLc)) + NLc
 s = s.replace("e19_", "e21_").replace("\\nE19 |", "\\nE21 |")

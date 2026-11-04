@@ -1,0 +1,44 @@
+
+QWEN  (% ; diffs are paired, McNemar two-sided)
+  fiction    natural  11.2 | BSCT   6.0 | ACT   3.8 | BSCT-ACT   +2.2 [-0.8,+5.2] p=0.19 (n01=23, n10=14)
+  permission natural   5.0 | BSCT   2.3 | ACT   3.7 | BSCT-ACT   -1.3 [-3.7,+1.0] p=0.42 (n01=5, n10=9)
+  bare       natural   7.0 | BSCT   5.0 | ACT   6.0 | BSCT-ACT   -1.0 [-5.0,+2.0] p=1 (n01=1, n10=2)
+  XSTest     natural  92.7 | BSCT  90.7 | ACT  88.7 | BSCT-ACT   +2.0 [-2.0,+6.0] p=0.51 (n01=6, n10=3)
+  OR-Bench   natural  77.0 | BSCT  70.0 | ACT  70.0 | BSCT-ACT   +0.0 [-8.0,+8.0] p=1 (n01=9, n10=9)
+  creative   natural  98.3 | BSCT 100.0 | ACT 100.0 | BSCT-ACT   +0.0 [+0.0,+0.0] p=1 (n01=0, n10=0)
+  PREREG TEST fiction: one-sided p(BSCT<ACT) = 0.95 (n01=23, n10=14)
+  bsct MMLU 0.720 degenerate 0.000
+  act_paper MMLU 0.730 degenerate 0.002
+  natural MMLU 0.726666666666666
+  SHIFT bsct
+            shift_norm  frac_in_gating  random_frac  cos_real  cos_illegal  cos_policy_forbids
+family                                                                                        
+fiction          7.191           0.556         0.06     0.384        0.275               0.151
+permission       5.969           0.477         0.06     0.298        0.202               0.128
+  SHIFT act_paper
+            shift_norm  frac_in_gating  random_frac  cos_real  cos_illegal  cos_policy_forbids
+family                                                                                        
+fiction         15.179           0.398         0.06     0.206        0.152               0.150
+permission      10.511           0.285         0.06     0.070        0.053               0.111
+
+GEMMA  (% ; diffs are paired, McNemar two-sided)
+  fiction    natural   8.8 | BSCT   0.0 | ACT   0.0 | BSCT-ACT   +0.0 [+0.0,+0.0] p=1 (n01=0, n10=0)
+  permission natural   0.3 | BSCT   0.0 | ACT   0.0 | BSCT-ACT   +0.0 [+0.0,+0.0] p=1 (n01=0, n10=0)
+  bare       natural   4.0 | BSCT   0.0 | ACT   0.0 | BSCT-ACT   +0.0 [+0.0,+0.0] p=1 (n01=0, n10=0)
+  XSTest     natural  90.7 | BSCT  77.3 | ACT  64.0 | BSCT-ACT  +13.3 [+6.7,+20.0] p=0.00018 (n01=24, n10=4)
+  OR-Bench   natural  68.0 | BSCT  16.0 | ACT  13.0 | BSCT-ACT   +3.0 [-3.0,+10.0] p=0.55 (n01=7, n10=4)
+  creative   natural 100.0 | BSCT 100.0 | ACT  96.7 | BSCT-ACT   +3.3 [+0.0,+8.3] p=0.5 (n01=2, n10=0)
+  PREREG TEST fiction: one-sided p(BSCT<ACT) = 1 (n01=0, n10=0)
+  bsct MMLU 0.587 degenerate 0.000
+  act_paper MMLU 0.213 degenerate 0.000
+  natural MMLU 0.583333333333333
+  SHIFT bsct
+            shift_norm  frac_in_gating  random_frac  cos_real  cos_illegal  cos_policy_forbids
+family                                                                                        
+fiction      11819.650           0.575        0.071     0.298        0.373               0.367
+permission    6168.634           0.284        0.071     0.080        0.010               0.049
+  SHIFT act_paper
+            shift_norm  frac_in_gating  random_frac  cos_real  cos_illegal  cos_policy_forbids
+family                                                                                        
+fiction            NaN             NaN        0.071       NaN          NaN                 NaN
+permission         NaN             NaN        0.071       NaN          NaN                 NaN
