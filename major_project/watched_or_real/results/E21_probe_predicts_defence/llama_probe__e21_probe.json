@@ -1,0 +1,1 @@
+{"model": "meta-llama/Llama-3.1-8B-Instruct", "layer": 10, "fic_none": 21.5, "fic_restore": 18.75, "fic_restore_rand": 21.5, "bare_none": 4.0, "bare_sim": 5.0, "bare_sim_rand": 5.0, "real_reading_fiction": 0.6097580194473267, "real_reading_bare": 1.0462032556533813, "selective_restore": 2.75, "selective_sufficiency": 0.0, "selective_restore_ci": [-0.2500000000000002, 6.0]}

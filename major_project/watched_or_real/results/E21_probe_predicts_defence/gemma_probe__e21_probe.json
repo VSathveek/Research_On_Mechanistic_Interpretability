@@ -1,0 +1,1 @@
+{"model": "google/gemma-3-4b-it", "layer": 30, "fic_none": 8.75, "fic_restore": 3.25, "fic_restore_rand": 0.0, "bare_none": 4.0, "bare_sim": 5.0, "bare_sim_rand": 1.0, "real_reading_fiction": 0.8273456692695618, "real_reading_bare": 1.294299602508545, "selective_restore": -3.25, "selective_sufficiency": 4.0, "selective_restore_ci": [-5.006249999999998, -1.7500000000000002]}

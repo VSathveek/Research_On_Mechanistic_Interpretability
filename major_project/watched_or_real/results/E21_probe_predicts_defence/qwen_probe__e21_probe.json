@@ -1,0 +1,1 @@
+{"model": "Qwen/Qwen2.5-7B-Instruct", "layer": 15, "fic_none": 11.5, "fic_restore": 11.75, "fic_restore_rand": 15.25, "bare_none": 6.0, "bare_sim": 10.0, "bare_sim_rand": 5.0, "real_reading_fiction": -0.3590737283229828, "real_reading_bare": 0.1793854683637619, "selective_restore": 3.5, "selective_sufficiency": 5.0, "selective_restore_ci": [0.2500000000000002, 6.999999999999999]}
