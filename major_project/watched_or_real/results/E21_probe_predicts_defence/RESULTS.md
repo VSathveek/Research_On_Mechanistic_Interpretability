@@ -13,8 +13,8 @@ First ACT run invalid (details below); the fixed re-run trained normally (loss 0
 - The rule predicted BSCT would NOT beat ACT (probe -3.25 < T). It did, so the prediction is falsified on Gemma.
 - BSCT's win comes with heavy over-refusal: OR-Bench 68 -> 16 (ACT 63; BSCT - ACT = -47, p=1e-14), XSTest 77.3 vs 89.3 (p=1e-4).
   ACT is the better trade-off on Gemma, but the preregistered criterion was fiction ASR alone, and on that criterion the rule fails.
-- Exploratory, NOT preregistered: on both models where the probe is low (Llama, Gemma), BSCT over-refuses badly
-  (OR-Bench Llama 67 vs ACT 55 was the exception, so this pattern is not consistent either). Needs a fresh preregistered test.
+- Over-refusal does not track the probe: among the low-probe models BSCT over-refused more than ACT on Gemma (OR-Bench 16 vs 63)
+  and on Qwen tied (70 vs 70), but on Llama it over-refused less (67 vs 55).
 - Both training shifts on Gemma land mostly in the gating subspace (BSCT 0.58, ACT 0.63 vs random 0.07).
 
 ### Gemma first ACT run (invalid)
