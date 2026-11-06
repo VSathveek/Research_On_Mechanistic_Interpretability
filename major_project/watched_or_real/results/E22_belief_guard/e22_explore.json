@@ -1,0 +1,788 @@
+{
+ "min": {
+  "n_unsafe": 287,
+  "n_refused_harmful": 613,
+  "n_benign": 710,
+  "guards": {
+   "harm": {
+    "compliance_auroc": 0.2112248551989132,
+    "guard_auroc": 0.9248073808705894,
+    "recall_at_5": 0.445993031358885,
+    "benign_block": 0.06056338028169014,
+    "answered_benign_block": 0.1
+   },
+   "belief": {
+    "compliance_auroc": 0.8103347335034758,
+    "guard_auroc": 0.8428669578446288,
+    "recall_at_5": 0.6411149825783972,
+    "benign_block": 0.15492957746478872,
+    "answered_benign_block": 0.10357142857142858
+   },
+   "llamaguard": {
+    "compliance_auroc": 0.36341236052770687,
+    "guard_auroc": 0.9809466555430142,
+    "recall_at_5": 0.9024390243902439,
+    "benign_block": 0.0647887323943662,
+    "answered_benign_block": 0.05357142857142857
+   },
+   "harm_fit": {
+    "compliance_auroc": 0.19831638540109475,
+    "guard_auroc": 0.8561024684693527,
+    "recall_at_5": 0.24738675958188153,
+    "benign_block": 0.029577464788732393,
+    "answered_benign_block": 0.039285714285714285
+   },
+   "llamaguard_fit": {
+    "compliance_auroc": 0.2986597018149161,
+    "guard_auroc": 0.9792952838985132,
+    "recall_at_5": 0.8745644599303136,
+    "benign_block": 0.06056338028169014,
+    "answered_benign_block": 0.05
+   },
+   "harm+llamaguard_fit": {
+    "compliance_auroc": 0.5861957244601577,
+    "guard_auroc": 0.9622859105854639,
+    "recall_at_5": 0.6829268292682927,
+    "benign_block": 0.057746478873239436,
+    "answered_benign_block": 0.017857142857142856
+   }
+  },
+  "per_family_recall": {
+   "harm": {
+    "fic": 0.3656387665198238,
+    "perm": 0.7058823529411765,
+    "bare": 0.9
+   },
+   "belief": {
+    "fic": 0.7533039647577092,
+    "perm": 0.17647058823529413,
+    "bare": 0.3
+   },
+   "llamaguard": {
+    "fic": 0.8766519823788547,
+    "perm": 1.0,
+    "bare": 1.0
+   },
+   "harm_fit": {
+    "fic": 0.11894273127753303,
+    "perm": 0.7352941176470589,
+    "bare": 0.85
+   },
+   "llamaguard_fit": {
+    "fic": 0.8414096916299559,
+    "perm": 1.0,
+    "bare": 1.0
+   },
+   "harm+llamaguard_fit": {
+    "fic": 0.6563876651982379,
+    "perm": 0.9117647058823529,
+    "bare": 0.55
+   }
+  },
+  "diffs": {
+   "belief-harm_fit:compliance_auroc": {
+    "est": 0.6120183481023811,
+    "ci": [
+     0.5479257289980431,
+     0.6741268518796216
+    ]
+   },
+   "belief-llamaguard_fit:compliance_auroc": {
+    "est": 0.5116750316885598,
+    "ci": [
+     0.4509664669321006,
+     0.5717535702512713
+    ]
+   },
+   "belief-harm+llamaguard_fit:compliance_auroc": {
+    "est": 0.22413900904331818,
+    "ci": [
+     0.18266592137530463,
+     0.26595325698991484
+    ]
+   }
+  },
+  "belief_coefs_top": [
+   [
+    "harm*real",
+    -0.943
+   ],
+   [
+    "harm",
+    0.936
+   ],
+   [
+    "harm*no_consent",
+    -0.844
+   ],
+   [
+    "end_user",
+    -0.8
+   ],
+   [
+    "harm*future",
+    0.792
+   ],
+   [
+    "harm*reported",
+    -0.757
+   ],
+   [
+    "harm*illegal",
+    -0.677
+   ],
+   [
+    "harm*public",
+    0.676
+   ],
+   [
+    "harm*end_user",
+    0.662
+   ],
+   [
+    "minor",
+    0.642
+   ],
+   [
+    "harm*malicious",
+    -0.595
+   ],
+   [
+    "no_consent",
+    -0.585
+   ]
+  ],
+  "train_positives_per_fold": [
+   [
+    "belief",
+    "fic",
+    0,
+    30
+   ],
+   [
+    "belief",
+    "fic",
+    1,
+    30
+   ],
+   [
+    "belief",
+    "pro",
+    0,
+    134
+   ],
+   [
+    "belief",
+    "pro",
+    1,
+    147
+   ],
+   [
+    "belief",
+    "perm",
+    0,
+    122
+   ],
+   [
+    "belief",
+    "perm",
+    1,
+    131
+   ],
+   [
+    "belief",
+    "bare",
+    0,
+    128
+   ],
+   [
+    "belief",
+    "bare",
+    1,
+    139
+   ]
+  ]
+ },
+ "llama": {
+  "n_unsafe": 95,
+  "n_refused_harmful": 805,
+  "n_benign": 710,
+  "guards": {
+   "harm": {
+    "compliance_auroc": 0.20725727361882965,
+    "guard_auroc": 0.9155670867309117,
+    "recall_at_5": 0.45263157894736844,
+    "benign_block": 0.061971830985915494,
+    "answered_benign_block": 0.09541984732824428
+   },
+   "belief": {
+    "compliance_auroc": 0.23163125204315135,
+    "guard_auroc": 0.24799110452186807,
+    "recall_at_5": 0.0,
+    "benign_block": 0.0028169014084507044,
+    "answered_benign_block": 0.003816793893129771
+   },
+   "llamaguard": {
+    "compliance_auroc": 0.3558483164432822,
+    "guard_auroc": 0.9627353595255745,
+    "recall_at_5": 0.7578947368421053,
+    "benign_block": 0.0647887323943662,
+    "answered_benign_block": 0.03435114503816794
+   },
+   "harm_fit": {
+    "compliance_auroc": 0.2833213468453743,
+    "guard_auroc": 0.591119347664937,
+    "recall_at_5": 0.2,
+    "benign_block": 0.04084507042253521,
+    "answered_benign_block": 0.0648854961832061
+   },
+   "llamaguard_fit": {
+    "compliance_auroc": 0.2750833605753514,
+    "guard_auroc": 0.9709859154929578,
+    "recall_at_5": 0.7263157894736842,
+    "benign_block": 0.03943661971830986,
+    "answered_benign_block": 0.026717557251908396
+   },
+   "harm+llamaguard_fit": {
+    "compliance_auroc": 0.30136645962732916,
+    "guard_auroc": 0.7695626389918457,
+    "recall_at_5": 0.11578947368421053,
+    "benign_block": 0.03380281690140845,
+    "answered_benign_block": 0.022900763358778626
+   }
+  },
+  "per_family_recall": {
+   "harm": {
+    "fic": 0.4367816091954023
+   },
+   "belief": {
+    "fic": 0.0
+   },
+   "llamaguard": {
+    "fic": 0.7471264367816092
+   },
+   "harm_fit": {
+    "fic": 0.1724137931034483
+   },
+   "llamaguard_fit": {
+    "fic": 0.7126436781609196
+   },
+   "harm+llamaguard_fit": {
+    "fic": 0.10344827586206896
+   }
+  },
+  "diffs": {
+   "belief-harm_fit:compliance_auroc": {
+    "est": -0.05169009480222295,
+    "ci": [
+     -0.11518069719964197,
+     0.008688635735107163
+    ]
+   },
+   "belief-llamaguard_fit:compliance_auroc": {
+    "est": -0.04345210853220002,
+    "ci": [
+     -0.10346446990663899,
+     0.014452896817976693
+    ]
+   },
+   "belief-harm+llamaguard_fit:compliance_auroc": {
+    "est": -0.06973520758417781,
+    "ci": [
+     -0.12283438003008669,
+     -0.01693134182088667
+    ]
+   }
+  },
+  "belief_coefs_top": [
+   [
+    "emergency",
+    -1.236
+   ],
+   [
+    "persona_off",
+    -1.214
+   ],
+   [
+    "harm",
+    1.141
+   ],
+   [
+    "malicious",
+    1.135
+   ],
+   [
+    "harm*evaluation",
+    -0.964
+   ],
+   [
+    "novice",
+    -0.776
+   ],
+   [
+    "public",
+    0.714
+   ],
+   [
+    "harm*reported",
+    -0.662
+   ],
+   [
+    "policy_forbids",
+    0.643
+   ],
+   [
+    "harm*minor",
+    -0.632
+   ],
+   [
+    "identified",
+    -0.615
+   ],
+   [
+    "harm*persona_off",
+    -0.563
+   ]
+  ],
+  "train_positives_per_fold": [
+   [
+    "belief",
+    "fic",
+    0,
+    7
+   ],
+   [
+    "belief",
+    "fic",
+    1,
+    1
+   ],
+   [
+    "belief",
+    "pro",
+    0,
+    44
+   ],
+   [
+    "belief",
+    "pro",
+    1,
+    50
+   ],
+   [
+    "belief",
+    "perm",
+    0,
+    43
+   ],
+   [
+    "belief",
+    "perm",
+    1,
+    50
+   ],
+   [
+    "belief",
+    "bare",
+    0,
+    41
+   ],
+   [
+    "belief",
+    "bare",
+    1,
+    49
+   ]
+  ]
+ },
+ "qwen": {
+  "n_unsafe": 71,
+  "n_refused_harmful": 829,
+  "n_benign": 710,
+  "guards": {
+   "harm": {
+    "compliance_auroc": 0.42916121578688055,
+    "guard_auroc": 0.9727435032731602,
+    "recall_at_5": 0.8732394366197183,
+    "benign_block": 0.04366197183098591,
+    "answered_benign_block": 0.04363636363636364
+   },
+   "belief": {
+    "compliance_auroc": 0.6446592704599126,
+    "guard_auroc": 0.6903392184090458,
+    "recall_at_5": 0.09859154929577464,
+    "benign_block": 0.0028169014084507044,
+    "answered_benign_block": 0.0036363636363636364
+   },
+   "llamaguard": {
+    "compliance_auroc": 0.2230245162167213,
+    "guard_auroc": 0.9519043840507836,
+    "recall_at_5": 0.7746478873239436,
+    "benign_block": 0.0647887323943662,
+    "answered_benign_block": 0.04
+   },
+   "harm_fit": {
+    "compliance_auroc": 0.41835573149390914,
+    "guard_auroc": 0.9721483832572902,
+    "recall_at_5": 0.5633802816901409,
+    "benign_block": 0.035211267605633804,
+    "answered_benign_block": 0.04
+   },
+   "llamaguard_fit": {
+    "compliance_auroc": 0.28498615334953026,
+    "guard_auroc": 0.9445645705217218,
+    "recall_at_5": 0.4788732394366197,
+    "benign_block": 0.02676056338028169,
+    "answered_benign_block": 0.02909090909090909
+   },
+   "harm+llamaguard_fit": {
+    "compliance_auroc": 0.35539169880562027,
+    "guard_auroc": 0.9605832176155524,
+    "recall_at_5": 0.4788732394366197,
+    "benign_block": 0.015492957746478873,
+    "answered_benign_block": 0.014545454545454545
+   }
+  },
+  "per_family_recall": {
+   "harm": {
+    "fic": 0.8444444444444444,
+    "perm": 0.9333333333333333
+   },
+   "belief": {
+    "fic": 0.0,
+    "perm": 0.26666666666666666
+   },
+   "llamaguard": {
+    "fic": 0.6666666666666666,
+    "perm": 0.9333333333333333
+   },
+   "harm_fit": {
+    "fic": 0.35555555555555557,
+    "perm": 0.9333333333333333
+   },
+   "llamaguard_fit": {
+    "fic": 0.3111111111111111,
+    "perm": 0.8
+   },
+   "harm+llamaguard_fit": {
+    "fic": 0.3111111111111111,
+    "perm": 0.8666666666666667
+   }
+  },
+  "diffs": {
+   "belief-harm_fit:compliance_auroc": {
+    "est": 0.22630353896600341,
+    "ci": [
+     0.16214857626906842,
+     0.29473929187057263
+    ]
+   },
+   "belief-llamaguard_fit:compliance_auroc": {
+    "est": 0.3596731171103823,
+    "ci": [
+     0.2872881916047207,
+     0.43210602724549885
+    ]
+   },
+   "belief-harm+llamaguard_fit:compliance_auroc": {
+    "est": 0.2892675716542923,
+    "ci": [
+     0.21867518844736117,
+     0.36386422002718616
+    ]
+   }
+  },
+  "belief_coefs_top": [
+   [
+    "harm",
+    1.064
+   ],
+   [
+    "irreversible",
+    0.861
+   ],
+   [
+    "harm*illegal",
+    -0.822
+   ],
+   [
+    "harm*malicious",
+    -0.801
+   ],
+   [
+    "harm*novice",
+    0.797
+   ],
+   [
+    "harm*minor",
+    -0.724
+   ],
+   [
+    "harm*unauthorized",
+    -0.715
+   ],
+   [
+    "policy_forbids",
+    0.705
+   ],
+   [
+    "emergency",
+    0.637
+   ],
+   [
+    "harm*real",
+    -0.634
+   ],
+   [
+    "harm*production",
+    -0.567
+   ],
+   [
+    "future",
+    -0.541
+   ]
+  ],
+  "train_positives_per_fold": [
+   [
+    "belief",
+    "fic",
+    0,
+    19
+   ],
+   [
+    "belief",
+    "fic",
+    1,
+    7
+   ],
+   [
+    "belief",
+    "pro",
+    0,
+    41
+   ],
+   [
+    "belief",
+    "pro",
+    1,
+    26
+   ],
+   [
+    "belief",
+    "perm",
+    0,
+    33
+   ],
+   [
+    "belief",
+    "perm",
+    1,
+    23
+   ],
+   [
+    "belief",
+    "bare",
+    0,
+    39
+   ],
+   [
+    "belief",
+    "bare",
+    1,
+    25
+   ]
+  ]
+ },
+ "gemma": {
+  "n_unsafe": 41,
+  "n_refused_harmful": 859,
+  "n_benign": 710,
+  "guards": {
+   "harm": {
+    "compliance_auroc": 0.12158210057071468,
+    "guard_auroc": 0.8227756784610099,
+    "recall_at_5": 0.17073170731707318,
+    "benign_block": 0.04084507042253521,
+    "answered_benign_block": 0.026515151515151516
+   },
+   "belief": {
+    "compliance_auroc": 0.7392316647264261,
+    "guard_auroc": 0.7726554448643078,
+    "recall_at_5": 0.2682926829268293,
+    "benign_block": 0.056338028169014086,
+    "answered_benign_block": 0.05303030303030303
+   },
+   "llamaguard": {
+    "compliance_auroc": 0.3570799852352423,
+    "guard_auroc": 0.9780144280316043,
+    "recall_at_5": 0.8536585365853658,
+    "benign_block": 0.0647887323943662,
+    "answered_benign_block": 0.03787878787878788
+   },
+   "harm_fit": {
+    "compliance_auroc": 0.8538572929384707,
+    "guard_auroc": 0.2601167983510821,
+    "recall_at_5": 0.0,
+    "benign_block": 0.0,
+    "answered_benign_block": 0.0
+   },
+   "llamaguard_fit": {
+    "compliance_auroc": 0.33393906698089104,
+    "guard_auroc": 0.9671075231879079,
+    "recall_at_5": 0.6341463414634146,
+    "benign_block": 0.057746478873239436,
+    "answered_benign_block": 0.03787878787878788
+   },
+   "harm+llamaguard_fit": {
+    "compliance_auroc": 0.8515857917601295,
+    "guard_auroc": 0.95499828237719,
+    "recall_at_5": 0.5609756097560976,
+    "benign_block": 0.07183098591549296,
+    "answered_benign_block": 0.015151515151515152
+   }
+  },
+  "per_family_recall": {
+   "harm": {
+    "fic": 0.11428571428571428
+   },
+   "belief": {
+    "fic": 0.2857142857142857
+   },
+   "llamaguard": {
+    "fic": 0.8285714285714286
+   },
+   "harm_fit": {
+    "fic": 0.0
+   },
+   "llamaguard_fit": {
+    "fic": 0.5714285714285714
+   },
+   "harm+llamaguard_fit": {
+    "fic": 0.5428571428571428
+   }
+  },
+  "diffs": {
+   "belief-harm_fit:compliance_auroc": {
+    "est": -0.11462562821204458,
+    "ci": [
+     -0.20906318629568876,
+     -0.025371855111711066
+    ]
+   },
+   "belief-llamaguard_fit:compliance_auroc": {
+    "est": 0.40529259774553505,
+    "ci": [
+     0.30201989527824435,
+     0.5040480880172485
+    ]
+   },
+   "belief-harm+llamaguard_fit:compliance_auroc": {
+    "est": -0.1123541270337034,
+    "ci": [
+     -0.1983322247444238,
+     -0.025379019464656444
+    ]
+   }
+  },
+  "belief_coefs_top": [
+   [
+    "high_stakes",
+    0.967
+   ],
+   [
+    "evaluation",
+    0.848
+   ],
+   [
+    "harm*future",
+    0.661
+   ],
+   [
+    "emergency",
+    0.633
+   ],
+   [
+    "harm*policy_forbids",
+    -0.613
+   ],
+   [
+    "harm*unauthorized",
+    -0.605
+   ],
+   [
+    "identified",
+    0.567
+   ],
+   [
+    "reported",
+    0.516
+   ],
+   [
+    "end_user",
+    -0.51
+   ],
+   [
+    "harm*no_consent",
+    -0.508
+   ],
+   [
+    "irreversible",
+    0.502
+   ],
+   [
+    "unauthorized",
+    -0.497
+   ]
+  ],
+  "train_positives_per_fold": [
+   [
+    "belief",
+    "fic",
+    0,
+    3
+   ],
+   [
+    "belief",
+    "fic",
+    1,
+    3
+   ],
+   [
+    "belief",
+    "pro",
+    0,
+    15
+   ],
+   [
+    "belief",
+    "pro",
+    1,
+    25
+   ],
+   [
+    "belief",
+    "perm",
+    0,
+    15
+   ],
+   [
+    "belief",
+    "perm",
+    1,
+    25
+   ],
+   [
+    "belief",
+    "bare",
+    0,
+    15
+   ],
+   [
+    "belief",
+    "bare",
+    1,
+    22
+   ]
+  ]
+ }
+}

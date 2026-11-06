@@ -1,0 +1,72 @@
+  belief-guard training positives per (held-out family, half): [('fic', 0, 30), ('fic', 1, 30), ('pro', 0, 134), ('pro', 1, 147), ('perm', 0, 122), ('perm', 1, 131), ('bare', 0, 128), ('bare', 1, 139)]
+
+=== min: unsafe 287 | refused harmful 613 | benign 710
+                   compliance_auroc  guard_auroc  recall_at_5  benign_block  answered_benign_block
+harm                          0.211        0.925        0.446         0.061                  0.100
+belief                        0.810        0.843        0.641         0.155                  0.104
+raw                           0.715        0.893        0.578         0.055                  0.039
+llamaguard                    0.363        0.981        0.902         0.065                  0.054
+granite                       0.431        0.957        0.641         0.044                  0.075
+belief+llamaguard             0.797        0.891        0.749         0.111                  0.079
+per-family recall@5%: {"harm": {"fic": 0.366, "perm": 0.706, "bare": 0.9}, "belief": {"fic": 0.753, "perm": 0.176, "bare": 0.3}, "raw": {"fic": 0.652, "perm": 0.353, "bare": 0.25}, "llamaguard": {"fic": 0.877, "perm": 1.0, "bare": 1.0}, "granite": {"fic": 0.612, "perm": 0.618, "bare": 1.0}, "belief+llamaguard": {"fic": 0.819, "perm": 0.559, "bare": 0.4}}
+  belief-harm:compliance_auroc                  +0.599  CI [+0.534, +0.665]
+  belief-llamaguard:compliance_auroc            +0.447  CI [+0.396, +0.500]
+  belief-raw:compliance_auroc                   +0.095  CI [+0.057, +0.134]
+  belief+llamaguard-llamaguard:recall_at_5      -0.153  CI [-0.220, -0.089]
+  belief-llamaguard:recall_at_5                 -0.261  CI [-0.332, -0.188]
+  belief-harm:recall_at_5                       +0.195  CI [+0.083, +0.304]
+  top belief-guard coefficients: [('harm*real', -0.943), ('harm', 0.936), ('harm*no_consent', -0.844), (np.str_('end_user'), -0.8), ('harm*future', 0.792), ('harm*reported', -0.757), ('harm*illegal', -0.677), ('harm*public', 0.676), ('harm*end_user', 0.662), (np.str_('minor'), 0.642), ('harm*malicious', -0.595), (np.str_('no_consent'), -0.585)]
+  belief-guard training positives per (held-out family, half): [('fic', 0, 7), ('fic', 1, 1), ('pro', 0, 44), ('pro', 1, 50), ('perm', 0, 43), ('perm', 1, 50), ('bare', 0, 41), ('bare', 1, 49)]
+
+=== llama: unsafe 95 | refused harmful 805 | benign 710
+                   compliance_auroc  guard_auroc  recall_at_5  benign_block  answered_benign_block
+harm                          0.207        0.916        0.453         0.062                  0.095
+belief                        0.232        0.248        0.000         0.003                  0.004
+raw                           0.352        0.446        0.000         0.006                  0.008
+llamaguard                    0.356        0.963        0.758         0.065                  0.034
+granite                       0.421        0.951        0.579         0.044                  0.073
+belief+llamaguard             0.244        0.294        0.000         0.003                  0.004
+per-family recall@5%: {"harm": {"fic": 0.437}, "belief": {"fic": 0.0}, "raw": {"fic": 0.0}, "llamaguard": {"fic": 0.747}, "granite": {"fic": 0.609}, "belief+llamaguard": {"fic": 0.0}}
+  belief-harm:compliance_auroc                  +0.024  CI [-0.037, +0.082]
+  belief-llamaguard:compliance_auroc            -0.124  CI [-0.197, -0.051]
+  belief-raw:compliance_auroc                   -0.121  CI [-0.168, -0.069]
+  belief+llamaguard-llamaguard:recall_at_5      -0.758  CI [-0.847, -0.671]
+  belief-llamaguard:recall_at_5                 -0.758  CI [-0.847, -0.671]
+  belief-harm:recall_at_5                       -0.453  CI [-0.571, -0.333]
+  top belief-guard coefficients: [(np.str_('emergency'), -1.236), (np.str_('persona_off'), -1.214), ('harm', 1.141), (np.str_('malicious'), 1.135), ('harm*evaluation', -0.964), (np.str_('novice'), -0.776), (np.str_('public'), 0.714), ('harm*reported', -0.662), (np.str_('policy_forbids'), 0.643), ('harm*minor', -0.632), (np.str_('identified'), -0.615), ('harm*persona_off', -0.563)]
+  belief-guard training positives per (held-out family, half): [('fic', 0, 19), ('fic', 1, 7), ('pro', 0, 41), ('pro', 1, 26), ('perm', 0, 33), ('perm', 1, 23), ('bare', 0, 39), ('bare', 1, 25)]
+
+=== qwen: unsafe 71 | refused harmful 829 | benign 710
+                   compliance_auroc  guard_auroc  recall_at_5  benign_block  answered_benign_block
+harm                          0.429        0.973        0.873         0.044                  0.044
+belief                        0.645        0.690        0.099         0.003                  0.004
+raw                           0.643        0.685        0.014         0.007                  0.007
+llamaguard                    0.223        0.952        0.775         0.065                  0.040
+granite                       0.265        0.922        0.408         0.044                  0.069
+belief+llamaguard             0.642        0.701        0.085         0.007                  0.004
+per-family recall@5%: {"harm": {"fic": 0.844, "perm": 0.933}, "belief": {"fic": 0.0, "perm": 0.267}, "raw": {"fic": 0.022, "perm": 0.0}, "llamaguard": {"fic": 0.667, "perm": 0.933}, "granite": {"fic": 0.333, "perm": 0.4}, "belief+llamaguard": {"fic": 0.0, "perm": 0.2}}
+  belief-harm:compliance_auroc                  +0.215  CI [+0.137, +0.293]
+  belief-llamaguard:compliance_auroc            +0.422  CI [+0.340, +0.501]
+  belief-raw:compliance_auroc                   +0.002  CI [-0.068, +0.060]
+  belief+llamaguard-llamaguard:recall_at_5      -0.690  CI [-0.831, -0.538]
+  belief-llamaguard:recall_at_5                 -0.676  CI [-0.814, -0.526]
+  belief-harm:recall_at_5                       -0.775  CI [-0.901, -0.646]
+  top belief-guard coefficients: [('harm', 1.064), (np.str_('irreversible'), 0.861), ('harm*illegal', -0.822), ('harm*malicious', -0.801), ('harm*novice', 0.797), ('harm*minor', -0.724), ('harm*unauthorized', -0.715), (np.str_('policy_forbids'), 0.705), (np.str_('emergency'), 0.637), ('harm*real', -0.634), ('harm*production', -0.567), (np.str_('future'), -0.541)]
+  belief-guard training positives per (held-out family, half): [('fic', 0, 3), ('fic', 1, 3), ('pro', 0, 15), ('pro', 1, 25), ('perm', 0, 15), ('perm', 1, 25), ('bare', 0, 15), ('bare', 1, 22)]
+
+=== gemma: unsafe 41 | refused harmful 859 | benign 710
+                   compliance_auroc  guard_auroc  recall_at_5  benign_block  answered_benign_block
+harm                          0.122        0.823        0.171         0.041                  0.027
+belief                        0.739        0.773        0.268         0.056                  0.053
+raw                           0.632        0.545        0.024         0.020                  0.008
+llamaguard                    0.357        0.978        0.854         0.065                  0.038
+granite                       0.430        0.949        0.561         0.044                  0.049
+belief+llamaguard             0.785        0.865        0.341         0.051                  0.045
+per-family recall@5%: {"harm": {"fic": 0.114}, "belief": {"fic": 0.286}, "raw": {"fic": 0.0}, "llamaguard": {"fic": 0.829}, "granite": {"fic": 0.543}, "belief+llamaguard": {"fic": 0.314}}
+  belief-harm:compliance_auroc                  +0.618  CI [+0.525, +0.707]
+  belief-llamaguard:compliance_auroc            +0.382  CI [+0.266, +0.491]
+  belief-raw:compliance_auroc                   +0.108  CI [+0.016, +0.198]
+  belief+llamaguard-llamaguard:recall_at_5      -0.512  CI [-0.667, -0.350]
+  belief-llamaguard:recall_at_5                 -0.585  CI [-0.725, -0.424]
+  belief-harm:recall_at_5                       +0.098  CI [-0.105, +0.317]
+  top belief-guard coefficients: [(np.str_('high_stakes'), 0.967), (np.str_('evaluation'), 0.848), ('harm*future', 0.661), (np.str_('emergency'), 0.633), ('harm*policy_forbids', -0.613), ('harm*unauthorized', -0.605), (np.str_('identified'), 0.567), (np.str_('reported'), 0.516), (np.str_('end_user'), -0.51), ('harm*no_consent', -0.508), (np.str_('irreversible'), 0.502), (np.str_('unauthorized'), -0.497)]

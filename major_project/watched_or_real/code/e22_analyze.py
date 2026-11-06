@@ -31,7 +31,7 @@ def load(fdir, lab_csv, gdir):
     G = np.load(f"{gdir}/e22_features.npz"); GR = pd.read_csv(f"{gdir}/e22_rows.csv")
     assert (GR[["set", "wrap", "goal"]].values == R[["set", "wrap", "goal"]].values).all(), "guard rows misaligned"
     h = Z[f"harm_L{sel}"][:, None]; b = Z[f"belief_L{sel}"]
-    X = dict(harm=h, belief=np.hstack([h, b, h * b]), raw=Z["raw_sel"].astype(np.float32))
+    X = dict(harm=h, belief=np.hstack([h, b, h * b]), raw=np.nan_to_num(Z["raw_sel"].astype(np.float32), posinf=65504.0, neginf=-65504.0))   # DEVIATION 2: Gemma fp16 overflow
     for k in ["llamaguard", "granite"]:
         if f"{k}_score" in G.files: X[k] = np.nan_to_num(G[f"{k}_score"], nan=0.0)[:, None]
     if "llamaguard" in X: X["belief+llamaguard"] = np.hstack([X["belief"], X["llamaguard"]])
@@ -52,7 +52,10 @@ def cv_scores(R, X, kind):
                 s_all = X[kind][:, 0]; thr = np.quantile(s_all[tr & R.benign.values], 1 - FPR)
             else:
                 m = pipe(kind).fit(X[kind][tr], y[tr]); s_all = np.full(len(R), np.nan); s_all[te] = m.decision_function(X[kind][te])
-                inner = cross_val_predict(pipe(kind), X[kind][tr], y[tr], cv=5, method="decision_function")
+                npos = int(y[tr].sum())          # DEVIATION (logged in RESULTS.md): too few positives for 5 inner folds on low-ASR models
+                inner = (cross_val_predict(pipe(kind), X[kind][tr], y[tr], cv=min(5, npos), method="decision_function") if npos >= 2
+                         else m.decision_function(X[kind][tr]))
+                NPOS.append((kind, f, h, npos))
                 thr = np.quantile(inner[R.benign.values[tr]], 1 - FPR)
             sc[te] = s_all[te]; fl[te] = s_all[te] > thr
     return sc, fl
@@ -75,7 +78,7 @@ def boot_diff(R, A, B, key):
         d.append(metrics(R, *A, idx)[key] - metrics(R, *B, idx)[key])
     return [float(np.nanpercentile(d, 2.5)), float(np.nanpercentile(d, 97.5))]
 
-out, gdir = {}, sys.argv[2]
+out, gdir = {}, sys.argv[2]; NPOS = []
 for arg in sys.argv[3:]:
     name, rest = arg.split("="); fdir, lab = rest.split(",")
     R, X, names = load(fdir, lab, gdir); S = {k: cv_scores(R, X, k) for k in X}
@@ -88,7 +91,9 @@ for arg in sys.argv[3:]:
     full = pipe("belief").fit(X["belief"], R.unsafe.values.astype(int)); co = full[-1].coef_[0]
     feat = ["harm"] + names + [f"harm*{n}" for n in names]
     res["belief_coefs_top"] = sorted(zip(feat, co.round(3).tolist()), key=lambda t: -abs(t[1]))[:12]
+    res["train_positives_per_fold"] = [x for x in NPOS if x[0] == "belief"]; NPOS.clear()
     out[name] = res
+    print("  belief-guard training positives per (held-out family, half):", [(f, h, n) for _, f, h, n in res["train_positives_per_fold"]])
     print(f"\n=== {name}: unsafe {res['n_unsafe']} | refused harmful {res['n_refused_harmful']} | benign {res['n_benign']}")
     print(pd.DataFrame(res["guards"]).T.round(3).to_string())
     print("per-family recall@5%:", json.dumps({k: {f: round(v, 3) for f, v in d.items()} for k, d in res["per_family_recall"].items()}))
