@@ -1,0 +1,537 @@
+{
+ "model": "google/gemma-3-4b-it",
+ "layer": 30,
+ "coverage": {
+  "benign_shift_in_atlas": 0.40749040246009827,
+  "harmful_shift_in_atlas": 0.38090068101882935,
+  "random_baseline": 0.008203125
+ },
+ "directions": [
+  {
+   "name": "pc0",
+   "evr": 0.16287687420845032,
+   "disc_auroc": 0.7633477633477633,
+   "m_comp": 12839.23828125,
+   "m_ref": 11737.8330078125,
+   "benign_framing_load": 0.16287687420845032,
+   "cos_harm": -3.259629011154175e-09,
+   "max_cos_atlas": 5.960464477539063e-08,
+   "lens_up": [
+    "Welcome",
+    " welcome",
+    " Welcome",
+    "ExceptionHandler",
+    " hello",
+    " welcomed",
+    " selamat",
+    " Greetings",
+    "Greetings",
+    "\u5b89\u5fc3\u3057\u3066",
+    "\u0928\u092e\u0938\u094d\u0915\u093e\u0930",
+    " (/"
+   ],
+   "lens_down": [
+    "The",
+    " here",
+    "THE",
+    " The",
+    "the",
+    " \u092a\u0924\u094d\u0924\u093f\u092f\u094b\u0902",
+    " Here",
+    " sp\u00e4t",
+    " THE",
+    "\u09bf\u09a4\u09cd\u09a4\u09bf\u0995",
+    " \u0627\u0644\u062a\u0627\u0631\u064a\u062e",
+    " aqu\u00ed"
+   ]
+  },
+  {
+   "name": "pc1",
+   "evr": 0.1451324075460434,
+   "disc_auroc": 0.6681096681096682,
+   "m_comp": 4642.80615234375,
+   "m_ref": 2411.004638671875,
+   "benign_framing_load": 0.14513234794139862,
+   "cos_harm": -3.725290298461914e-09,
+   "max_cos_atlas": 1.3131648302078247e-07,
+   "lens_up": [
+    " rainfall",
+    " rain",
+    "levance",
+    " relevance",
+    "welcome",
+    " welcome",
+    " Rain",
+    " chuva",
+    " overcast",
+    " Humidity",
+    " \u0995\u09be\u09ae",
+    " satisfaction"
+   ],
+   "lens_down": [
+    " aqu\u00ed",
+    "Okay",
+    " here",
+    "Here",
+    "Ok",
+    " Here",
+    " Ok",
+    " Aqu\u00ed",
+    " Okay",
+    " \u0a85\u0ab9\u0ac0\u0a82",
+    " aqui",
+    " \u03b5\u03b4\u03ce"
+   ]
+  },
+  {
+   "name": "pc2",
+   "evr": 0.0820949524641037,
+   "disc_auroc": 0.5307840307840308,
+   "m_comp": 697.943603515625,
+   "m_ref": -186.70370483398438,
+   "benign_framing_load": 0.0820949599146843,
+   "cos_harm": 1.210719347000122e-08,
+   "max_cos_atlas": 6.705522537231445e-08,
+   "lens_up": [
+    " kill",
+    "erful",
+    " listens",
+    "\u8210",
+    "GetObject",
+    " Africans",
+    " \u0634\u06d5",
+    "nails",
+    " Nails",
+    " stop",
+    " *_",
+    "\u05dc\u05d0"
+   ],
+   "lens_down": [
+    " okay",
+    "OK",
+    " ok",
+    "##",
+    "okay",
+    "Ok",
+    "Okay",
+    "ok",
+    " Ok",
+    " OK",
+    " Okay",
+    " \u201c"
+   ]
+  },
+  {
+   "name": "pc3",
+   "evr": 0.06904923170804977,
+   "disc_auroc": 0.6142376142376144,
+   "m_comp": 7596.748046875,
+   "m_ref": 7164.1806640625,
+   "benign_framing_load": 0.06904931366443634,
+   "cos_harm": -7.450580596923828e-09,
+   "max_cos_atlas": 5.587935447692871e-08,
+   "lens_up": [
+    " here",
+    " Here",
+    " HERE",
+    "Here",
+    " greeting",
+    " hier",
+    " \u0437\u0434\u0435\u0441\u044c",
+    " aqu\u00ed",
+    " aqui",
+    " ici",
+    " greetings",
+    " welcome"
+   ],
+   "lens_down": [
+    "That",
+    "iliated",
+    " fabulous",
+    "\u6559",
+    "that",
+    " amazing",
+    "\u0ba9\u0bc7",
+    " imaginar",
+    "\u093e\u0917\u094d\u0930\u093e\u092e",
+    "\u60f3\u8c61",
+    "zeichnet",
+    " deliciously"
+   ]
+  },
+  {
+   "name": "pc4",
+   "evr": 0.061818867921829224,
+   "disc_auroc": 0.7730880230880232,
+   "m_comp": 13996.8720703125,
+   "m_ref": 12573.201171875,
+   "benign_framing_load": 0.06181885674595833,
+   "cos_harm": -1.5832483768463135e-08,
+   "max_cos_atlas": 9.313225746154785e-08,
+   "lens_up": [
+    " okay",
+    "Okay",
+    " Okay",
+    "okay",
+    "\u8fd9\u91cc",
+    "here",
+    " here",
+    " \u8fd9\u91cc",
+    " aqui",
+    " \u098f\u0996\u09be\u09a8\u09c7",
+    " aqu\u00ed",
+    " ok"
+   ],
+   "lens_down": [
+    " ihe",
+    " welcoming",
+    "Merhaba",
+    " welcomed",
+    " melanogaster",
+    " HelloWorld",
+    " \u0d28\u0d3f\u0d32",
+    " welcomes",
+    " Versorgung",
+    "AntiForgeryToken",
+    " glyphicon",
+    "'])->"
+   ]
+  },
+  {
+   "name": "pc5",
+   "evr": 0.04677590727806091,
+   "disc_auroc": 0.8297258297258298,
+   "m_comp": -4785.93212890625,
+   "m_ref": -5904.328125,
+   "benign_framing_load": 0.046775851398706436,
+   "cos_harm": 0.0,
+   "max_cos_atlas": 8.009374141693115e-08,
+   "lens_up": [
+    "subject",
+    "**",
+    " subject",
+    " hmm",
+    " Insert",
+    "TestingModule",
+    "\u0c08",
+    "\u1793\u17b9\u1784",
+    " inserted",
+    "\u043f\u0442\u043e\u0432\u0430",
+    "inserted",
+    "removed"
+   ],
+   "lens_down": [
+    "\u0633\u0627\u0639\u062f\u0629",
+    " as",
+    "\u1c51",
+    " undeni",
+    "\u4f5c\u4e3a",
+    " abilit",
+    " \u4f5c\u4e3a",
+    " \u0628\u0647\u200c\u0639\u0646\u0648\u0627\u0646",
+    "\u90c4",
+    " assistive",
+    "Predict",
+    " overheard"
+   ]
+  },
+  {
+   "name": "pc6",
+   "evr": 0.04244721680879593,
+   "disc_auroc": 0.601010101010101,
+   "m_comp": -45.8856201171875,
+   "m_ref": -148.8679962158203,
+   "benign_framing_load": 0.042447227984666824,
+   "cos_harm": 8.381903171539307e-09,
+   "max_cos_atlas": 6.51925802230835e-08,
+   "lens_up": [
+    "##",
+    "\u6124\u6012",
+    "\u61a4",
+    " angry",
+    " \u0627\u0644\u0632",
+    " ##",
+    " subpar",
+    " improvised",
+    " distrust",
+    " \u0917\u0941\u0938\u094d\u0938\u0947",
+    "\u6d77\u519b",
+    " \u0630\u06c1\u0646\u06cc"
+   ],
+   "lens_down": [
+    " arriving",
+    " oh",
+    "\uff1f\uff09",
+    " transitioning",
+    "\u0434\u044b\u043d",
+    " \u0628\u062f\u06cc",
+    " \u0446\u044c\u043e\u0433\u043e",
+    "italia",
+    "oteur",
+    "\u0928\u0947\u0936",
+    "iply",
+    " plaat"
+   ]
+  },
+  {
+   "name": "pc7",
+   "evr": 0.03637055307626724,
+   "disc_auroc": 0.6778499278499279,
+   "m_comp": -13917.6025390625,
+   "m_ref": -14238.6005859375,
+   "benign_framing_load": 0.03637053817510605,
+   "cos_harm": -5.587935447692871e-09,
+   "max_cos_atlas": 1.341104507446289e-07,
+   "lens_up": [
+    " \u201c",
+    "\u201c",
+    " \"",
+    " wow",
+    " \u201c\u2018",
+    " \u201e",
+    " \u201c[",
+    " \u201c(",
+    "\u5750",
+    " \u0447\u0440\u0435\u0437\u0432\u044b",
+    "\u201c(",
+    "\u3001\u201c"
+   ],
+   "lens_down": [
+    " algae",
+    " Gravel",
+    "gewater",
+    "licher",
+    "Summer",
+    " Skies",
+    "The",
+    " tar",
+    " sediment",
+    " seawater",
+    "\u3150",
+    " salt"
+   ]
+  },
+  {
+   "name": "supervised",
+   "evr": 0.05653572827577591,
+   "disc_auroc": 0.8964646464646464,
+   "m_comp": 7917.69970703125,
+   "m_ref": 3312.84716796875,
+   "benign_framing_load": 0.05653573200106621,
+   "cos_harm": -4.6566128730773926e-08,
+   "max_cos_atlas": 7.255002856254578e-07,
+   "lens_up": [
+    " avoid",
+    " enjoyment",
+    " enjoy",
+    "Avoid",
+    " settle",
+    " Dont",
+    " Enjoy",
+    " maintain",
+    " \u0627\u0628\u062a",
+    " Avoid",
+    " \u0438\u043d\u0442\u0435\u0440\u0435\u0441",
+    " \u0443\u0434\u043e\u0432\u043e\u043b\u044c"
+   ],
+   "lens_down": [
+    "\u8ce6",
+    "\u517c\u7528",
+    " \u09a6\u09bf\u09af\u09bc\u09be",
+    " \u03b5\u03bd\u03b5\u03c1\u03b3",
+    " discriminator",
+    " \u0928\u094d\u092f\u093e\u092f\u092e\u0942\u0930\u094d\u0924\u093f",
+    "\u0a95\u0acd\u0ab0\u0abf\u0aaf",
+    " \u0995\u09b0\u09bf\u09a4\u09c7\u099b\u09c7",
+    " Active",
+    " \u0628\u064a\u0642\u0648\u0644",
+    " \ud65c",
+    " active"
+   ]
+  }
+ ],
+ "by_wrapper": {
+  "pc0": {
+   "story": -5005.37255859375,
+   "roleplay": 1562.0035400390625,
+   "hypothetical": 3181.81884765625,
+   "game": 4534.66845703125,
+   "professional": 3083.000244140625,
+   "authorized": 3814.8359375,
+   "legal": 3559.33935546875,
+   "operator": 2694.84228515625
+  },
+  "pc1": {
+   "story": 4737.89208984375,
+   "roleplay": 7769.15380859375,
+   "hypothetical": 462.9239196777344,
+   "game": 3320.8115234375,
+   "professional": 688.7329711914062,
+   "authorized": 1061.2528076171875,
+   "legal": 1116.9337158203125,
+   "operator": 776.7689819335938
+  },
+  "pc2": {
+   "story": -4023.377197265625,
+   "roleplay": 5108.52001953125,
+   "hypothetical": -1474.7506103515625,
+   "game": -2048.0634765625,
+   "professional": -1925.399658203125,
+   "authorized": -1915.3470458984375,
+   "legal": -1307.33935546875,
+   "operator": -1483.2615966796875
+  },
+  "pc3": {
+   "story": 79.79019165039062,
+   "roleplay": 176.7703094482422,
+   "hypothetical": -2252.9697265625,
+   "game": 5758.447265625,
+   "professional": -1333.1522216796875,
+   "authorized": -792.808349609375,
+   "legal": -2092.046630859375,
+   "operator": -239.14584350585938
+  },
+  "pc4": {
+   "story": 962.8333740234375,
+   "roleplay": 2883.5751953125,
+   "hypothetical": 1970.6622314453125,
+   "game": -2614.320556640625,
+   "professional": 593.6651000976562,
+   "authorized": 592.2306518554688,
+   "legal": 45.46894073486328,
+   "operator": -122.08503723144531
+  },
+  "pc5": {
+   "story": -888.14013671875,
+   "roleplay": 753.728515625,
+   "hypothetical": 2723.1376953125,
+   "game": 1546.907470703125,
+   "professional": -883.5509643554688,
+   "authorized": -928.216064453125,
+   "legal": -462.0013427734375,
+   "operator": -515.8245239257812
+  },
+  "pc6": {
+   "story": -793.0089111328125,
+   "roleplay": 919.114501953125,
+   "hypothetical": -4179.49365234375,
+   "game": -502.1460266113281,
+   "professional": 1422.8760986328125,
+   "authorized": 1067.1829833984375,
+   "legal": -337.5242614746094,
+   "operator": 937.208984375
+  },
+  "pc7": {
+   "story": 3216.480712890625,
+   "roleplay": 530.5836791992188,
+   "hypothetical": -520.2330932617188,
+   "game": -184.76849365234375,
+   "professional": 734.034423828125,
+   "authorized": 9.7394437789917,
+   "legal": 259.20538330078125,
+   "operator": 288.12969970703125
+  },
+  "supervised": {
+   "story": 542.59326171875,
+   "roleplay": 6311.75146484375,
+   "hypothetical": 1754.0291748046875,
+   "game": 2395.901123046875,
+   "professional": 658.8306274414062,
+   "authorized": 818.844970703125,
+   "legal": 688.1812744140625,
+   "operator": 623.8085327148438
+  }
+ },
+ "none_fic": 6.5,
+ "none_bare": 2.0,
+ "tests": {
+  "pc5:up": {
+   "asr_dir": 0.0,
+   "asr_rand": 4.0,
+   "selective": -4.0,
+   "ci95": [
+    -10.0,
+    0.0
+   ],
+   "p_one_sided": 1.0,
+   "n": 50
+  },
+  "pc5:down": {
+   "asr_dir": 8.0,
+   "asr_rand": 6.5,
+   "selective": -1.5,
+   "ci95": [
+    -5.5,
+    2.5
+   ],
+   "p_one_sided": 0.8000499875031242,
+   "n": 200
+  },
+  "pc4:up": {
+   "asr_dir": 6.0,
+   "asr_rand": 4.0,
+   "selective": 2.0,
+   "ci95": [
+    -4.0,
+    10.0
+   ],
+   "p_one_sided": 0.39015246188452885,
+   "n": 50
+  },
+  "pc4:down": {
+   "asr_dir": 6.5,
+   "asr_rand": 6.0,
+   "selective": -0.5,
+   "ci95": [
+    -4.0,
+    3.0
+   ],
+   "p_one_sided": 0.6665833541614596,
+   "n": 200
+  },
+  "pc0:up": {
+   "asr_dir": 2.0,
+   "asr_rand": 0.0,
+   "selective": 2.0,
+   "ci95": [
+    0.0,
+    6.0
+   ],
+   "p_one_sided": 0.36215946013496625,
+   "n": 50
+  },
+  "pc0:down": {
+   "asr_dir": 8.0,
+   "asr_rand": 5.5,
+   "selective": -2.5,
+   "ci95": [
+    -7.0,
+    2.0
+   ],
+   "p_one_sided": 0.88127968007998,
+   "n": 200
+  },
+  "supervised:up": {
+   "asr_dir": 2.0,
+   "asr_rand": 0.0,
+   "selective": 2.0,
+   "ci95": [
+    0.0,
+    6.0
+   ],
+   "p_one_sided": 0.36690827293176703,
+   "n": 50
+  },
+  "supervised:down": {
+   "asr_dir": 7.000000000000001,
+   "asr_rand": 6.5,
+   "selective": -0.5,
+   "ci95": [
+    -4.5,
+    3.5
+   ],
+   "p_one_sided": 0.6443389152711823,
+   "n": 200
+  }
+ }
+}
