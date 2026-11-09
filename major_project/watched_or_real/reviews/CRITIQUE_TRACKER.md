@@ -31,11 +31,11 @@ A new round is run at every phase boundary (after P1, after P2, before the submi
 ## Interpretability methods
 | id | critique | action | where | status |
 |---|---|---|---|---|
-| A-W1 | Lexical confound in d_R (keywords shared with wrappers) | keyword-free, keyword-flipped and neutral-keyword readings; keyword-stripped wrappers (generation) | E25 part C | DONE: clean on Ministral, partly lexical on Llama (H6 failed); paper caveat TODO |
+| A-W1 | Lexical confound in d_R (keywords shared with wrappers) | keyword-free, keyword-flipped and neutral-keyword readings; keyword-stripped wrappers (generation) | E25 part C | DONE: meaning-like on Ministral; on Llama d_R does not separate 'real' from any added sentence (no semantic label); paper caveat TODO |
 | A-W2 | Steering is not concept-specific (E18: most beliefs break refusal; "real" is 11th) | adopt it as a finding (broad gating subspace motivates the thesis); add matched in-distribution displacement + dose-response for the top beliefs | P2 side run | TODO |
 | A-W3 | E11 "patching" is mean-ablation; reverse control missing | rename in the paper; exploratory per-layer full-state patching into ACT (E25 B); proper paired R+/R- per-position patching only if the heads stay in the paper | E25 B / P5 | partial: single-layer full-state patch into ACT restores only part of the attack |
 | A-W4 | Heads chosen by direct attribution; no path patching or attention patterns | WONTFIX for main text: heads move to the appendix (AC); state the limitation | P5 | WONTFIX (reason: off-thesis, cost) |
-| A-W5 | "real" reading does not mediate the defence | mediation test: restore the natural d_R projection inside the BSCT adapter vs a random move | E25 part B | DONE: BSCT not mediated by d_R (H4 failed); paper must drop the belief-protection story for BSCT |
+| A-W5 | "real" reading does not mediate the defence | mediation test: restore the natural d_R projection inside the BSCT adapter vs a random move | E25 part B | PARTIAL: no mediation > ~5 pts via decision-token prompt-pass restoration (CI [-2,4]); all-position + decode + sufficiency arm TODO; paper drops the belief-protection story for BSCT |
 | A-W6 | Unequal LoRA capacity (BSCT layers < max(LW), ACT all) | confirmed; all-layer LoRA for every method in P2; E24 caveat added | P2 (E26 make: LoRA on all decoder layers for every cell, act_paper included) | DONE (caveat) / CODE DONE, smoke running |
 | A-W7 | Reading b not on a common scale; selective_restore partly a random-control artefact | report raw projections and refusal-direction units alongside b; drop the E21 threshold rule as a claim | E25 A, P5 | ongoing |
 | A-W8 | Layer / model inconsistencies (Qwen 7B vs 14B, "late") | one model table in the paper with exact versions and layers | P5 | TODO |
@@ -58,6 +58,33 @@ A new round is run at every phase boundary (after P1, after P2, before the submi
 | AC-1 | Draft is incremental on eval-awareness work | reframe: "How broad must activation invariance be?"; watched/real becomes the motivating case | ROADMAP, P5 | DONE (plan) |
 | AC-2 | "Steerable is not protectable" follows from hydra / obfuscation / concept cones; ReFAT and Safety Anchor are counterexamples | cite and reconcile: which dimension (rank, layers, positions) makes ReFAT/Safety Anchor succeed | P5 related work; P2 design | TODO |
 | AC-3 | E24 confounds under-constraint with rerouting | breadth sweep including a strong 1-d setting (all layers + suffix + lambda x {1,5,25}) | P2 | TODO |
-| AC-4 | Rerouting vs pre-existing redundancy | natural-vs-adapted complement shift (rerouting index) | E25 part A | DONE: no rerouting (all RI < 1); refusal push survives narrow adapters and tracks ASR (rho 0.79) |
+| AC-4 | Rerouting vs pre-existing redundancy | natural-vs-adapted complement shift (rerouting index) | E25 part A | PARTIAL: all RI CIs < 1 (prereg label 'suppression'); RI is a mean-shift energy measure, so rerouting in a small subspace is not excluded; the causal test of redundancy is in E26 (R2-M1) |
 | AC-5 | Predictor has a poor record and few models | redundancy score preregistered; prospective test on 2 new 7-9B models (not 14B) | P3 | TODO |
 | AC-6 | Cut list (heads, 14B, E13, E22, privacy attacks, agentic pilot, judge robustness to an appendix) | apply in P5 | P5 | TODO |
+
+## Round 2 (reviews/MOCK_ICML_REVIEW_2026-11-10_round2.md): M = methods, S = statistics, F = safety/eval, AC
+| id | critique | action | where | status |
+|---|---|---|---|---|
+| R2-S1/M1 | RI relabelled; "fails because of redundancy" untested | E25 RESULTS corrected; E26 causal test: block the surviving refusal push (refusal-readout arm) | E25, E26 | DONE (text) / TODO (E26) |
+| R2-M2/S4/F9 | H3 circular for ACT, pooled n=8, version mix, ACT/BSCT mis-ordered within Ministral | reported descriptive with within-model rho; E26: push measured inside each adapter, own-run ASR, model as factor | E25, E26 | DONE (text) / TODO |
+| R2-M3/S7 | H4 overstated; no sufficiency arm, calibration, single random dir | narrowed claim with CI; all-position/decode mediation with 10 randoms + sufficiency arm folded into E26 audit | E25, E26 | DONE (text) / TODO |
+| R2-M4/S3 | H6 unit (sentence) and reference (baseline); Llama d_R not semantic | exploratory label; Llama "real" arm uses keyword-free direction or loses the semantic label in E26 | E25, E26 | DONE (text) / TODO |
+| R2-M5/S2 | H7 stimuli only partly stripped; "game" claim false | claim withdrawn; per-wrapper numbers | E25 | DONE |
+| R2-M6/S6/F10 | H8 Llama by one prompt | reported null | E25, paper | DONE |
+| R2-S5 | H1-H3 not blind (smoke seen before hypotheses committed) | labelled; policy: commit hypotheses before any smoke; smoke on non-test goals only | E25, all future | DONE / policy |
+| R2-S8 | 6/8 padded by manipulation checks | type column added | E25 | DONE |
+| R2-F1/M8/S11 | breadth only in-family; pcs8 leaks | hold out the role-play family from training (test it as out-of-family); pcs fit on training families only; add refusal-suppression + prefix-injection attack | E26 | TODO |
+| R2-F2 | no prefill attack (positions factor irrelevant without it) | prefill evaluation on every cell | E26 | TODO |
+| R2-M7/AC4/AC5 | rank confounded with energy coverage and dose | rank-matched random subspaces; pcs-k sweep; achieved invariance and push-removed as x-axis; ASR vs push-removed law test across all adapters | E26 | TODO |
+| R2-M9 | aligned last-8 positions = content erasure | positions = decision token vs span (shared template tokens + goal tokens aligned by token match) | E26 | TODO |
+| R2-M10 | mean over sites dilutes pressure; benign constraint varies with breadth | LAM sweep on decisive cells; benign constraint fixed across cells | E26 | TODO |
+| R2-S9..S14/F5 | seed-level inference, selection bias, thresholds, H4 coin flip, H6 different method, same eval set | 3 seeds on every hypothesis cell; seed-level tests; select on goals 0-49, confirm on 50-99; justified margins (>= 2 x seed SD); one contrast per hypothesis; BH | E26 prereg | TODO |
+| R2-F6/M11 | baselines/controls | LAM=0 control, SFT-on-refusals, system prompt (inference), act_paper LAM sweep; ReFAT and RR in P4 | E26 / P4 | TODO |
+| R2-F3/F7 | Pareto and over-refusal power; token cap | OR-Bench-hard 500, XSTest 250+200, fiction-wrapped borderline benign 200, 384 tokens | E26 | TODO |
+| R2-AC3 | refusal-readout arm | 1-d natural refusal direction at all layers and the span | E26 | TODO |
+| R2-AC9 | freeze redundancy score before E26 ASR | E26-pre inference notebook; scores hashed in the E26 prereg | E26-pre | TODO |
+| R2-AC10 | E27 N=2 is a coin flip | predict whole ASR-vs-breadth curves on >= 5 held-out models (3-4B allowed) | E27 | TODO |
+| R2-AC11 | related work: 2606.05817, 2502.09674, 2511.08379, 2607.14147, ReFAT, RR | cite and place each on the rank x layers x positions grid | P5 | TODO |
+| R2-AC12 | P4 budget must be ring-fenced | ~100 GPU-h reserved before E27 grows | ROADMAP | TODO |
+| R2-F7b | 100-item author audit on finalists | needs the author | P4 | TODO (needs author) |
+| R2-M11b | LoRA attention-only vs RR's MLP | note; one cell with MLP targets if budget allows | E26 | TODO (optional) |
