@@ -107,3 +107,13 @@ The H6b prediction is that the span benefit is larger on Llama.
   it gets in a last cell (reviewer R2-M10, dilution). The sum keeps decision-token pressure equal across POS and adds the other
   positions on top. Layers stay averaged; LAYERS is compared through the LAM sweep and the achieved-geometry law test (H2).
 - No hypothesis, threshold or test changes.
+
+## Code freeze (before any full run)
+code/e26_make.py, code/e26_build.py, code/e26_analyze.py and code/e26_queue.py are frozen in the commit that adds this section.
+Smoke runs before the freeze, all on AdvBench non-test goals:
+- Ministral refusal-all-span, bct and act, and Llama pcs8-all-span. They passed.
+- The Ministral bases used in the smokes were from the E26-pre smoke; the full runs use the hashed full bases.
+Code changes after the first smoke:
+- amendment A1 (sum over positions);
+- the harm loss is logged over harm batches only.
+The analysis was tested on synthetic results only.
