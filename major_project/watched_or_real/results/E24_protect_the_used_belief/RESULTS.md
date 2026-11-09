@@ -67,8 +67,19 @@ the models learned to keep the protected direction unchanged under wrapping on t
 The belief-level account works where the attack really does route through a mapped belief ("real" on Ministral: E19, E21).
 It does not extend to an off-atlas direction found by benign-shift discovery, even when that direction is causal under
 steering. For defences, the evidence now points one way: narrow belief invariance helps only when it hits the model's own
-gating belief, and broad activation consistency (ACT) is the robust default. The E21 probe remains the tool for deciding
-which applies to a given model.
+gating belief, and broad activation consistency (ACT) is the robust default. CORRECTION (post-review): an earlier version
+said "the E21 probe remains the tool for deciding which applies". That is not supported: E21 held 1/2 and its threshold was
+fit to two models.
+
+## Post-review caveats (found by an internal mock review after these results were committed)
+- Capacity confound: BSCT-family LoRA adapters cover layers 0..max(LW)-1 only (11 of 32 on Llama), while ACT's cover all
+  layers (code/e19_which_beliefs.py:181). Every BSCT vs ACT comparison in E19-E24 confounds the loss with adapter capacity.
+- Single seed per run, and E20 shows same-method seed differences reach McNemar p = 4e-4 on Ministral. Single-seed McNemar
+  tests measure evaluation noise, not training variance; Llama dir_pc2 - BSCT (+1.0) is well inside seed noise.
+- Seeds change only LoRA init and dropout: data order is random.Random(ep) and the benign wrapper choice is fixed.
+- The +5-point non-inferiority margin had low power by design (about 0.4 on Llama, 0.2 on Ministral if methods were equal).
+- E23's pc2 effect against no steering is small (fiction 18.5 -> 15); its selectivity partly came from the random control
+  raising ASR, so E24 was built on a weak premise.
 
 ## Caveats
 - One seed per run. The comparison runs (natural, BSCT, ACT) are reused from E19/E20 with the same seed, data and prompts.

@@ -21,7 +21,10 @@ First ACT run invalid (details below); the fixed re-run trained normally (loss 0
 - Paper ACT loss was NaN from the first logged step (MMLU 21%, chance level).
 - Cause: ACT targets were cached in fp16, and Gemma-3's residual stream exceeds the fp16 range (inf - inf = NaN).
 - Fix: cache in the model's compute dtype (fp32 on Gemma; unchanged for every other model). This is an
-  implementation bug fix made before the ACT result could be read, not a choice informed by the outcome.
+  implementation bug fix. CORRECTION (post-review): an earlier version of this file said the fix was made "before the ACT
+  result could be read". That is inaccurate: stats_v1.txt in commit dc40aef already tabulated the v1 outcomes, under which
+  the prediction would have HELD (ACT 0.0 vs BSCT 0.0). The re-run turned a hold into a fail, so the fix worked against our
+  hypothesis, but it was made after the v1 result was visible.
   Only gemma act_paper is re-run; the v1 files are kept with the suffix _v1_nan.
 
 ## Scorecard
