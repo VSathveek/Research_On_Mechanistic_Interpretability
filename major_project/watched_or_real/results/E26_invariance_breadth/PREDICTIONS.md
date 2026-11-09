@@ -86,5 +86,24 @@ Design v2 after mock review round 2 (reviews/MOCK_ICML_REVIEW_2026-11-10_round2.
 - The breadth sub-grid (layers x positions) and the LAM / Pareto curves.
 - XSTest unsafe-contrast and MMLU.
 
-## E26-pre hashes
-(filled in at the E26-pre commit)
+## E26-pre hashes (frozen before any E26 ASR; inference only, no generation)
+Files in pre/<model>/, code in code/e26pre_make.py and code/e26pre_build.py. sha256:
+    ae25c714845bd35cb6eb16325698e99ddf036172b36bed1f25600ae9e898abaf *llama/e26pre_scores.json
+    08673b2d403ab735af885b269dcda0c68bea342ca30f35183b9207d909b1422f *min/e26pre_scores.json
+    f2adad8e7ba8e17ab6e71962b358988abbac548bc2a3780864423f875ef67043 *llama/e26pre_bases.npz
+    5d77b7a8674c8468c6433d556cc782226d7b88327e3ce61a9f06edc59a0ff03c *min/e26pre_bases.npz
+Frozen scores:
+- Llama: k*_win = not reached (>128); full_win_frac_left 0.458.
+- Ministral: k*_win = 1; full_win_frac_left 0.019.
+The H6 predictions are therefore:
+- R_pcs8(Llama) < R_pcs8(Ministral);
+- R_pcs8 >= 0.8 on Ministral and < 0.8 on Llama.
+The H6b prediction is that the span benefit is larger on Llama.
+
+## Amendment A1 (2026-11-10, after the first E26 v2 smoke on AdvBench non-test goals, before any full run)
+- Harm loss is now the SUM over the constrained positions (still the mean over layers) of ||P_l(h_fic - h_plain)||^2 / NRM_l. The
+  committed text said "mean over constrained sites".
+- Reason: with the mean, a span cell spreads the same weight over about 9 positions, so the decision token gets 1/9 of the pressure
+  it gets in a last cell (reviewer R2-M10, dilution). The sum keeps decision-token pressure equal across POS and adds the other
+  positions on top. Layers stay averaged; LAYERS is compared through the LAM sweep and the achieved-geometry law test (H2).
+- No hypothesis, threshold or test changes.
