@@ -28,5 +28,13 @@ Status of every hypothesis, with the commit that froze it. Compiled after the in
 | E23 | H3 generality (2 of 4 models) | HELD 3/4 | |
 | E23 | H4 supervised beats framing directions | FAILED 2/4 | |
 | E24 | H1-H5 | FAILED 0/5 | |
+| E25 | H1 manipulation (protected component cut >= 50%) | HELD | prereg 326c570 (code + hypotheses frozen before full runs; smoke seen, disclosed) |
+| E25 | H2 narrow dir leaves refusal shift, ACT removes it (Llama) | HELD | 0.82 vs -0.03 |
+| E25 | H3 refusal push tracks ASR over 8 cells | HELD | rho 0.79 |
+| E25 | H4 BSCT mediated by d_R (Ministral) | FAILED | +1.0, p 0.38 |
+| E25 | H5 dir_pc0 mediated by u (Ministral) | HELD | +8.5, p 0.0005 |
+| E25 | H6 d_R reads meaning (both models) | FAILED | Llama sim_nokw CI includes 0.5 |
+| E25 | H7 keyword-stripped wrappers keep >= 50% ASR | HELD | |
+| E25 | H8 E23 directions beat 19 random | HELD | Llama by 1 of 200 prompts |
 
 No correction for multiplicity was applied across experiments (only E23 H2 is Bonferroni-corrected within).

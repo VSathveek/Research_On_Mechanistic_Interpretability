@@ -19,9 +19,9 @@ A new round is run at every phase boundary (after P1, after P2, before the submi
 | id | critique | action | where | status |
 |---|---|---|---|---|
 | C-1 | Single-seed McNemar measures evaluation noise; same-method seeds differ at p = 4e-4 | noise floor (4 pts) reported; seed-level test; >= 3 real seeds for every key cell from now on | REANALYSIS_clustered; P2 | DONE (re-analysis) / TODO (seeds) |
-| C-1b / B-f | Seeds change only LoRA init (data order Random(ep), benign wrapper fixed) | P0 code fix: SEED drives data order, benign wrapper choice and LoRA init | P2 training code | TODO |
+| C-1b / B-f | Seeds change only LoRA init (data order Random(ep), benign wrapper fixed) | P0 code fix: SEED drives data order, benign wrapper choice and LoRA init | P2 training code (E26 make: SEED -> LoRA init, Random(1000*SEED+ep), Random(7919*SEED+i)) | CODE DONE, smoke running |
 | C-2 | Pseudo-replication (goals x wrappers), item bootstraps | goal-clustered sign-flip tests + BH FDR | REANALYSIS_clustered; all future analysis | DONE / ongoing |
-| C-3 | E23 rests on one non-neutral random control | 19-direction null | E25 part D | RUNNING |
+| C-3 | E23 rests on one non-neutral random control | 19-direction null | E25 part D (prereg 326c570) | DONE: Ministral survives (38 vs max 34); Llama marginal (15.0 vs min 15.5) |
 | C-4 | Multiplicity uncorrected | BH across each experiment's family; ledger-wide report in the paper | analysis, paper | ongoing |
 | C-5 | +5-point non-inferiority margin unjustified, power about 0.2-0.4 | future margins: relative to the comparator, with a power analysis in PREDICTIONS | P2-P4 | TODO |
 | C-6 | Adaptive reuse of one evaluation set E17-E24 | fresh confirmation set built, hashed and untouched until P4 | P0/P4 | TODO |
@@ -31,12 +31,12 @@ A new round is run at every phase boundary (after P1, after P2, before the submi
 ## Interpretability methods
 | id | critique | action | where | status |
 |---|---|---|---|---|
-| A-W1 | Lexical confound in d_R (keywords shared with wrappers) | keyword-free, keyword-flipped and neutral-keyword readings; keyword-stripped wrappers (generation) | E25 part C | RUNNING |
+| A-W1 | Lexical confound in d_R (keywords shared with wrappers) | keyword-free, keyword-flipped and neutral-keyword readings; keyword-stripped wrappers (generation) | E25 part C | DONE: clean on Ministral, partly lexical on Llama (H6 failed); paper caveat TODO |
 | A-W2 | Steering is not concept-specific (E18: most beliefs break refusal; "real" is 11th) | adopt it as a finding (broad gating subspace motivates the thesis); add matched in-distribution displacement + dose-response for the top beliefs | P2 side run | TODO |
-| A-W3 | E11 "patching" is mean-ablation; reverse control missing | rename in the paper; exploratory per-layer full-state patching into ACT (E25 B); proper paired R+/R- per-position patching only if the heads stay in the paper | E25 B / P5 | RUNNING (partial) |
+| A-W3 | E11 "patching" is mean-ablation; reverse control missing | rename in the paper; exploratory per-layer full-state patching into ACT (E25 B); proper paired R+/R- per-position patching only if the heads stay in the paper | E25 B / P5 | partial: single-layer full-state patch into ACT restores only part of the attack |
 | A-W4 | Heads chosen by direct attribution; no path patching or attention patterns | WONTFIX for main text: heads move to the appendix (AC); state the limitation | P5 | WONTFIX (reason: off-thesis, cost) |
-| A-W5 | "real" reading does not mediate the defence | mediation test: restore the natural d_R projection inside the BSCT adapter vs a random move | E25 part B | RUNNING |
-| A-W6 | Unequal LoRA capacity (BSCT layers < max(LW), ACT all) | confirmed; all-layer LoRA for every method in P2; E24 caveat added | P2 | DONE (caveat) / TODO (runs) |
+| A-W5 | "real" reading does not mediate the defence | mediation test: restore the natural d_R projection inside the BSCT adapter vs a random move | E25 part B | DONE: BSCT not mediated by d_R (H4 failed); paper must drop the belief-protection story for BSCT |
+| A-W6 | Unequal LoRA capacity (BSCT layers < max(LW), ACT all) | confirmed; all-layer LoRA for every method in P2; E24 caveat added | P2 (E26 make: LoRA on all decoder layers for every cell, act_paper included) | DONE (caveat) / CODE DONE, smoke running |
 | A-W7 | Reading b not on a common scale; selective_restore partly a random-control artefact | report raw projections and refusal-direction units alongside b; drop the E21 threshold rule as a claim | E25 A, P5 | ongoing |
 | A-W8 | Layer / model inconsistencies (Qwen 7B vs 14B, "late") | one model table in the paper with exact versions and layers | P5 | TODO |
 | A-6 | SAE cross-check | optional: Llama Scope on Llama-3.1-8B for the E23 pc2 direction and the top heads | P3 if budget | TODO (optional) |
@@ -58,6 +58,6 @@ A new round is run at every phase boundary (after P1, after P2, before the submi
 | AC-1 | Draft is incremental on eval-awareness work | reframe: "How broad must activation invariance be?"; watched/real becomes the motivating case | ROADMAP, P5 | DONE (plan) |
 | AC-2 | "Steerable is not protectable" follows from hydra / obfuscation / concept cones; ReFAT and Safety Anchor are counterexamples | cite and reconcile: which dimension (rank, layers, positions) makes ReFAT/Safety Anchor succeed | P5 related work; P2 design | TODO |
 | AC-3 | E24 confounds under-constraint with rerouting | breadth sweep including a strong 1-d setting (all layers + suffix + lambda x {1,5,25}) | P2 | TODO |
-| AC-4 | Rerouting vs pre-existing redundancy | natural-vs-adapted complement shift (rerouting index) | E25 part A | RUNNING |
+| AC-4 | Rerouting vs pre-existing redundancy | natural-vs-adapted complement shift (rerouting index) | E25 part A | DONE: no rerouting (all RI < 1); refusal push survives narrow adapters and tracks ASR (rho 0.79) |
 | AC-5 | Predictor has a poor record and few models | redundancy score preregistered; prospective test on 2 new 7-9B models (not 14B) | P3 | TODO |
 | AC-6 | Cut list (heads, 14B, E13, E22, privacy attacks, agentic pilot, judge robustness to an appendix) | apply in P5 | P5 | TODO |
