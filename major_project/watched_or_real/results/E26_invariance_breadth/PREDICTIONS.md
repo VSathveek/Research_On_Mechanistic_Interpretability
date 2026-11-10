@@ -117,3 +117,8 @@ Code changes after the first smoke:
 - amendment A1 (sum over positions);
 - the harm loss is logged over harm batches only.
 The analysis was tested on synthetic results only.
+
+## Deviation D1 (2026-11-10, during the full runs, infrastructure only)
+- code/e26_queue.py: an output download that timed out crashed the Ministral queue after 6 completed runs. The queue now catches
+  shell errors, raises the download timeout to 3600 s and retries the download on the next poll instead of crashing.
+- No notebook, objective, evaluation, analysis or hypothesis code changed. No result had been looked at.

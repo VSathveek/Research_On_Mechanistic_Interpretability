@@ -15,7 +15,9 @@ R += [(a, l, p, 1, 0) for a in ["refusal", "pcs8"] for l, p in [("win", "last"),
 R += [(a, "all", "span", x, 0) for a in ["refusal", "pcs8"] for x in [4, 16]] + [("act", "all", "span", x, 0) for x in [0.3, 3]]
 R += [(a, "all", "span", 1, 0) for a in ["pcs32", "rand32"]]
 def tag(r): a, l, p, lam, s = r; return f"{mdl}-{a}-{l}-{p}-l{float(lam):g}-s{s}".replace(".", "p")
-def sh(cmd, **k): return subprocess.run(cmd, capture_output=True, text=True, env=env, **k)
+def sh(cmd, **k):
+    try: return subprocess.run(cmd, capture_output=True, text=True, env=env, **k)
+    except Exception as e: return subprocess.CompletedProcess(cmd, 1, "", f"sh error: {e}")
 st = json.load(open(STATE)) if os.path.exists(STATE) else {}
 def save(): json.dump(st, open(STATE, "w"), indent=1)
 def status(t):
@@ -30,7 +32,8 @@ while True:
         s_ = status(t)
         if s_ == "COMPLETE":
             d = f"{OUTROOT}/{t}"; os.makedirs(d, exist_ok=True)
-            sh(["kaggle", "kernels", "output", f"{owner}/wor-e26v2-{t}", "-p", d], timeout=1800)
+            dl = sh(["kaggle", "kernels", "output", f"{owner}/wor-e26v2-{t}", "-p", d], timeout=3600)
+            if dl.returncode and not any(f.startswith("e26_result_") for f in os.listdir(d)): print(time.strftime("%H:%M"), t, "download retry", dl.stderr[-150:], flush=True); continue
             ok = any(f.startswith("e26_result_") for f in os.listdir(d)); st[t]["state"] = "done" if ok else "failed"
             print(time.strftime("%H:%M"), t, st[t]["state"], flush=True); save()
         elif s_ in ("ERROR", "CANCEL"):
