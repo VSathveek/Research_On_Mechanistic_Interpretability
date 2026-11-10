@@ -122,3 +122,10 @@ The analysis was tested on synthetic results only.
 - code/e26_queue.py: an output download that timed out crashed the Ministral queue after 6 completed runs. The queue now catches
   shell errors, raises the download timeout to 3600 s and retries the download on the next poll instead of crashing.
 - No notebook, objective, evaluation, analysis or hypothesis code changed. No result had been looked at.
+
+## Deviation D2 (2026-11-11, during the full runs, infrastructure only)
+- The Ministral queue now spreads runs over three consenting Kaggle accounts (vanamalaaravind, pulanagamanikanta, amar1004) to
+  get past the weekly GPU quota. Each run records which account ran it. Llama stays on the author's account because its notebooks
+  carry the author's Hugging Face token.
+- Each account reads the same hashed bases file (sha256 5d77b7a8...). The notebook code, the pinned Kaggle image and every
+  setting are identical, so only the account changes. No result had been looked at.
