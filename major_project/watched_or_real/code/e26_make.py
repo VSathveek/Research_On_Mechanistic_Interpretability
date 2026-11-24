@@ -165,7 +165,7 @@ if METHOD in ("inv", "bct"):
                         term = LAMBDA_BEN * (((h - t_) ** 2).sum(-1) / (t_ ** 2).sum(-1)).mean()
                     loss = loss + term / len(b)
                 lh = lh / max(nh, 1)
-            opt.zero_grad(); loss.backward(); torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0); opt.step()
+            if torch.is_tensor(loss): opt.zero_grad(); loss.backward(); torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0); opt.step()   # D3: LAM-0 all-harm batch has no gradient
             step += 1; hist.append(float(loss))
             if METHOD == "bct" or nh > 0: hh.append(lh)
             if step % 25 == 0: print(f"  ep {ep} step {step} loss {np.mean(hist[-25:]):.4f} harm/lm {np.mean(hh[-25:]):.4f} ({time.time()-t0:.0f}s)")

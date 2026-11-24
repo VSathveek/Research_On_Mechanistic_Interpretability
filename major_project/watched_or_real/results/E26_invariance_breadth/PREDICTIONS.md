@@ -129,3 +129,12 @@ The analysis was tested on synthetic results only.
   carry the author's Hugging Face token.
 - Each account reads the same hashed bases file (sha256 5d77b7a8...). The notebook code, the pinned Kaggle image and every
   setting are identical, so only the account changes. No result had been looked at.
+
+## Deviation D3 (2026-11-24): LAM-0 crash fix
+- min-none-all-span-l0-s0 crashed twice with `'float' object has no attribute 'backward'`. With LAM = 0 the harm items are skipped,
+  so a training batch made only of harm items has no loss tensor.
+- Fix in code/e26_make.py: the optimiser step runs only when the loss is a tensor (such batches are skipped). For every other
+  arm the loss is always a tensor, so their computation is unchanged; the regenerated e26.py differs from the frozen one in that
+  single line only.
+- The none arm is descriptive (1 seed, "none vs natural"), not part of H1-H6b. It is rerun once under the fix; the Llama none
+  run uses the fixed code from the start. No result had been opened.
