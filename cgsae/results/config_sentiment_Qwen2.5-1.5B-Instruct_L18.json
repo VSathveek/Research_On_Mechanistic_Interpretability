@@ -1,0 +1,70 @@
+{
+  "args": {
+    "axis": "sentiment",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "layer": 18,
+    "expansion": 8,
+    "topk": 32,
+    "n_docs": 6000,
+    "max_tokens": 300000,
+    "epochs": 30,
+    "n_select": 64,
+    "n_selects": [
+      64,
+      256,
+      1024
+    ],
+    "save_generations": true,
+    "n_prompts": 120,
+    "gen_tokens": 32,
+    "ppl_docs": 150,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "tag_fracs": [
+      0.05,
+      0.1,
+      0.2,
+      0.5
+    ],
+    "alphas": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "dir_alphas": [
+      0.0,
+      0.5,
+      1.0,
+      2.0,
+      4.0,
+      8.0
+    ],
+    "lambda_cg": 1.0,
+    "pen_mode": "contrast",
+    "pen_modes": null,
+    "lambda_cgs": null,
+    "skip_steering": false,
+    "dtype": "fp16",
+    "probe_layers": null,
+    "layer_scan": false,
+    "scan_alphas": [
+      1.0,
+      2.0,
+      4.0
+    ],
+    "out": "/kaggle/working/results",
+    "smoke": false
+  },
+  "baseline": {
+    "eff": 0.6194108128547668,
+    "ctrl": 0.23962736129760742,
+    "ppl": 16.88944196167542
+  },
+  "d_latent": 12288,
+  "n_tokens": 300000
+}

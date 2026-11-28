@@ -1,0 +1,12 @@
+\begin{tabular}{@{}l l c c c c c@{}}
+\toprule
+Run & Model & Layer & Seeds & Tokens & $d_{\text{latent}}$ & Unsteered PPL \\
+\midrule
+R1 & GPT-2 & 7 & 5 & 600{,}000 & 6{,}144 & 52.13 \\
+R2 & GPT-2 & 8 & 5 & 172{,}330 & 6{,}144 & 52.13 \\
+R3 & Qwen2.5-1.5B & 15 & 3 & 300{,}000 & 12{,}288 & 16.89 \\
+R4 & Qwen2.5-1.5B & 18 & 3 & 300{,}000 & 12{,}288 & 16.89 \\
+R5 & Qwen2.5-1.5B & 10 & 3 & 169{,}439 & 12{,}288 & 16.89 \\
+R6$^{\dagger}$ & Qwen2.5-1.5B & 15 & 3 & 169{,}439 & 12{,}288 & 16.89 \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,13 @@
+{
+  "id": "pulanagamanikanta/cgsae-bucket-llm-check",
+  "title": "cgsae bucket llm check",
+  "code_file": "cgsae-bucket-llm-check.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

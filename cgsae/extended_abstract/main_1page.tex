@@ -1,0 +1,141 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{mathptmx}
+\usepackage[Symbol]{upgreek}
+\usepackage[margin=1.5cm,top=1.0cm,bottom=1.0cm]{geometry}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[font=footnotesize,labelfont=bf,skip=2pt]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\linespread{1.0}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlength{\intextsep}{2pt}
+
+% Every number below is generated from the result files, never typed by hand.
+\input{generated/paper_numbers.tex}
+\input{generated/ea_numbers.tex}
+
+% \bstctlcite normally comes from the IEEEtran class; defined here so IEEEtran.bst can read its
+% control entry (at most three authors, otherwise "et al.") under the article class.
+\makeatletter
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack
+  \@for\@citeb:=#2\do{%
+    \edef\@citeb{\expandafter\@firstofone\@citeb}%
+    \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+  \@esphack}
+\makeatother
+
+\newcommand{\Wb}{\mathrm{W}}
+\newcommand{\Nb}{\mathrm{N}}
+\newcommand{\Ub}{\mathrm{U}}
+\newcommand{\avg}{\operatorname{mean}}
+\newcommand{\hd}[1]{\textbf{#1}\enspace}
+
+\begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
+
+\begin{center}
+{\large\bfseries Localising Unwanted Knowledge in Language Models\\[1pt] with Reserved Buckets and a Neutral Buffer}\\[4pt]
+Varanasi Sathveek, Vanamala Aravind, Pula Naga Manikanta, K.\ Hima Bindu\\
+{\small Department of Computer Science \& Engineering, National Institute of Technology Andhra Pradesh, India\\
+Extended abstract \,\textbullet\, CARE 2026 \,\textbullet\, Track: Social Impact of AI}
+\end{center}
+
+\hd{Objective.}
+Removing a harmful behaviour from a language model without damaging everything else is hard,
+because models store far more concepts than they have neurons and the concepts overlap
+(superposition)~\cite{elhage2022toy}. Steering finds a direction after
+training~\cite{turner2023actadd,rimsky2024caa,li2023iti}, sparse-autoencoder (SAE) methods tie a
+behaviour to one unit~\cite{harle2024scar} or search for units afterwards~\cite{he2025saessv}, and
+gradient routing masks gradients to localise a capability~\cite{cloud2024gradient}; none gives features
+shared by opposing behaviours a place of their own. The obvious penalty can also be met by silencing
+units, which the usual \emph{leakage} measure misses ($r=\leakRoutingCorr$ with actual routing). Our
+objective is to reserve, before training, a fixed place for one unwanted behaviour, such as toxic
+language or negative sentiment, so it can later be cut out without touching the rest.
+
+\hd{Keywords:} mechanistic interpretability; sparse autoencoders; superposition; model editing;
+knowledge removal
+
+\hd{Method.}
+Take a layer with $m$ hidden units: the MLP neurons of a language model, or the
+dictionary units of an SAE. We set aside $\lfloor\uptau m\rfloor$ of them as a wanted bucket $\Wb$
+and as many as an unwanted bucket $\Ub$, where $0<\uptau\le\frac12$ is the fraction per bucket (we
+tried 0.05 to 0.5; at $\frac12$ no buffer is left). The remaining units
+form a \emph{neutral buffer} $\Nb$ that is never penalised, so features shared by both behaviours
+have somewhere to go. With $s_S$ the share of activity falling in bucket
+$S$ and $y$ the label of the training text ($y=0$ unwanted), we train with
+$L=L_{\mathrm{task}}+\uplambda P$, where
+\begin{equation}
+  P=-\tfrac12\Big[\big(\avg_{y=0}s_{\Ub}-\avg_{y=1}s_{\Ub}\big)+\big(\avg_{y=1}s_{\Wb}-\avg_{y=0}s_{\Wb}\big)\Big].
+\end{equation}
+This rewards $\Ub$ for \emph{carrying} unwanted activity rather than staying silent. Afterwards $\Ub$
+is deleted: inside a model we zero its neurons' weights; in an SAE we scale its units down and add
+only the resulting change to the frozen model.
+
+\hd{Experiments.}
+We test the idea at three scales, always comparing the deletion of $\Ub$ with
+deleting a random bucket of the same size. First, a toy classifier on two overlapping Gaussian
+classes (\nSynthSeeds{} seeds). Second, buckets inside
+GPT-2's MLP neurons (layers 5--9, $\uptau=0.1$) during fine-tuning, and inside a small GPT-style
+model trained from scratch. The data are IMDB reviews with negative sentiment as the unwanted
+behaviour; we measure perplexity on held-out negative and positive reviews, and on WikiText-103
+for general fluency. Third, buckets inside SAEs~\cite{gao2024scaling} on frozen GPT-2 and
+Qwen2.5-1.5B for sentiment (IMDB) and toxicity (RealToxicityPrompts), against a normal SAE, a single
+conditioned unit and difference-in-means steering at equal sparsity, edit size and fluency cost
+(2--3 seeds each).
+
+\hd{Results.}
+\emph{Toy:} we define specificity $S$ as the drop in the classifier's AUC at recognising the
+unwanted class when $\Ub$ is deleted, divided by the same drop when a random bucket is deleted
+($S=1$ is chance). With a wide buffer ($\uptau=0.1$) $S$ reaches \specMax; with no buffer
+($\uptau=\frac12$) it falls to \specNoBufLamOne{} at $\uplambda=1$ and to \specNoBufLamFive{} at
+$\uplambda=5$. \emph{Inside GPT-2} ($\uplambda=3$): deleting
+$\Ub$ raises perplexity on negative reviews by \gtBadNeg\% but on positive reviews by only \gtBadPos\%
+in all \gtSeeds{} runs, deleting $\Wb$ does the reverse, and a random bucket hurts both equally
+(Fig.~1), at a \gtWikiCostPct\% cost in general fluency. The model trained from scratch shows the
+same pattern. \emph{SAEs:} removing $\Ub$ beats removing a random bucket in \blockPositive{} of
+\blockTotal{} settings ($p=\blockSignP$); a bucketed SAE beats a normal SAE on Qwen
+(\vsSSVqwenSig{}/\vsSSVqwenTotal{} tests) but not on GPT-2 (\vsSSVgptSig{}/\vsSSVgptTotal); difference-in-means
+steering wins on sentiment, while SAEs win on toxicity. \emph{Ablations, errors and generality:}
+the pattern needs both the buffer and a strong enough penalty ($\uplambda=1$ forms no buckets,
+$\uplambda=10$ costs \ghWikiCostPct\% in fluency) and holds across two models, two concepts, and both
+fine-tuning and training from scratch; however, deleting $\Ub$ did not reliably make the model
+\emph{write} less negatively, and the knowledge can be relearned.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.66\linewidth]{figures/fig_inmodel_compact.pdf}
+  \caption{Perplexity rise on held-out reviews after deleting a bucket. Once buckets form, deleting
+  $\Ub$ mainly hurts negative reviews.}
+\end{figure}
+
+\hd{Inference.}
+The knowledge behind an unwanted behaviour can be placed in a chosen location and removed
+selectively, as measured by perplexity, and the neutral buffer is what makes this work. Knowledge moves more reliably than behaviour; closing
+that gap is our next step. Leakage alone should not be used to judge such methods.
+
+\hd{References}
+{\scriptsize
+\renewcommand{\section}[2]{}%
+\makeatletter
+\renewcommand\@openbib@code{\setlength\itemsep{0pt}\setlength\parsep{0pt}\setlength\topsep{0pt}}%
+\makeatother
+\setlength{\parskip}{0pt}\linespread{1.0}\selectfont
+\setlength{\columnsep}{14pt}\setlength{\multicolsep}{2pt}
+\begin{multicols}{2}
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,references}
+\end{multicols}}
+
+\end{document}

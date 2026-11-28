@@ -1,0 +1,23 @@
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Objective & $\lambda$ & FVU $\downarrow$ & Leakage $\downarrow$ & Routing $\uparrow$ & B-block alive & Dead latents \\
+\midrule
+squared mean (v1) & 1 & 0.173 & 0.4936 & 0.005 & 99\% & 87 \\
+ & 3 & 0.173 & 0.4861 & 0.008 & 98\% & 84 \\
+ & 10 & 0.173 & 0.4705 & 0.012 & 97\% & 104 \\
+\addlinespace[2pt]
+mean & 1 & 0.175 & 0.3424 & 0.014 & 89\% & 308 \\
+ & 3 & 0.179 & 0.1814 & 0.011 & 67\% & 834 \\
+ & 10 & 0.188 & \underline{0.0020} & 0.000 & 4\% & 2380 \\
+\addlinespace[2pt]
+ratio & 1 & 0.188 & 0.0929 & 0.006 & 22\% & 1944 \\
+ & 3 & 0.189 & 0.0900 & 0.006 & 22\% & 1994 \\
+ & 10 & 0.190 & 0.1292 & 0.010 & 23\% & 1964 \\
+\addlinespace[2pt]
+\textbf{contrastive (ours)} & 1 & 0.250 & 0.3004 & 0.357 & 59\% & 1190 \\
+ & 3 & 0.391 & 0.2955 & \textbf{0.401} & 83\% & 2533 \\
+ & 10 & 1.026 & 0.0830 & 0.201 & 98\% & 3252 \\
+\midrule
+Vanilla TopK SAE & -- & 0.173 & -- & -- & -- & 82 \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-paper-compile",
+  "title": "CGSAE v2 paper compile",
+  "code_file": "cgsae-v2-paper-compile.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-sentiment-gpt2-l8-calib",
+  "title": "CGSAE v2 sentiment gpt2 L8 calib",
+  "code_file": "cgsae-v2-sentiment-gpt2-l8-calib.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

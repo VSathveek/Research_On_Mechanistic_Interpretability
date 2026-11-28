@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-sentiment-gpt2-l8-layerscan",
+  "title": "CGSAE v2 sentiment gpt2 L8 layerscan",
+  "code_file": "cgsae-v2-sentiment-gpt2-l8-layerscan.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-sentiment-qwen1p5b-l15-main",
+  "title": "CGSAE v2 sentiment qwen1p5b L15 main",
+  "code_file": "cgsae-v2-sentiment-qwen1p5b-l15-main.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

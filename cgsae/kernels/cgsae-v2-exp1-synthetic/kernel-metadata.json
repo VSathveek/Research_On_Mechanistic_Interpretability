@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-exp1-synthetic",
+  "title": "CGSAE v2 exp1 synthetic",
+  "code_file": "cgsae-v2-exp1-synthetic.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

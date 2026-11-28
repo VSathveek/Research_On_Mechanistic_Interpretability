@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-study-compile",
+  "title": "CGSAE study compile",
+  "code_file": "cgsae-study-compile.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

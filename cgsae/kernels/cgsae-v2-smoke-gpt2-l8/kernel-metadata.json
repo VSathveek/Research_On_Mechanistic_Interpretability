@@ -1,0 +1,13 @@
+{
+  "id": "varanasilvsssathveek/cgsae-v2-smoke-gpt2-l8",
+  "title": "CGSAE v2 smoke gpt2 L8",
+  "code_file": "cgsae-v2-smoke-gpt2-l8.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}
